@@ -8,75 +8,83 @@ import {
 } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { RefreshCw, Pause, Play } from "lucide-react"
+import ReactDOM from "react-dom"
 
 <Meta title="Tailwind/Animations" />
 
 # Tailwind Animations
 
-This guide demonstrates the usage of `tailwindcss-animate`, a powerful Tailwind CSS plugin for creating beautiful animations.
+This guide demonstrates the usage of [tailwindcss-animate](https://github.com/jamiebuilds/tailwindcss-animate), an animation plugin for Tailwind CSS.
 This plugin is included in the shadcn/ui package and used across its components.
 
-<div className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 p-4 flex justify-end gap-2 border-b">
+<div className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 p-4 flex justify-end gap-2 border-b ml-[-40px]! mr-[-40px]!">
 	<Button
 		variant="outline"
 		size="default"
-		onClick={() => {
-			const containers = document.querySelectorAll("[data-animation-container]");
-			const button = document.querySelector("[data-play-pause-button]");
+		onClick={(e) => {
+			const button = e.currentTarget;
 			const isPaused = button.getAttribute("data-state") === "paused";
 			
-			containers.forEach(container => {
+			const animatedElements = document.querySelectorAll("[data-animation-container]");
+			animatedElements.forEach(element => {
+				const allAnimatedChildren = element.querySelectorAll('*');
 				if (isPaused) {
-					container.classList.remove("paused");
+					element.classList.remove("paused");
+					allAnimatedChildren.forEach(child => {
+						child.classList.remove("paused");
+					});
 				} else {
-					container.classList.add("paused");
+					element.classList.add("paused");
+					allAnimatedChildren.forEach(child => {
+						child.classList.add("paused");
+					});
 				}
 			});
 
-    		if (isPaused) {
-    			button.setAttribute("data-state", "playing");
-    			button.querySelector("span").textContent = "Pause All";
-    			button.querySelector("svg").replaceWith(document.createElementNS("http://www.w3.org/2000/svg", "svg"));
-    			const pauseIcon = button.querySelector("svg");
-    			pauseIcon.setAttribute("viewBox", "0 0 24 24");
-    			pauseIcon.setAttribute("fill", "none");
-    			pauseIcon.setAttribute("stroke", "currentColor");
-    			pauseIcon.setAttribute("stroke-width", "2");
-    			pauseIcon.setAttribute("class", "h-4 w-4");
-    			pauseIcon.innerHTML = '<rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect>';
-    		} else {
-    			button.setAttribute("data-state", "paused");
-    			button.querySelector("span").textContent = "Play All";
-    			button.querySelector("svg").replaceWith(document.createElementNS("http://www.w3.org/2000/svg", "svg"));
-    			const playIcon = button.querySelector("svg");
-    			playIcon.setAttribute("viewBox", "0 0 24 24");
-    			playIcon.setAttribute("fill", "none");
-    			playIcon.setAttribute("stroke", "currentColor");
-    			playIcon.setAttribute("stroke-width", "2");
-    			playIcon.setAttribute("class", "h-4 w-4");
-    			playIcon.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"></polygon>';
-    		}
+    		// Update button state
+    		button.setAttribute("data-state", isPaused ? "playing" : "paused");
     	}}
     	className="gap-2"
     	data-play-pause-button
     	data-state="playing"
     >
-    	<Pause className="h-4 w-4" />
-    	<span>Pause All</span>
+    	<span className="block data-[state=playing]:hidden"><Pause /></span>
+    	<span className="hidden data-[state=paused]:block"><Play /></span>
     </Button>
     <Button
     	variant="outline"
     	size="default"
-    	onClick={() => {
+    	onClick={(e) => {
+    		const icon = e.currentTarget.querySelector("svg");
+    		icon.classList.add("animate-spin-once");
+
     		document
     			.querySelectorAll("[data-animation-container]")
     			.forEach(container => {
-    				container.style.animation = "none"
-    				container.offsetHeight
-    				container.style.animation = null
-    				container.style.transform = null
-    				container.style.opacity = null
-    			})
+    				const originalClasses = container.className;
+
+    				container.className = originalClasses
+    					.split(" ")
+    					.filter(cls => !cls.startsWith("animate-"))
+    					.join(" ");
+
+    				container.style.animation = "none";
+    				container.style.transform = "none";
+    				container.style.opacity = "";
+    				container.style.animationPlayState = "";
+
+    				void container.offsetHeight;
+
+    				container.style.animation = "";
+    				container.style.transform = "";
+
+    				container.className = originalClasses;
+    			});
+
+    		// Remove spin animation after it completes
+    		setTimeout(() => {
+    			icon.classList.remove("animate-spin-once");
+    		}, 500);
     	}}
     	className="gap-2"
     >
@@ -97,32 +105,57 @@ This plugin is included in the shadcn/ui package and used across its components.
     animation-fill-mode: forwards;
   }
 
-  [data-animation-container].paused {
-    animation-play-state: paused !important;
+  .animate-out {
+    animation-fill-mode: forwards;
   }
 
   .animate-bounce {
     animation: bounce 1s infinite;
   }
 
-  [data-animation-container].paused .animate-bounce,
-  [data-animation-container].paused.animate-bounce {
-    animation-play-state: paused !important;
-  }
-
   /* Add smooth transition for the button icon change */
-  [data-play-pause-button] svg {
+  button svg {
     transition: transform 0.2s ease;
   }
   
   /* Optional: add a subtle scale effect on hover */
-  [data-play-pause-button]:hover svg {
+  button:hover svg {
     transform: scale(1.1);
+  }
+
+  /* Ensure animations start from their initial state */
+  [data-animation-container] {
+    will-change: transform, opacity;
+  }
+
+  /* Add spin animation for refresh icon */
+  @keyframes spin-once {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .animate-spin-once {
+    animation: spin-once 0.5s ease-in-out;
+    transform-origin: center;
+  }
+
+  /* Define bounce animation if not already defined */
+  @keyframes bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-25%);
+    }
   }
 `}
 </style>
 
-## Basic Usage
+<br />
 
 ### Enter Animations
 
@@ -412,21 +445,21 @@ This plugin is included in the shadcn/ui package and used across its components.
 <div className="grid grid-cols-2 gap-4">
 	<div>
 		```jsx
-		<div className="motion-safe:animate-bounce">
+		<div className="motion-safe:animate-bounce" data-animation-container>
 			Only animates if user hasn't enabled reduced motion
 		</div>
-		<div className="motion-reduce:animate-none">
+		<div className="motion-reduce:animate-none" data-animation-container>
 			Won't animate if user has enabled reduced motion
 		</div>
 		```
 	</div>
 	<div className="space-y-4">
-		<Card className="motion-safe:animate-bounce">
+		<Card className="motion-safe:animate-bounce" data-animation-container>
 			<CardContent className="p-4">
 				Only animates if user hasn't enabled reduced motion
 			</CardContent>
 		</Card>
-		<Card className="motion-reduce:animate-none">
+		<Card className="motion-reduce:animate-none" data-animation-container>
 			<CardContent className="p-4">
 				Won't animate if user has enabled reduced motion
 			</CardContent>
@@ -441,13 +474,19 @@ This plugin is included in the shadcn/ui package and used across its components.
 <div className="grid grid-cols-2 gap-4">
 	<div>
 		```jsx
-		<div className="animate-in fade-in zoom-in duration-700 delay-150">
+		<div
+			className="animate-in fade-in zoom-in duration-700 delay-150"
+			data-animation-container
+		>
 			Fade and zoom with custom timing
 		</div>
 		```
 	</div>
 	<div>
-		<Card className="animate-in fade-in zoom-in duration-700 delay-150">
+		<Card
+			className="animate-in fade-in zoom-in duration-700 delay-150"
+			data-animation-container
+		>
 			<CardContent className="p-4">
 				Fade and zoom with custom timing
 			</CardContent>
@@ -468,10 +507,10 @@ This plugin is included in the shadcn/ui package and used across its components.
 		```
 	</div>
 	<div className="space-y-4">
-		<Card className="animate-in fade-in-25">
+		<Card className="animate-in fade-in-25" data-animation-container>
 			<CardContent className="p-4">25% opacity start</CardContent>
 		</Card>
-		<Card className="animate-in fade-in-50">
+		<Card className="animate-in fade-in-50" data-animation-container>
 			<CardContent className="p-4">50% opacity start</CardContent>
 		</Card>
 		<Card className="animate-in fade-in-75">
@@ -491,13 +530,13 @@ This plugin is included in the shadcn/ui package and used across its components.
 		```
 	</div>
 	<div className="space-y-4">
-		<Card className="animate-in spin-in-1">
+		<Card className="animate-in spin-in-1" data-animation-container>
 			<CardContent className="p-4">1° rotation</CardContent>
 		</Card>
-		<Card className="animate-in spin-in-6">
+		<Card className="animate-in spin-in-6" data-animation-container>
 			<CardContent className="p-4">6° rotation</CardContent>
 		</Card>
-		<Card className="animate-in spin-in-90">
+		<Card className="animate-in spin-in-90" data-animation-container>
 			<CardContent className="p-4">90° rotation</CardContent>
 		</Card>
 	</div>
@@ -514,13 +553,13 @@ This plugin is included in the shadcn/ui package and used across its components.
 		```
 	</div>
 	<div className="space-y-4">
-		<Card className="animate-in zoom-in-50">
+		<Card className="animate-in zoom-in-50" data-animation-container>
 			<CardContent className="p-4">50% scale start</CardContent>
 		</Card>
-		<Card className="animate-in zoom-in-75">
+		<Card className="animate-in zoom-in-75" data-animation-container>
 			<CardContent className="p-4">75% scale start</CardContent>
 		</Card>
-		<Card className="animate-in zoom-in-95">
+		<Card className="animate-in zoom-in-95" data-animation-container>
 			<CardContent className="p-4">95% scale start</CardContent>
 		</Card>
 	</div>
@@ -537,62 +576,39 @@ This plugin is included in the shadcn/ui package and used across its components.
 		```
 	</div>
 	<div className="space-y-4">
-		<Card className="animate-in slide-in-from-top-48">
+		<Card className="animate-in slide-in-from-top-48" data-animation-container>
 			<CardContent className="p-4">From top 12rem</CardContent>
 		</Card>
-		<Card className="animate-in slide-in-from-bottom-72">
+		<Card
+			className="animate-in slide-in-from-bottom-72"
+			data-animation-container
+		>
 			<CardContent className="p-4">From bottom 18rem</CardContent>
 		</Card>
-		<Card className="animate-in slide-in-from-left-96">
+		<Card className="animate-in slide-in-from-left-96" data-animation-container>
 			<CardContent className="p-4">From left 24rem</CardContent>
 		</Card>
 	</div>
 </div>
 
-## Tips & Best Practices
-
-<Card className="mb-8">
-	<CardHeader>
-		<CardTitle>Animation Guidelines</CardTitle>
-	</CardHeader>
-	<CardContent>
-		<ul className="list-disc pl-6 space-y-2">
-			<li>
-				Use subtle animations to enhance user experience, not distract from it
-			</li>
-			<li>Keep durations short (150-700ms) for UI interactions</li>
-			<li>Always provide reduced-motion alternatives</li>
-			<li>Combine animations thoughtfully - less is often more</li>
-			<li>Test animations across different devices and screen sizes</li>
-		</ul>
-	</CardContent>
-</Card>
-
 ## Installation
 
-<Card>
-	<CardHeader>
-		<CardTitle>Getting Started</CardTitle>
-		<CardDescription>Follow these steps to add animations to your project</CardDescription>
-	</CardHeader>
-	<CardContent>
-		```bash
-		npm install -D tailwindcss-animate
-		```
+Follow these steps to add animations to your project.
 
-    	Add the plugin to your `tailwind.config.js`:
+```bash
+npm install -D tailwindcss-animate
+```
 
-    	```js
-    	module.exports = {
-    		theme: {
-    			// ...
-    		},
-    		plugins: [
-    			require("tailwindcss-animate"),
-    			// ...
-    		],
-    	}
-    	```
-    </CardContent>
+Add the plugin to your `tailwind.config.js`:
 
-</Card>
+```js
+module.exports = {
+	theme: {
+		// ...
+	},
+	plugins: [
+		require("tailwindcss-animate"),
+		// ...
+	],
+}
+```
