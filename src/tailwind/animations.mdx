@@ -48,16 +48,43 @@ This plugin is included in the shadcn/ui package and used across its components.
     	data-play-pause-button
     	data-state="playing"
     >
-    	<span className="block data-[state=playing]:hidden"><Pause /></span>
-    	<span className="hidden data-[state=paused]:block"><Play /></span>
+    	<div className="playing-state">
+    		<Pause className="h-4 w-4" />
+    	</div>
+
+    	<div className="paused-state">
+    		<Play className="h-4 w-4" />
+    	</div>
     </Button>
     <Button
     	variant="outline"
     	size="default"
     	onClick={(e) => {
-    		const icon = e.currentTarget.querySelector("svg");
-    		icon.classList.add("animate-spin-once");
+    		const button = e.currentTarget;
+    		const icon = button.querySelector("svg");
 
+    		// Create a unique instance of the animation
+    		const uniqueAnimationClass = `animate-spin-once-${Date.now()}`;
+
+    		// Add the animation class and a special tracking attribute
+    		icon.classList.add(uniqueAnimationClass);
+    		icon.setAttribute("data-spinning", "true");
+
+    		// Create a stylesheet for this unique animation
+    		const style = document.createElement('style');
+    		style.textContent = `
+    			@keyframes ${uniqueAnimationClass} {
+    				from { transform: rotate(0deg); }
+    				to { transform: rotate(360deg); }
+    			}
+    			.${uniqueAnimationClass} {
+    				animation: ${uniqueAnimationClass} 0.5s linear forwards;
+    				transform-origin: center;
+    			}
+    		`;
+    		document.head.appendChild(style);
+
+    		// Perform animation reset
     		document
     			.querySelectorAll("[data-animation-container]")
     			.forEach(container => {
@@ -81,9 +108,11 @@ This plugin is included in the shadcn/ui package and used across its components.
     				container.className = originalClasses;
     			});
 
-    		// Remove spin animation after it completes
+    		// Clean up after animation completes
     		setTimeout(() => {
-    			icon.classList.remove("animate-spin-once");
+    			icon.classList.remove(uniqueAnimationClass);
+    			icon.removeAttribute("data-spinning");
+    			document.head.removeChild(style);
     		}, 500);
     	}}
     	className="gap-2"
@@ -141,6 +170,13 @@ This plugin is included in the shadcn/ui package and used across its components.
   .animate-spin-once {
     animation: spin-once 0.5s ease-in-out;
     transform-origin: center;
+    pointer-events: none; /* Prevent interaction during spin */
+  }
+
+  /* Add disabled state styling */
+  button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
   }
 
   /* Define bounce animation if not already defined */
@@ -151,6 +187,27 @@ This plugin is included in the shadcn/ui package and used across its components.
     50% {
       transform: translateY(-25%);
     }
+  }
+
+  /* Style for play/pause button states */
+  .playing-state {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .paused-state {
+    display: none;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  [data-state="paused"] .playing-state {
+    display: none;
+  }
+  
+  [data-state="paused"] .paused-state {
+    display: flex;
   }
 `}
 </style>
