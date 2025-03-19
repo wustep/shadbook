@@ -1,7 +1,5 @@
-import React from "react"
-
-import { Button } from "./Button"
-import "./header.css"
+import { Button } from "@/storybook/Button"
+import "@/storybook/header.css"
 
 type User = {
 	name: string
