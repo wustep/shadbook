@@ -3,6 +3,8 @@ import { useState } from "react"
 import "@/app/App.css"
 import reactLogo from "@/app/assets/react.svg"
 import viteLogo from "@/app/assets/vite.svg"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
 
 function App() {
 	const [count, setCount] = useState(0)
@@ -25,18 +27,17 @@ function App() {
 					<img src={reactLogo} className="logo react" alt="React logo" />
 				</a>
 			</div>
-			<h1>Vite + React</h1>
-			<div className="card">
-				<button onClick={() => setCount(count => count + 1)}>
-					count is {count}
-				</button>
-				<p>
-					Edit <code>src/App.tsx</code> and save to test HMR
-				</p>
-			</div>
-			<p className="read-the-docs">
-				Click on the Vite and React logos to learn more
-			</p>
+			<Card className="w-[300px]">
+				<h1 className="text-2xl font-bold">Vite + React</h1>
+				<CardContent className="space-y-4">
+					<Button
+						onClick={() => setCount(count => count + 1)}
+						className="w-full"
+					>
+						count is {count}
+					</Button>
+				</CardContent>
+			</Card>
 		</div>
 	)
 }
