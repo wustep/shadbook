@@ -1,0 +1,598 @@
+import { Meta, Unstyled } from "@storybook/blocks"
+import {
+	Card,
+	CardContent,
+	CardHeader,
+	CardTitle,
+	CardDescription,
+} from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { RefreshCw, Pause, Play } from "lucide-react"
+
+<Meta title="Tailwind/Animations" />
+
+# Tailwind Animations
+
+This guide demonstrates the usage of `tailwindcss-animate`, a powerful Tailwind CSS plugin for creating beautiful animations.
+This plugin is included in the shadcn/ui package and used across its components.
+
+<div className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 p-4 flex justify-end gap-2 border-b">
+	<Button
+		variant="outline"
+		size="default"
+		onClick={() => {
+			const containers = document.querySelectorAll("[data-animation-container]");
+			const button = document.querySelector("[data-play-pause-button]");
+			const isPaused = button.getAttribute("data-state") === "paused";
+			
+			containers.forEach(container => {
+				if (isPaused) {
+					container.classList.remove("paused");
+				} else {
+					container.classList.add("paused");
+				}
+			});
+
+    		if (isPaused) {
+    			button.setAttribute("data-state", "playing");
+    			button.querySelector("span").textContent = "Pause All";
+    			button.querySelector("svg").replaceWith(document.createElementNS("http://www.w3.org/2000/svg", "svg"));
+    			const pauseIcon = button.querySelector("svg");
+    			pauseIcon.setAttribute("viewBox", "0 0 24 24");
+    			pauseIcon.setAttribute("fill", "none");
+    			pauseIcon.setAttribute("stroke", "currentColor");
+    			pauseIcon.setAttribute("stroke-width", "2");
+    			pauseIcon.setAttribute("class", "h-4 w-4");
+    			pauseIcon.innerHTML = '<rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect>';
+    		} else {
+    			button.setAttribute("data-state", "paused");
+    			button.querySelector("span").textContent = "Play All";
+    			button.querySelector("svg").replaceWith(document.createElementNS("http://www.w3.org/2000/svg", "svg"));
+    			const playIcon = button.querySelector("svg");
+    			playIcon.setAttribute("viewBox", "0 0 24 24");
+    			playIcon.setAttribute("fill", "none");
+    			playIcon.setAttribute("stroke", "currentColor");
+    			playIcon.setAttribute("stroke-width", "2");
+    			playIcon.setAttribute("class", "h-4 w-4");
+    			playIcon.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"></polygon>';
+    		}
+    	}}
+    	className="gap-2"
+    	data-play-pause-button
+    	data-state="playing"
+    >
+    	<Pause className="h-4 w-4" />
+    	<span>Pause All</span>
+    </Button>
+    <Button
+    	variant="outline"
+    	size="default"
+    	onClick={() => {
+    		document
+    			.querySelectorAll("[data-animation-container]")
+    			.forEach(container => {
+    				container.style.animation = "none"
+    				container.offsetHeight
+    				container.style.animation = null
+    				container.style.transform = null
+    				container.style.opacity = null
+    			})
+    	}}
+    	className="gap-2"
+    >
+    	<RefreshCw className="h-4 w-4" />
+    	<span>Replay All</span>
+    </Button>
+
+</div>
+
+<style>
+	{`
+  [data-animation-container] {
+    isolation: isolate;
+    contain: content;
+  }
+  
+  .animate-in {
+    animation-fill-mode: forwards;
+  }
+
+  [data-animation-container].paused {
+    animation-play-state: paused !important;
+  }
+
+  .animate-bounce {
+    animation: bounce 1s infinite;
+  }
+
+  [data-animation-container].paused .animate-bounce,
+  [data-animation-container].paused.animate-bounce {
+    animation-play-state: paused !important;
+  }
+
+  /* Add smooth transition for the button icon change */
+  [data-play-pause-button] svg {
+    transition: transform 0.2s ease;
+  }
+  
+  /* Optional: add a subtle scale effect on hover */
+  [data-play-pause-button]:hover svg {
+    transform: scale(1.1);
+  }
+`}
+</style>
+
+## Basic Usage
+
+### Enter Animations
+
+<div className="grid grid-cols-2 gap-8">
+	<div>
+		<Card className="mb-4">
+			<CardHeader>
+				<CardTitle>Code Example</CardTitle>
+				<CardDescription>
+					Add these classes to create entrance animations
+				</CardDescription>
+			</CardHeader>
+			<CardContent>
+				```jsx
+				<div className="animate-in fade-in zoom-in">Fade and Zoom In</div>
+				<div className="animate-in slide-in-from-top">Slide In From Top</div>
+				<div className="animate-in slide-in-from-bottom">
+					Slide In From Bottom
+				</div>
+				<div className="animate-in slide-in-from-left">Slide In From Left</div>
+				<div className="animate-in slide-in-from-right">
+					Slide In From Right
+				</div>
+				```
+			</CardContent>
+		</Card>
+	</div>
+	<div className="space-y-4">
+		<Card className="animate-in fade-in zoom-in" data-animation-container>
+			<CardContent className="p-4">Fade and Zoom In</CardContent>
+		</Card>
+		<Card className="animate-in slide-in-from-top" data-animation-container>
+			<CardContent className="p-4">Slide In From Top</CardContent>
+		</Card>
+		<Card className="animate-in slide-in-from-bottom" data-animation-container>
+			<CardContent className="p-4">Slide In From Bottom</CardContent>
+		</Card>
+		<Card className="animate-in slide-in-from-left" data-animation-container>
+			<CardContent className="p-4">Slide In From Left</CardContent>
+		</Card>
+		<Card className="animate-in slide-in-from-right" data-animation-container>
+			<CardContent className="p-4">Slide In From Right</CardContent>
+		</Card>
+	</div>
+</div>
+
+### Exit Animations
+
+<div className="grid grid-cols-2 gap-8">
+	<div>
+		<Card className="mb-4">
+			<CardHeader>
+				<CardTitle>Code Example</CardTitle>
+				<CardDescription>
+					Add these classes to create exit animations
+				</CardDescription>
+			</CardHeader>
+			<CardContent>
+				```jsx
+				<div className="animate-out fade-out zoom-out">Fade and Zoom Out</div>
+				<div className="animate-out slide-out-to-top">Slide Out To Top</div>
+				<div className="animate-out slide-out-to-bottom">
+					Slide Out To Bottom
+				</div>
+				<div className="animate-out slide-out-to-left">Slide Out To Left</div>
+				<div className="animate-out slide-out-to-right">Slide Out To Right</div>
+				```
+			</CardContent>
+		</Card>
+	</div>
+	<div className="space-y-4">
+		<Card className="animate-out fade-out zoom-out" data-animation-container>
+			<CardContent className="p-4">Fade and Zoom Out</CardContent>
+		</Card>
+		<Card className="animate-out slide-out-to-top" data-animation-container>
+			<CardContent className="p-4">Slide Out To Top</CardContent>
+		</Card>
+		<Card className="animate-out slide-out-to-bottom" data-animation-container>
+			<CardContent className="p-4">Slide Out To Bottom</CardContent>
+		</Card>
+		<Card className="animate-out slide-out-to-left" data-animation-container>
+			<CardContent className="p-4">Slide Out To Left</CardContent>
+		</Card>
+		<Card className="animate-out slide-out-to-right" data-animation-container>
+			<CardContent className="p-4">Slide Out To Right</CardContent>
+		</Card>
+	</div>
+</div>
+
+## Animation Controls
+
+### Duration
+
+<div className="grid grid-cols-2 gap-8">
+	<div>
+		<Card className="mb-4">
+			<CardHeader>
+				<CardTitle>Duration Control</CardTitle>
+				<CardDescription>
+					Control how long the animation takes to complete
+				</CardDescription>
+			</CardHeader>
+			<CardContent>
+				```jsx
+				<div className="animate-in fade-in duration-150">Fast (150ms)</div>
+				<div className="animate-in fade-in duration-300">Medium (300ms)</div>
+				<div className="animate-in fade-in duration-700">Slow (700ms)</div>
+				```
+			</CardContent>
+		</Card>
+	</div>
+	<div className="space-y-4">
+		<Card className="animate-in fade-in duration-150" data-animation-container>
+			<CardContent className="p-4">Fast (150ms)</CardContent>
+		</Card>
+		<Card className="animate-in fade-in duration-300" data-animation-container>
+			<CardContent className="p-4">Medium (300ms)</CardContent>
+		</Card>
+		<Card className="animate-in fade-in duration-700" data-animation-container>
+			<CardContent className="p-4">Slow (700ms)</CardContent>
+		</Card>
+	</div>
+</div>
+
+### Delay
+
+<div className="grid grid-cols-2 gap-4">
+	<div>
+		```jsx
+		<div className="animate-in fade-in delay-150">Short delay (150ms)</div>
+		<div className="animate-in fade-in delay-300">Medium delay (300ms)</div>
+		<div className="animate-in fade-in delay-700">Long delay (700ms)</div>
+		```
+	</div>
+	<div className="space-y-4">
+		<Card className="animate-in fade-in delay-150">
+			<CardContent className="p-4">Short delay (150ms)</CardContent>
+		</Card>
+		<Card className="animate-in fade-in delay-300">
+			<CardContent className="p-4">Medium delay (300ms)</CardContent>
+		</Card>
+		<Card className="animate-in fade-in delay-700">
+			<CardContent className="p-4">Long delay (700ms)</CardContent>
+		</Card>
+	</div>
+</div>
+
+### Animation Direction
+
+<div className="grid grid-cols-2 gap-4">
+	<div>
+		```jsx
+		<div className="animate-bounce direction-normal">Normal</div>
+		<div className="animate-bounce direction-reverse">Reverse</div>
+		<div className="animate-bounce direction-alternate">Alternate</div>
+		<div className="animate-bounce direction-alternate-reverse">
+			Alternate Reverse
+		</div>
+		```
+	</div>
+	<div className="space-y-4">
+		<Card className="animate-bounce direction-normal" data-animation-container>
+			<CardContent className="p-4">Normal</CardContent>
+		</Card>
+		<Card className="animate-bounce direction-reverse" data-animation-container>
+			<CardContent className="p-4">Reverse</CardContent>
+		</Card>
+		<Card
+			className="animate-bounce direction-alternate"
+			data-animation-container
+		>
+			<CardContent className="p-4">Alternate</CardContent>
+		</Card>
+		<Card
+			className="animate-bounce direction-alternate-reverse"
+			data-animation-container
+		>
+			<CardContent className="p-4">Alternate Reverse</CardContent>
+		</Card>
+	</div>
+</div>
+
+### Fill Mode
+
+<div className="grid grid-cols-2 gap-4">
+	<div>
+		```jsx
+		<div className="animate-bounce fill-mode-none">None</div>
+		<div className="animate-bounce fill-mode-forwards">Forwards</div>
+		<div className="animate-bounce fill-mode-backwards">Backwards</div>
+		<div className="animate-bounce fill-mode-both">Both</div>
+		```
+	</div>
+	<div className="space-y-4">
+		<Card className="animate-bounce fill-mode-none" data-animation-container>
+			<CardContent className="p-4">None</CardContent>
+		</Card>
+		<Card
+			className="animate-bounce fill-mode-forwards"
+			data-animation-container
+		>
+			<CardContent className="p-4">Forwards</CardContent>
+		</Card>
+		<Card
+			className="animate-bounce fill-mode-backwards"
+			data-animation-container
+		>
+			<CardContent className="p-4">Backwards</CardContent>
+		</Card>
+		<Card className="animate-bounce fill-mode-both" data-animation-container>
+			<CardContent className="p-4">Both</CardContent>
+		</Card>
+	</div>
+</div>
+
+### Iteration Count
+
+<div className="grid grid-cols-2 gap-4">
+	<div>
+		```jsx
+		<div className="animate-bounce repeat-0">No Repeat</div>
+		<div className="animate-bounce repeat-1">Once</div>
+		<div className="animate-bounce repeat-infinite">Infinite</div>
+		```
+	</div>
+	<div className="space-y-4">
+		<Card className="animate-bounce repeat-0" data-animation-container>
+			<CardContent className="p-4">No Repeat</CardContent>
+		</Card>
+		<Card className="animate-bounce repeat-1" data-animation-container>
+			<CardContent className="p-4">Once</CardContent>
+		</Card>
+		<Card className="animate-bounce repeat-infinite" data-animation-container>
+			<CardContent className="p-4">Infinite</CardContent>
+		</Card>
+	</div>
+</div>
+
+### Play State
+
+<div className="grid grid-cols-2 gap-4">
+	<div>
+		```jsx
+		<div className="animate-bounce running">Running</div>
+		<div className="animate-bounce paused">Paused</div>
+		```
+	</div>
+	<div className="space-y-4">
+		<Card className="animate-bounce running" data-animation-container>
+			<CardContent className="p-4">Running</CardContent>
+		</Card>
+		<Card className="animate-bounce paused" data-animation-container>
+			<CardContent className="p-4">Paused</CardContent>
+		</Card>
+	</div>
+</div>
+
+### Timing Function
+
+<div className="grid grid-cols-2 gap-4">
+	<div>
+		```jsx
+		<div className="animate-bounce ease-linear">Linear</div>
+		<div className="animate-bounce ease-in">Ease In</div>
+		<div className="animate-bounce ease-out">Ease Out</div>
+		<div className="animate-bounce ease-in-out">Ease In Out</div>
+		```
+	</div>
+	<div className="space-y-4">
+		<Card className="animate-bounce ease-linear" data-animation-container>
+			<CardContent className="p-4">Linear</CardContent>
+		</Card>
+		<Card className="animate-bounce ease-in" data-animation-container>
+			<CardContent className="p-4">Ease In</CardContent>
+		</Card>
+		<Card className="animate-bounce ease-out" data-animation-container>
+			<CardContent className="p-4">Ease Out</CardContent>
+		</Card>
+		<Card className="animate-bounce ease-in-out" data-animation-container>
+			<CardContent className="p-4">Ease In Out</CardContent>
+		</Card>
+	</div>
+</div>
+
+## Accessibility
+
+<div className="grid grid-cols-2 gap-4">
+	<div>
+		```jsx
+		<div className="motion-safe:animate-bounce">
+			Only animates if user hasn't enabled reduced motion
+		</div>
+		<div className="motion-reduce:animate-none">
+			Won't animate if user has enabled reduced motion
+		</div>
+		```
+	</div>
+	<div className="space-y-4">
+		<Card className="motion-safe:animate-bounce">
+			<CardContent className="p-4">
+				Only animates if user hasn't enabled reduced motion
+			</CardContent>
+		</Card>
+		<Card className="motion-reduce:animate-none">
+			<CardContent className="p-4">
+				Won't animate if user has enabled reduced motion
+			</CardContent>
+		</Card>
+	</div>
+</div>
+
+## Advanced Usage
+
+### Combining Multiple Properties
+
+<div className="grid grid-cols-2 gap-4">
+	<div>
+		```jsx
+		<div className="animate-in fade-in zoom-in duration-700 delay-150">
+			Fade and zoom with custom timing
+		</div>
+		```
+	</div>
+	<div>
+		<Card className="animate-in fade-in zoom-in duration-700 delay-150">
+			<CardContent className="p-4">
+				Fade and zoom with custom timing
+			</CardContent>
+		</Card>
+	</div>
+</div>
+
+### Enter Animation Variations
+
+#### Opacity
+
+<div className="grid grid-cols-2 gap-4">
+	<div>
+		```jsx
+		<div className="animate-in fade-in-25">25% opacity start</div>
+		<div className="animate-in fade-in-50">50% opacity start</div>
+		<div className="animate-in fade-in-75">75% opacity start</div>
+		```
+	</div>
+	<div className="space-y-4">
+		<Card className="animate-in fade-in-25">
+			<CardContent className="p-4">25% opacity start</CardContent>
+		</Card>
+		<Card className="animate-in fade-in-50">
+			<CardContent className="p-4">50% opacity start</CardContent>
+		</Card>
+		<Card className="animate-in fade-in-75">
+			<CardContent className="p-4">75% opacity start</CardContent>
+		</Card>
+	</div>
+</div>
+
+#### Rotation
+
+<div className="grid grid-cols-2 gap-4">
+	<div>
+		```jsx
+		<div className="animate-in spin-in-1">1° rotation</div>
+		<div className="animate-in spin-in-6">6° rotation</div>
+		<div className="animate-in spin-in-90">90° rotation</div>
+		```
+	</div>
+	<div className="space-y-4">
+		<Card className="animate-in spin-in-1">
+			<CardContent className="p-4">1° rotation</CardContent>
+		</Card>
+		<Card className="animate-in spin-in-6">
+			<CardContent className="p-4">6° rotation</CardContent>
+		</Card>
+		<Card className="animate-in spin-in-90">
+			<CardContent className="p-4">90° rotation</CardContent>
+		</Card>
+	</div>
+</div>
+
+#### Scale
+
+<div className="grid grid-cols-2 gap-4">
+	<div>
+		```jsx
+		<div className="animate-in zoom-in-50">50% scale start</div>
+		<div className="animate-in zoom-in-75">75% scale start</div>
+		<div className="animate-in zoom-in-95">95% scale start</div>
+		```
+	</div>
+	<div className="space-y-4">
+		<Card className="animate-in zoom-in-50">
+			<CardContent className="p-4">50% scale start</CardContent>
+		</Card>
+		<Card className="animate-in zoom-in-75">
+			<CardContent className="p-4">75% scale start</CardContent>
+		</Card>
+		<Card className="animate-in zoom-in-95">
+			<CardContent className="p-4">95% scale start</CardContent>
+		</Card>
+	</div>
+</div>
+
+#### Translation
+
+<div className="grid grid-cols-2 gap-4">
+	<div>
+		```jsx
+		<div className="animate-in slide-in-from-top-48">From top 12rem</div>
+		<div className="animate-in slide-in-from-bottom-72">From bottom 18rem</div>
+		<div className="animate-in slide-in-from-left-96">From left 24rem</div>
+		```
+	</div>
+	<div className="space-y-4">
+		<Card className="animate-in slide-in-from-top-48">
+			<CardContent className="p-4">From top 12rem</CardContent>
+		</Card>
+		<Card className="animate-in slide-in-from-bottom-72">
+			<CardContent className="p-4">From bottom 18rem</CardContent>
+		</Card>
+		<Card className="animate-in slide-in-from-left-96">
+			<CardContent className="p-4">From left 24rem</CardContent>
+		</Card>
+	</div>
+</div>
+
+## Tips & Best Practices
+
+<Card className="mb-8">
+	<CardHeader>
+		<CardTitle>Animation Guidelines</CardTitle>
+	</CardHeader>
+	<CardContent>
+		<ul className="list-disc pl-6 space-y-2">
+			<li>
+				Use subtle animations to enhance user experience, not distract from it
+			</li>
+			<li>Keep durations short (150-700ms) for UI interactions</li>
+			<li>Always provide reduced-motion alternatives</li>
+			<li>Combine animations thoughtfully - less is often more</li>
+			<li>Test animations across different devices and screen sizes</li>
+		</ul>
+	</CardContent>
+</Card>
+
+## Installation
+
+<Card>
+	<CardHeader>
+		<CardTitle>Getting Started</CardTitle>
+		<CardDescription>Follow these steps to add animations to your project</CardDescription>
+	</CardHeader>
+	<CardContent>
+		```bash
+		npm install -D tailwindcss-animate
+		```
+
+    	Add the plugin to your `tailwind.config.js`:
+
+    	```js
+    	module.exports = {
+    		theme: {
+    			// ...
+    		},
+    		plugins: [
+    			require("tailwindcss-animate"),
+    			// ...
+    		],
+    	}
+    	```
+    </CardContent>
+
+</Card>
