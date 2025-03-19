@@ -8,12 +8,20 @@ function App() {
 	const [count, setCount] = useState(0)
 
 	return (
-		<>
-			<div>
-				<a href="https://vite.dev" target="_blank">
+		<div className="flex flex-col items-center justify-center h-screen">
+			<div className="flex items-center justify-center gap-4">
+				<a
+					href="https://vite.dev"
+					target="_blank"
+					className="hover:opacity-80 transition-opacity"
+				>
 					<img src={viteLogo} className="logo" alt="Vite logo" />
 				</a>
-				<a href="https://react.dev" target="_blank">
+				<a
+					href="https://react.dev"
+					target="_blank"
+					className="hover:opacity-80 transition-opacity"
+				>
 					<img src={reactLogo} className="logo react" alt="React logo" />
 				</a>
 			</div>
@@ -29,7 +37,7 @@ function App() {
 			<p className="read-the-docs">
 				Click on the Vite and React logos to learn more
 			</p>
-		</>
+		</div>
 	)
 }
 

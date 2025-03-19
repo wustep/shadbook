@@ -13,5 +13,8 @@
 		"typescriptreact"
 	],
 	"typescript.preferences.importModuleSpecifier": "non-relative",
-	"typescript.preferences.importModuleSpecifierEnding": "minimal"
+	"typescript.preferences.importModuleSpecifierEnding": "minimal",
+	"files.associations": {
+		"*.css": "tailwindcss"
+	}
 }
