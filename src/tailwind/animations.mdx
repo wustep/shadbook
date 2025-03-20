@@ -232,29 +232,44 @@ This plugin is included in the shadcn/ui package and used across its components.
 				<div className="animate-in slide-in-from-bottom">
 					Slide In From Bottom
 				</div>
-				<div className="animate-in slide-in-from-left">Slide In From Left</div>
 				<div className="animate-in slide-in-from-right">
 					Slide In From Right
 				</div>
+				<div className="animate-in slide-in-from-left">Slide In From Left</div>
 				```
 			</CardContent>
 		</Card>
 	</div>
 	<div className="space-y-4">
-		<Card className="animate-in fade-in zoom-in" data-animation-container>
+		<Card
+			className="animate-in fade-in zoom-in bg-red-200"
+			data-animation-container
+		>
 			<CardContent className="p-4">Fade and Zoom In</CardContent>
 		</Card>
-		<Card className="animate-in slide-in-from-top" data-animation-container>
+		<Card
+			className="animate-in slide-in-from-top bg-orange-200"
+			data-animation-container
+		>
 			<CardContent className="p-4">Slide In From Top</CardContent>
 		</Card>
-		<Card className="animate-in slide-in-from-bottom" data-animation-container>
+		<Card
+			className="animate-in slide-in-from-bottom bg-green-200"
+			data-animation-container
+		>
 			<CardContent className="p-4">Slide In From Bottom</CardContent>
 		</Card>
-		<Card className="animate-in slide-in-from-left" data-animation-container>
-			<CardContent className="p-4">Slide In From Left</CardContent>
-		</Card>
-		<Card className="animate-in slide-in-from-right" data-animation-container>
+		<Card
+			className="animate-in slide-in-from-right bg-blue-200"
+			data-animation-container
+		>
 			<CardContent className="p-4">Slide In From Right</CardContent>
+		</Card>
+		<Card
+			className="animate-in slide-in-from-left bg-violet-200"
+			data-animation-container
+		>
+			<CardContent className="p-4">Slide In From Left</CardContent>
 		</Card>
 	</div>
 </div>
@@ -277,27 +292,42 @@ This plugin is included in the shadcn/ui package and used across its components.
 				<div className="animate-out slide-out-to-bottom">
 					Slide Out To Bottom
 				</div>
-				<div className="animate-out slide-out-to-left">Slide Out To Left</div>
 				<div className="animate-out slide-out-to-right">Slide Out To Right</div>
+				<div className="animate-out slide-out-to-left">Slide Out To Left</div>
 				```
 			</CardContent>
 		</Card>
 	</div>
 	<div className="space-y-4">
-		<Card className="animate-out fade-out zoom-out" data-animation-container>
+		<Card
+			className="animate-out fade-out zoom-out bg-red-200"
+			data-animation-container
+		>
 			<CardContent className="p-4">Fade and Zoom Out</CardContent>
 		</Card>
-		<Card className="animate-out slide-out-to-top" data-animation-container>
+		<Card
+			className="animate-out slide-out-to-top bg-orange-200"
+			data-animation-container
+		>
 			<CardContent className="p-4">Slide Out To Top</CardContent>
 		</Card>
-		<Card className="animate-out slide-out-to-bottom" data-animation-container>
+		<Card
+			className="animate-out slide-out-to-bottom bg-green-200"
+			data-animation-container
+		>
 			<CardContent className="p-4">Slide Out To Bottom</CardContent>
 		</Card>
-		<Card className="animate-out slide-out-to-left" data-animation-container>
-			<CardContent className="p-4">Slide Out To Left</CardContent>
-		</Card>
-		<Card className="animate-out slide-out-to-right" data-animation-container>
+		<Card
+			className="animate-out slide-out-to-right bg-violet-200"
+			data-animation-container
+		>
 			<CardContent className="p-4">Slide Out To Right</CardContent>
+		</Card>
+		<Card
+			className="animate-out slide-out-to-left bg-blue-200"
+			data-animation-container
+		>
+			<CardContent className="p-4">Slide Out To Left</CardContent>
 		</Card>
 	</div>
 </div>
@@ -325,13 +355,22 @@ This plugin is included in the shadcn/ui package and used across its components.
 		</Card>
 	</div>
 	<div className="space-y-4">
-		<Card className="animate-in fade-in duration-150" data-animation-container>
+		<Card
+			className="animate-in fade-in duration-150 bg-red-200"
+			data-animation-container
+		>
 			<CardContent className="p-4">Fast (150ms)</CardContent>
 		</Card>
-		<Card className="animate-in fade-in duration-300" data-animation-container>
+		<Card
+			className="animate-in fade-in duration-300 bg-orange-200"
+			data-animation-container
+		>
 			<CardContent className="p-4">Medium (300ms)</CardContent>
 		</Card>
-		<Card className="animate-in fade-in duration-700" data-animation-container>
+		<Card
+			className="animate-in fade-in duration-700 bg-green-200"
+			data-animation-container
+		>
 			<CardContent className="p-4">Slow (700ms)</CardContent>
 		</Card>
 	</div>
@@ -348,13 +387,22 @@ This plugin is included in the shadcn/ui package and used across its components.
 		```
 	</div>
 	<div className="space-y-4">
-		<Card className="animate-in fade-in delay-150">
+		<Card
+			className="animate-in fade-in delay-150 bg-red-200"
+			data-animation-container
+		>
 			<CardContent className="p-4">Short delay (150ms)</CardContent>
 		</Card>
-		<Card className="animate-in fade-in delay-300">
+		<Card
+			className="animate-in fade-in delay-300 bg-orange-200"
+			data-animation-container
+		>
 			<CardContent className="p-4">Medium delay (300ms)</CardContent>
 		</Card>
-		<Card className="animate-in fade-in delay-700">
+		<Card
+			className="animate-in fade-in delay-700 bg-green-200"
+			data-animation-container
+		>
 			<CardContent className="p-4">Long delay (700ms)</CardContent>
 		</Card>
 	</div>
@@ -374,20 +422,26 @@ This plugin is included in the shadcn/ui package and used across its components.
 		```
 	</div>
 	<div className="space-y-4">
-		<Card className="animate-bounce direction-normal" data-animation-container>
+		<Card
+			className="animate-bounce direction-normal bg-red-200"
+			data-animation-container
+		>
 			<CardContent className="p-4">Normal</CardContent>
 		</Card>
-		<Card className="animate-bounce direction-reverse" data-animation-container>
+		<Card
+			className="animate-bounce direction-reverse bg-orange-200"
+			data-animation-container
+		>
 			<CardContent className="p-4">Reverse</CardContent>
 		</Card>
 		<Card
-			className="animate-bounce direction-alternate"
+			className="animate-bounce direction-alternate bg-green-200"
 			data-animation-container
 		>
 			<CardContent className="p-4">Alternate</CardContent>
 		</Card>
 		<Card
-			className="animate-bounce direction-alternate-reverse"
+			className="animate-bounce direction-alternate-reverse bg-blue-200"
 			data-animation-container
 		>
 			<CardContent className="p-4">Alternate Reverse</CardContent>
@@ -407,22 +461,28 @@ This plugin is included in the shadcn/ui package and used across its components.
 		```
 	</div>
 	<div className="space-y-4">
-		<Card className="animate-bounce fill-mode-none" data-animation-container>
+		<Card
+			className="animate-bounce fill-mode-none bg-red-200"
+			data-animation-container
+		>
 			<CardContent className="p-4">None</CardContent>
 		</Card>
 		<Card
-			className="animate-bounce fill-mode-forwards"
+			className="animate-bounce fill-mode-forwards bg-orange-200"
 			data-animation-container
 		>
 			<CardContent className="p-4">Forwards</CardContent>
 		</Card>
 		<Card
-			className="animate-bounce fill-mode-backwards"
+			className="animate-bounce fill-mode-backwards bg-green-200"
 			data-animation-container
 		>
 			<CardContent className="p-4">Backwards</CardContent>
 		</Card>
-		<Card className="animate-bounce fill-mode-both" data-animation-container>
+		<Card
+			className="animate-bounce fill-mode-both bg-blue-200"
+			data-animation-container
+		>
 			<CardContent className="p-4">Both</CardContent>
 		</Card>
 	</div>
@@ -439,13 +499,22 @@ This plugin is included in the shadcn/ui package and used across its components.
 		```
 	</div>
 	<div className="space-y-4">
-		<Card className="animate-bounce repeat-0" data-animation-container>
+		<Card
+			className="animate-bounce repeat-0 bg-red-200"
+			data-animation-container
+		>
 			<CardContent className="p-4">No Repeat</CardContent>
 		</Card>
-		<Card className="animate-bounce repeat-1" data-animation-container>
+		<Card
+			className="animate-bounce repeat-1 bg-orange-200"
+			data-animation-container
+		>
 			<CardContent className="p-4">Once</CardContent>
 		</Card>
-		<Card className="animate-bounce repeat-infinite" data-animation-container>
+		<Card
+			className="animate-bounce repeat-infinite bg-green-200"
+			data-animation-container
+		>
 			<CardContent className="p-4">Infinite</CardContent>
 		</Card>
 	</div>
@@ -461,10 +530,16 @@ This plugin is included in the shadcn/ui package and used across its components.
 		```
 	</div>
 	<div className="space-y-4">
-		<Card className="animate-bounce running" data-animation-container>
+		<Card
+			className="animate-bounce running bg-red-200"
+			data-animation-container
+		>
 			<CardContent className="p-4">Running</CardContent>
 		</Card>
-		<Card className="animate-bounce paused" data-animation-container>
+		<Card
+			className="animate-bounce paused bg-orange-200"
+			data-animation-container
+		>
 			<CardContent className="p-4">Paused</CardContent>
 		</Card>
 	</div>
@@ -482,16 +557,28 @@ This plugin is included in the shadcn/ui package and used across its components.
 		```
 	</div>
 	<div className="space-y-4">
-		<Card className="animate-bounce ease-linear" data-animation-container>
+		<Card
+			className="animate-bounce ease-linear bg-red-200"
+			data-animation-container
+		>
 			<CardContent className="p-4">Linear</CardContent>
 		</Card>
-		<Card className="animate-bounce ease-in" data-animation-container>
+		<Card
+			className="animate-bounce ease-in bg-orange-200"
+			data-animation-container
+		>
 			<CardContent className="p-4">Ease In</CardContent>
 		</Card>
-		<Card className="animate-bounce ease-out" data-animation-container>
+		<Card
+			className="animate-bounce ease-out bg-green-200"
+			data-animation-container
+		>
 			<CardContent className="p-4">Ease Out</CardContent>
 		</Card>
-		<Card className="animate-bounce ease-in-out" data-animation-container>
+		<Card
+			className="animate-bounce ease-in-out bg-blue-200"
+			data-animation-container
+		>
 			<CardContent className="p-4">Ease In Out</CardContent>
 		</Card>
 	</div>
@@ -511,12 +598,18 @@ This plugin is included in the shadcn/ui package and used across its components.
 		```
 	</div>
 	<div className="space-y-4">
-		<Card className="motion-safe:animate-bounce" data-animation-container>
+		<Card
+			className="motion-safe:animate-bounce bg-red-200"
+			data-animation-container
+		>
 			<CardContent className="p-4">
 				Only animates if user hasn't enabled reduced motion
 			</CardContent>
 		</Card>
-		<Card className="motion-reduce:animate-none" data-animation-container>
+		<Card
+			className="motion-reduce:animate-none bg-orange-200"
+			data-animation-container
+		>
 			<CardContent className="p-4">
 				Won't animate if user has enabled reduced motion
 			</CardContent>
@@ -541,7 +634,7 @@ This plugin is included in the shadcn/ui package and used across its components.
 	</div>
 	<div>
 		<Card
-			className="animate-in fade-in zoom-in duration-700 delay-150"
+			className="animate-in fade-in zoom-in duration-700 delay-150 bg-red-200"
 			data-animation-container
 		>
 			<CardContent className="p-4">
@@ -564,13 +657,19 @@ This plugin is included in the shadcn/ui package and used across its components.
 		```
 	</div>
 	<div className="space-y-4">
-		<Card className="animate-in fade-in-25" data-animation-container>
+		<Card className="animate-in fade-in-25 bg-red-200" data-animation-container>
 			<CardContent className="p-4">25% opacity start</CardContent>
 		</Card>
-		<Card className="animate-in fade-in-50" data-animation-container>
+		<Card
+			className="animate-in fade-in-50 bg-orange-200"
+			data-animation-container
+		>
 			<CardContent className="p-4">50% opacity start</CardContent>
 		</Card>
-		<Card className="animate-in fade-in-75">
+		<Card
+			className="animate-in fade-in-75 bg-green-200"
+			data-animation-container
+		>
 			<CardContent className="p-4">75% opacity start</CardContent>
 		</Card>
 	</div>
@@ -587,13 +686,19 @@ This plugin is included in the shadcn/ui package and used across its components.
 		```
 	</div>
 	<div className="space-y-4">
-		<Card className="animate-in spin-in-1" data-animation-container>
+		<Card className="animate-in spin-in-1 bg-red-200" data-animation-container>
 			<CardContent className="p-4">1° rotation</CardContent>
 		</Card>
-		<Card className="animate-in spin-in-6" data-animation-container>
+		<Card
+			className="animate-in spin-in-6 bg-orange-200"
+			data-animation-container
+		>
 			<CardContent className="p-4">6° rotation</CardContent>
 		</Card>
-		<Card className="animate-in spin-in-90" data-animation-container>
+		<Card
+			className="animate-in spin-in-90 bg-green-200"
+			data-animation-container
+		>
 			<CardContent className="p-4">90° rotation</CardContent>
 		</Card>
 	</div>
@@ -610,13 +715,19 @@ This plugin is included in the shadcn/ui package and used across its components.
 		```
 	</div>
 	<div className="space-y-4">
-		<Card className="animate-in zoom-in-50" data-animation-container>
+		<Card className="animate-in zoom-in-50 bg-red-200" data-animation-container>
 			<CardContent className="p-4">50% scale start</CardContent>
 		</Card>
-		<Card className="animate-in zoom-in-75" data-animation-container>
+		<Card
+			className="animate-in zoom-in-75 bg-orange-200"
+			data-animation-container
+		>
 			<CardContent className="p-4">75% scale start</CardContent>
 		</Card>
-		<Card className="animate-in zoom-in-95" data-animation-container>
+		<Card
+			className="animate-in zoom-in-95 bg-green-200"
+			data-animation-container
+		>
 			<CardContent className="p-4">95% scale start</CardContent>
 		</Card>
 	</div>
@@ -633,16 +744,22 @@ This plugin is included in the shadcn/ui package and used across its components.
 		```
 	</div>
 	<div className="space-y-4">
-		<Card className="animate-in slide-in-from-top-48" data-animation-container>
+		<Card
+			className="animate-in slide-in-from-top-48 bg-red-200"
+			data-animation-container
+		>
 			<CardContent className="p-4">From top 12rem</CardContent>
 		</Card>
 		<Card
-			className="animate-in slide-in-from-bottom-72"
+			className="animate-in slide-in-from-bottom-72 bg-orange-200"
 			data-animation-container
 		>
 			<CardContent className="p-4">From bottom 18rem</CardContent>
 		</Card>
-		<Card className="animate-in slide-in-from-left-96" data-animation-container>
+		<Card
+			className="animate-in slide-in-from-left-96 bg-green-200"
+			data-animation-container
+		>
 			<CardContent className="p-4">From left 24rem</CardContent>
 		</Card>
 	</div>
