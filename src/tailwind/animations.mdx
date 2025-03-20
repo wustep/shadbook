@@ -406,49 +406,43 @@ This plugin is included in the shadcn/ui package and used across its components.
 <div className="grid grid-cols-2 gap-4">
 	<div className="z-[0]">
 		```jsx
-		<div className="animate-in slide-in-from-left slide-out-to-right duration-2000 repeat-infinite direction-normal">
+		<div className="animate-in slide-in-from-right duration-2000 repeat-infinite direction-normal">
 			Normal
 		</div>
-		<div className="animate-in slide-in-from-right slide-out-to-left duration-2000 repeat-infinite direction-reverse">
-			Reverse
+		<div className="animate-in slide-in-from-right duration-2000 repeat-infinite direction-reverse">
+			Reverse (Right → Left)
 		</div>
-		<div className="animate-in slide-in-from-left duration-2000 repeat-infinite direction-alternate">
-			Alternate
+		<div className="animate-in slide-in-from-right duration-2000 repeat-infinite direction-alternate">
+			Alternate (Right ↔ Left)
 		</div>
 		<div className="animate-in slide-in-from-right duration-2000 repeat-infinite direction-alternate-reverse">
-			Alternate Reverse
+			Alternate Reverse (Left ↔ Right)
 		</div>
 		```
 	</div>
 	<div className="space-y-4">
 		<Card
-			className="animate-in slide-in-from-left slide-out-to-right duration-2000 repeat-infinite direction-normal bg-red-200"
+			className="animate-in slide-in-from-right duration-2000 repeat-infinite direction-normal bg-red-200"
 			data-animation-container
 		>
 			<CardContent className="p-4 flex items-center justify-between">
-				<span>◀</span>
 				<span>Normal (Left → Right)</span>
-				<span>▶</span>
 			</CardContent>
 		</Card>
 		<Card
-			className="animate-in slide-in-from-right slide-out-to-left duration-2000 repeat-infinite direction-reverse bg-orange-200"
+			className="animate-in slide-in-from-right duration-2000 repeat-infinite direction-reverse bg-orange-200"
 			data-animation-container
 		>
 			<CardContent className="p-4 flex items-center justify-between">
-				<span>◀</span>
 				<span>Reverse (Right → Left)</span>
-				<span>▶</span>
 			</CardContent>
 		</Card>
 		<Card
-			className="animate-in slide-in-from-left duration-2000 repeat-infinite direction-alternate bg-green-200"
+			className="animate-in slide-in-from-right duration-2000 repeat-infinite direction-alternate bg-green-200"
 			data-animation-container
 		>
 			<CardContent className="p-4 flex items-center justify-between">
-				<span>◀</span>
-				<span>Alternate (Back and Forth)</span>
-				<span>▶</span>
+				<span>Alternate (Right ↔ Left)</span>
 			</CardContent>
 		</Card>
 		<Card
@@ -456,9 +450,7 @@ This plugin is included in the shadcn/ui package and used across its components.
 			data-animation-container
 		>
 			<CardContent className="p-4 flex items-center justify-between">
-				<span>◀</span>
-				<span>Alternate Reverse (Opposite)</span>
-				<span>▶</span>
+				<span>Alternate Reverse (Left ↔ Right)</span>
 			</CardContent>
 		</Card>
 	</div>
@@ -787,37 +779,37 @@ This plugin is included in the shadcn/ui package and used across its components.
 #### Translation
 
 <div className="grid grid-cols-2 gap-4">
-	<div>
+	<div className="z-[0]">
 		```jsx
-		<div className="animate-in slide-in-from-top-48 duration-1000">
-			From top 12rem
+		<div className="animate-in slide-in-from-top-24 duration-1000">
+			From top 6rem
 		</div>
-		<div className="animate-in slide-in-from-bottom-72 duration-1000">
-			From bottom 18rem
+		<div className="animate-in slide-in-from-bottom-36 duration-1000">
+			From bottom 12rem
 		</div>
-		<div className="animate-in slide-in-from-left-96 duration-1000">
-			From left 24rem
+		<div className="animate-in slide-in-from-left-48 duration-1000">
+			From left 18rem
 		</div>
 		```
 	</div>
 	<div className="space-y-4">
 		<Card
-			className="animate-in slide-in-from-top-48 duration-1000 bg-red-200"
+			className="animate-in slide-in-from-top-24 duration-1000 bg-red-200"
 			data-animation-container
 		>
-			<CardContent className="p-4">From top 12rem</CardContent>
+			<CardContent className="p-4">From top 6rem</CardContent>
 		</Card>
 		<Card
-			className="animate-in slide-in-from-bottom-72 duration-1000 bg-orange-200"
+			className="animate-in slide-in-from-bottom-36 duration-1000 bg-orange-200"
 			data-animation-container
 		>
-			<CardContent className="p-4">From bottom 18rem</CardContent>
+			<CardContent className="p-4">From bottom 12rem</CardContent>
 		</Card>
 		<Card
-			className="animate-in slide-in-from-left-96 duration-1000 bg-green-200"
+			className="animate-in slide-in-from-left-48 duration-1000 bg-green-200"
 			data-animation-container
 		>
-			<CardContent className="p-4">From left 24rem</CardContent>
+			<CardContent className="p-4">From left 18rem</CardContent>
 		</Card>
 	</div>
 </div>
