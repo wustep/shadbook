@@ -411,40 +411,62 @@ This plugin is included in the shadcn/ui package and used across its components.
 ### Animation Direction
 
 <div className="grid grid-cols-2 gap-4">
-	<div>
+	<div className="z-[0]">
 		```jsx
-		<div className="animate-bounce direction-normal">Normal</div>
-		<div className="animate-bounce direction-reverse">Reverse</div>
-		<div className="animate-bounce direction-alternate">Alternate</div>
-		<div className="animate-bounce direction-alternate-reverse">
+		<div className="animate-in slide-in-from-left slide-out-to-right duration-2000 repeat-infinite direction-normal">
+			Normal
+		</div>
+		<div className="animate-in slide-in-from-right slide-out-to-left duration-2000 repeat-infinite direction-reverse">
+			Reverse
+		</div>
+		<div className="animate-in slide-in-from-left duration-2000 repeat-infinite direction-alternate">
+			Alternate
+		</div>
+		<div className="animate-in slide-in-from-right duration-2000 repeat-infinite direction-alternate-reverse">
 			Alternate Reverse
 		</div>
 		```
 	</div>
 	<div className="space-y-4">
 		<Card
-			className="animate-bounce direction-normal bg-red-200"
+			className="animate-in slide-in-from-left slide-out-to-right duration-2000 repeat-infinite direction-normal bg-red-200"
 			data-animation-container
 		>
-			<CardContent className="p-4">Normal</CardContent>
+			<CardContent className="p-4 flex items-center justify-between">
+				<span>◀</span>
+				<span>Normal (Left → Right)</span>
+				<span>▶</span>
+			</CardContent>
 		</Card>
 		<Card
-			className="animate-bounce direction-reverse bg-orange-200"
+			className="animate-in slide-in-from-right slide-out-to-left duration-2000 repeat-infinite direction-reverse bg-orange-200"
 			data-animation-container
 		>
-			<CardContent className="p-4">Reverse</CardContent>
+			<CardContent className="p-4 flex items-center justify-between">
+				<span>◀</span>
+				<span>Reverse (Right → Left)</span>
+				<span>▶</span>
+			</CardContent>
 		</Card>
 		<Card
-			className="animate-bounce direction-alternate bg-green-200"
+			className="animate-in slide-in-from-left duration-2000 repeat-infinite direction-alternate bg-green-200"
 			data-animation-container
 		>
-			<CardContent className="p-4">Alternate</CardContent>
+			<CardContent className="p-4 flex items-center justify-between">
+				<span>◀</span>
+				<span>Alternate (Back and Forth)</span>
+				<span>▶</span>
+			</CardContent>
 		</Card>
 		<Card
-			className="animate-bounce direction-alternate-reverse bg-blue-200"
+			className="animate-in slide-in-from-right duration-2000 repeat-infinite direction-alternate-reverse bg-blue-200"
 			data-animation-container
 		>
-			<CardContent className="p-4">Alternate Reverse</CardContent>
+			<CardContent className="p-4 flex items-center justify-between">
+				<span>◀</span>
+				<span>Alternate Reverse (Opposite)</span>
+				<span>▶</span>
+			</CardContent>
 		</Card>
 	</div>
 </div>
@@ -454,36 +476,64 @@ This plugin is included in the shadcn/ui package and used across its components.
 <div className="grid grid-cols-2 gap-4">
 	<div>
 		```jsx
-		<div className="animate-bounce fill-mode-none">None</div>
-		<div className="animate-bounce fill-mode-forwards">Forwards</div>
-		<div className="animate-bounce fill-mode-backwards">Backwards</div>
-		<div className="animate-bounce fill-mode-both">Both</div>
+		<div className="animate-in slide-in-from-left fade-in duration-1000 fill-mode-none">
+			None
+		</div>
+		<div className="animate-in slide-in-from-left fade-in duration-1000 fill-mode-forwards">
+			Forwards
+		</div>
+		<div className="animate-in slide-in-from-left fade-in duration-1000 fill-mode-backwards">
+			Backwards
+		</div>
+		<div className="animate-in slide-in-from-left fade-in duration-1000 fill-mode-both">
+			Both
+		</div>
 		```
 	</div>
-	<div className="space-y-4">
+	<div className="space-y-4 flex flex-col gap-5">
 		<Card
-			className="animate-bounce fill-mode-none bg-red-200"
+			className="animate-in slide-in-from-left fade-in duration-1000 fill-mode-none bg-red-200"
 			data-animation-container
 		>
-			<CardContent className="p-4">None</CardContent>
+			<CardContent className="p-4">
+				<div className="flex items-center gap-2">
+					<div className="w-4 h-4 rounded-full bg-red-500"></div>
+					None - Returns to initial state
+				</div>
+			</CardContent>
 		</Card>
 		<Card
-			className="animate-bounce fill-mode-forwards bg-orange-200"
+			className="animate-in slide-in-from-left fade-in duration-1000 fill-mode-forwards bg-orange-200"
 			data-animation-container
 		>
-			<CardContent className="p-4">Forwards</CardContent>
+			<CardContent className="p-4">
+				<div className="flex items-center gap-2">
+					<div className="w-4 h-4 rounded-full bg-orange-500"></div>
+					Forwards - Keeps final state
+				</div>
+			</CardContent>
 		</Card>
 		<Card
-			className="animate-bounce fill-mode-backwards bg-green-200"
+			className="animate-in slide-in-from-left fade-in duration-1000 fill-mode-backwards bg-green-200"
 			data-animation-container
 		>
-			<CardContent className="p-4">Backwards</CardContent>
+			<CardContent className="p-4">
+				<div className="flex items-center gap-2">
+					<div className="w-4 h-4 rounded-full bg-green-500"></div>
+					Backwards - Uses initial state before start
+				</div>
+			</CardContent>
 		</Card>
 		<Card
-			className="animate-bounce fill-mode-both bg-blue-200"
+			className="animate-in slide-in-from-left fade-in duration-1000 fill-mode-both bg-blue-200"
 			data-animation-container
 		>
-			<CardContent className="p-4">Both</CardContent>
+			<CardContent className="p-4">
+				<div className="flex items-center gap-2">
+					<div className="w-4 h-4 rounded-full bg-blue-500"></div>
+					Both - Applies both forwards and backwards
+				</div>
+			</CardContent>
 		</Card>
 	</div>
 </div>
@@ -493,26 +543,26 @@ This plugin is included in the shadcn/ui package and used across its components.
 <div className="grid grid-cols-2 gap-4">
 	<div>
 		```jsx
-		<div className="animate-bounce repeat-0">No Repeat</div>
-		<div className="animate-bounce repeat-1">Once</div>
-		<div className="animate-bounce repeat-infinite">Infinite</div>
+		<div className="animate-spin repeat-0">No Repeat</div>
+		<div className="animate-spin repeat-1">Once</div>
+		<div className="animate-spin repeat-infinite">Infinite</div>
 		```
 	</div>
-	<div className="space-y-4">
+	<div className="space-y-4 flex flex-row gap-5 justify-center">
 		<Card
-			className="animate-bounce repeat-0 bg-red-200"
+			className="animate-spin repeat-0 bg-red-200 w-30 h-30 justify-center items-center"
 			data-animation-container
 		>
 			<CardContent className="p-4">No Repeat</CardContent>
 		</Card>
 		<Card
-			className="animate-bounce repeat-1 bg-orange-200"
+			className="animate-spin repeat-1 bg-orange-200 w-30 h-30 justify-center items-center"
 			data-animation-container
 		>
 			<CardContent className="p-4">Once</CardContent>
 		</Card>
 		<Card
-			className="animate-bounce repeat-infinite bg-green-200"
+			className="animate-spin repeat-infinite bg-green-200 w-30 h-30 justify-center items-center"
 			data-animation-container
 		>
 			<CardContent className="p-4">Infinite</CardContent>
@@ -525,19 +575,19 @@ This plugin is included in the shadcn/ui package and used across its components.
 <div className="grid grid-cols-2 gap-4">
 	<div>
 		```jsx
-		<div className="animate-bounce running">Running</div>
-		<div className="animate-bounce paused">Paused</div>
+		<div className="animate-ping running">Running</div>
+		<div className="animate-ping paused">Paused</div>
 		```
 	</div>
-	<div className="space-y-4">
+	<div className="space-y-4 flex flex-row gap-5 justify-center">
 		<Card
-			className="animate-bounce running bg-red-200"
+			className="animate-ping running bg-red-200 w-30 h-30 justify-center items-center"
 			data-animation-container
 		>
 			<CardContent className="p-4">Running</CardContent>
 		</Card>
 		<Card
-			className="animate-bounce paused bg-orange-200"
+			className="animate-ping paused bg-orange-200 w-30 h-30 justify-center items-center"
 			data-animation-container
 		>
 			<CardContent className="p-4">Paused</CardContent>
@@ -550,33 +600,33 @@ This plugin is included in the shadcn/ui package and used across its components.
 <div className="grid grid-cols-2 gap-4">
 	<div>
 		```jsx
-		<div className="animate-bounce ease-linear">Linear</div>
-		<div className="animate-bounce ease-in">Ease In</div>
-		<div className="animate-bounce ease-out">Ease Out</div>
-		<div className="animate-bounce ease-in-out">Ease In Out</div>
+		<div className="animate-spin ease-linear">Linear</div>
+		<div className="animate-spin ease-in">Ease In</div>
+		<div className="animate-spin ease-out">Ease Out</div>
+		<div className="animate-spin ease-in-out">Ease In Out</div>
 		```
 	</div>
-	<div className="space-y-4">
+	<div className="space-y-4 flex flex-row gap-5 justify-center">
 		<Card
-			className="animate-bounce ease-linear bg-red-200"
+			className="animate-spin ease-linear bg-red-200 w-30 h-30 justify-center items-center"
 			data-animation-container
 		>
 			<CardContent className="p-4">Linear</CardContent>
 		</Card>
 		<Card
-			className="animate-bounce ease-in bg-orange-200"
+			className="animate-spin ease-in bg-orange-200 w-30 h-30 justify-center items-center "
 			data-animation-container
 		>
 			<CardContent className="p-4">Ease In</CardContent>
 		</Card>
 		<Card
-			className="animate-bounce ease-out bg-green-200"
+			className="animate-spin ease-out bg-green-200 w-30 h-30 justify-center items-center"
 			data-animation-container
 		>
 			<CardContent className="p-4">Ease Out</CardContent>
 		</Card>
 		<Card
-			className="animate-bounce ease-in-out bg-blue-200"
+			className="animate-spin ease-in-out bg-blue-200 w-30 h-30 justify-center items-center"
 			data-animation-container
 		>
 			<CardContent className="p-4">Ease In Out</CardContent>
@@ -651,23 +701,33 @@ This plugin is included in the shadcn/ui package and used across its components.
 <div className="grid grid-cols-2 gap-4">
 	<div>
 		```jsx
-		<div className="animate-in fade-in-25">25% opacity start</div>
-		<div className="animate-in fade-in-50">50% opacity start</div>
-		<div className="animate-in fade-in-75">75% opacity start</div>
+		<div className="animate-in fade-in-0 duration-2000">0% opacity start</div>
+		<div className="animate-in fade-in-25 duration-2000">25% opacity start</div>
+		<div className="animate-in fade-in-50 duration-2000">50% opacity start</div>
+		<div className="animate-in fade-in-75 duration-2000">75% opacity start</div>
 		```
 	</div>
-	<div className="space-y-4">
-		<Card className="animate-in fade-in-25 bg-red-200" data-animation-container>
+	<div className="space-y-4 flex flex-row gap-5 justify-center">
+		<Card
+			className="animate-in fade-in-0 duration-2000 bg-red-200 w-30 h-30 justify-center items-center"
+			data-animation-container
+		>
+			<CardContent className="p-4">0% opacity start</CardContent>
+		</Card>
+		<Card
+			className="animate-in fade-in-25 duration-2000 bg-orange-200 w-30 h-30 justify-center items-center"
+			data-animation-container
+		>
 			<CardContent className="p-4">25% opacity start</CardContent>
 		</Card>
 		<Card
-			className="animate-in fade-in-50 bg-orange-200"
+			className="animate-in fade-in-50 duration-2000 bg-green-200 w-30 h-30 justify-center items-center"
 			data-animation-container
 		>
 			<CardContent className="p-4">50% opacity start</CardContent>
 		</Card>
 		<Card
-			className="animate-in fade-in-75 bg-green-200"
+			className="animate-in fade-in-75 duration-2000 bg-blue-200 w-30 h-30 justify-center items-center"
 			data-animation-container
 		>
 			<CardContent className="p-4">75% opacity start</CardContent>
@@ -680,26 +740,29 @@ This plugin is included in the shadcn/ui package and used across its components.
 <div className="grid grid-cols-2 gap-4">
 	<div>
 		```jsx
-		<div className="animate-in spin-in-1">1° rotation</div>
-		<div className="animate-in spin-in-6">6° rotation</div>
-		<div className="animate-in spin-in-90">90° rotation</div>
+		<div className="animate-in spin-in-30 duration-1000">30° rotation</div>
+		<div className="animate-in spin-in-90 duration-1000">90° rotation</div>
+		<div className="animate-in spin-in-180 duration-1000">180° rotation</div>
 		```
 	</div>
-	<div className="space-y-4">
-		<Card className="animate-in spin-in-1 bg-red-200" data-animation-container>
-			<CardContent className="p-4">1° rotation</CardContent>
-		</Card>
+	<div className="space-y-4 flex flex-row gap-5 justify-center">
 		<Card
-			className="animate-in spin-in-6 bg-orange-200"
+			className="animate-in spin-in-30 duration-1000 bg-red-200 w-30 h-30 justify-center items-center"
 			data-animation-container
 		>
-			<CardContent className="p-4">6° rotation</CardContent>
+			<CardContent className="p-4">30° rotation</CardContent>
 		</Card>
 		<Card
-			className="animate-in spin-in-90 bg-green-200"
+			className="animate-in spin-in-90 duration-1000 bg-orange-200 w-30 h-30 justify-center items-center"
 			data-animation-container
 		>
 			<CardContent className="p-4">90° rotation</CardContent>
+		</Card>
+		<Card
+			className="animate-in spin-in-180 duration-1000 bg-green-200 w-30 h-30 justify-center items-center"
+			data-animation-container
+		>
+			<CardContent className="p-4">180° rotation</CardContent>
 		</Card>
 	</div>
 </div>
@@ -709,23 +772,26 @@ This plugin is included in the shadcn/ui package and used across its components.
 <div className="grid grid-cols-2 gap-4">
 	<div>
 		```jsx
-		<div className="animate-in zoom-in-50">50% scale start</div>
-		<div className="animate-in zoom-in-75">75% scale start</div>
-		<div className="animate-in zoom-in-95">95% scale start</div>
+		<div className="animate-in zoom-in-0 duration-1000">0% scale start</div>
+		<div className="animate-in zoom-in-50 duration-1000">50% scale start</div>
+		<div className="animate-in zoom-in-95 duration-1000">95% scale start</div>
 		```
 	</div>
-	<div className="space-y-4">
-		<Card className="animate-in zoom-in-50 bg-red-200" data-animation-container>
+	<div className="space-y-4 flex flex-row gap-5 justify-center">
+		<Card
+			className="animate-in zoom-in-0 duration-1000 bg-red-200 w-30 h-30 justify-center items-center"
+			data-animation-container
+		>
+			<CardContent className="p-4">0% scale start</CardContent>
+		</Card>
+		<Card
+			className="animate-in zoom-in-50 duration-1000 	bg-orange-200 w-30 h-30 justify-center items-center"
+			data-animation-container
+		>
 			<CardContent className="p-4">50% scale start</CardContent>
 		</Card>
 		<Card
-			className="animate-in zoom-in-75 bg-orange-200"
-			data-animation-container
-		>
-			<CardContent className="p-4">75% scale start</CardContent>
-		</Card>
-		<Card
-			className="animate-in zoom-in-95 bg-green-200"
+			className="animate-in zoom-in-95 duration-1000 bg-green-200 w-30 h-30 justify-center items-center"
 			data-animation-container
 		>
 			<CardContent className="p-4">95% scale start</CardContent>
@@ -738,26 +804,32 @@ This plugin is included in the shadcn/ui package and used across its components.
 <div className="grid grid-cols-2 gap-4">
 	<div>
 		```jsx
-		<div className="animate-in slide-in-from-top-48">From top 12rem</div>
-		<div className="animate-in slide-in-from-bottom-72">From bottom 18rem</div>
-		<div className="animate-in slide-in-from-left-96">From left 24rem</div>
+		<div className="animate-in slide-in-from-top-48 duration-1000">
+			From top 12rem
+		</div>
+		<div className="animate-in slide-in-from-bottom-72 duration-1000">
+			From bottom 18rem
+		</div>
+		<div className="animate-in slide-in-from-left-96 duration-1000">
+			From left 24rem
+		</div>
 		```
 	</div>
 	<div className="space-y-4">
 		<Card
-			className="animate-in slide-in-from-top-48 bg-red-200"
+			className="animate-in slide-in-from-top-48 duration-1000 bg-red-200"
 			data-animation-container
 		>
 			<CardContent className="p-4">From top 12rem</CardContent>
 		</Card>
 		<Card
-			className="animate-in slide-in-from-bottom-72 bg-orange-200"
+			className="animate-in slide-in-from-bottom-72 duration-1000 bg-orange-200"
 			data-animation-container
 		>
 			<CardContent className="p-4">From bottom 18rem</CardContent>
 		</Card>
 		<Card
-			className="animate-in slide-in-from-left-96 bg-green-200"
+			className="animate-in slide-in-from-left-96 duration-1000 bg-green-200"
 			data-animation-container
 		>
 			<CardContent className="p-4">From left 24rem</CardContent>
