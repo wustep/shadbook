@@ -1,10 +1,4 @@
 import { Button } from "./button"
-import {
-	Tooltip,
-	TooltipContent,
-	TooltipProvider,
-	TooltipTrigger,
-} from "./tooltip"
 import type { Meta, StoryObj } from "@storybook/react"
 import {
 	AlertCircle,
@@ -13,6 +7,13 @@ import {
 	InfoIcon,
 	Settings,
 } from "lucide-react"
+
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger,
+} from "@/components/ui/tooltip"
 
 const meta: Meta<typeof Tooltip> = {
 	title: "shadcn/Tooltip",

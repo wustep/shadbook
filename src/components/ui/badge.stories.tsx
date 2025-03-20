@@ -1,6 +1,7 @@
-import { Badge } from "./badge"
 import type { Meta, StoryObj } from "@storybook/react"
 import { CheckCircle, Clock, Info, XCircle } from "lucide-react"
+
+import { Badge } from "@/components/ui/badge"
 
 const meta: Meta<typeof Badge> = {
 	title: "shadcn/Badge",

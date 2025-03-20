@@ -1,5 +1,11 @@
-import { Button } from "./button"
-import { Checkbox } from "./checkbox"
+import { zodResolver } from "@hookform/resolvers/zod"
+import type { Meta, StoryObj } from "@storybook/react"
+import React, { useState } from "react"
+import { useFieldArray, useForm } from "react-hook-form"
+import * as z from "zod"
+
+import { Button } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox"
 import {
 	Form,
 	FormControl,
@@ -8,23 +14,17 @@ import {
 	FormItem,
 	FormLabel,
 	FormMessage,
-} from "./form"
-import { Input } from "./input"
-import { RadioGroup, RadioGroupItem } from "./radio-group"
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import {
 	Select,
 	SelectContent,
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from "./select"
-import { Textarea } from "./textarea"
-import { zodResolver } from "@hookform/resolvers/zod"
-import type { Meta, StoryObj } from "@storybook/react"
-import React, { useState } from "react"
-import { useForm } from "react-hook-form"
-import * as z from "zod"
-
+} from "@/components/ui/select"
+import { Textarea } from "@/components/ui/textarea"
 import { cn } from "@/lib/utils"
 
 const meta: Meta<typeof Form> = {
@@ -768,7 +768,10 @@ export const DynamicForm: Story = {
 			},
 		})
 
-		const { fields, append, remove } = form.control._formValues.skills
+		const { fields, append, remove } = useFieldArray({
+			control: form.control,
+			name: "skills",
+		})
 
 		function onSubmit(values: FormValues) {
 			console.log(values)
@@ -786,7 +789,7 @@ export const DynamicForm: Story = {
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
 						<div className="space-y-4">
-							{fields.map((field: any, index: number) => (
+							{fields.map((field, index) => (
 								<div key={field.id} className="rounded-md border p-4">
 									<div className="flex justify-between mb-2">
 										<h3 className="text-sm font-medium">Skill {index + 1}</h3>

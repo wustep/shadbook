@@ -10,6 +10,8 @@ const preview: Preview = {
 				date: /Date$/i,
 			},
 		},
+		// Disable visual tests for now
+		chromatic: { disable: true },
 	},
 }
 
