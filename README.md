@@ -13,14 +13,18 @@ npm run start
 
 # TODO
 ## Tailwind 
-[ ] Colors to storybook
-[ ] Animations to storybook
+[x] Colors to storybook
+[x] Animations to storybook
 
 ## shadcn
-[ ] All components to storybook
+[x] All components to storybook
 [ ] Add Blocks to app
 [ ] Add Blocks to storybook
+[ ] Add colors theme switcher
 
 ## Storybook
-[ ] Add theme switcher
+[ ] Fix dark mode theme switcher
 [ ] Some example visual / component tests
+
+## Misc.
+[ ] Fix issue with absolute paths not being auto-fixed by eslint
