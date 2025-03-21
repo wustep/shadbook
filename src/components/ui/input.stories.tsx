@@ -4,12 +4,14 @@ import { Label } from "./label"
 import type { Meta, StoryObj } from "@storybook/react"
 import {
 	AtSign,
+	CheckCircle2,
+	Copy,
 	DollarSign,
 	Eye as EyeIcon,
 	EyeOff as EyeOffIcon,
-	File as FileIcon,
 	Loader2,
 	Search,
+	XCircle,
 } from "lucide-react"
 import { useState } from "react"
 
@@ -119,34 +121,32 @@ export const PasswordWithToggle: Story = {
 }
 
 /**
- * Disabled input
+ * Input states
  */
-export const Disabled: Story = {
-	render: () => <Input disabled placeholder="Disabled input" />,
-}
-
-/**
- * Input with label
- */
-export const WithLabel: Story = {
-	render: () => (
-		<div className="grid w-full max-w-sm gap-1.5">
-			<Label htmlFor="name">Name</Label>
-			<Input id="name" placeholder="John Doe" />
-			<p className="text-xs text-muted-foreground">Enter your full name.</p>
-		</div>
-	),
-}
-
-/**
- * Input sizes
- */
-export const Sizes: Story = {
+export const States: Story = {
 	render: () => (
 		<div className="flex w-full max-w-sm flex-col gap-4">
-			<Input className="h-7 px-2 text-xs" placeholder="Small input" />
-			<Input placeholder="Default input" />
-			<Input className="h-11 px-4 text-lg" placeholder="Large input" />
+			<div className="grid gap-1.5">
+				<Label htmlFor="default-input">Default</Label>
+				<Input id="default-input" placeholder="Default input" />
+			</div>
+
+			<div className="grid gap-1.5">
+				<Label htmlFor="focus-input">Focus (click to see)</Label>
+				<Input id="focus-input" placeholder="Click to focus" />
+			</div>
+
+			<div className="grid gap-1.5">
+				<Label htmlFor="disabled-input" className="text-muted-foreground">
+					Disabled
+				</Label>
+				<Input id="disabled-input" disabled placeholder="Disabled input" />
+			</div>
+
+			<div className="grid gap-1.5">
+				<Label htmlFor="readonly-input">Read-only</Label>
+				<Input id="readonly-input" readOnly value="Read-only value" />
+			</div>
 		</div>
 	),
 }
@@ -159,36 +159,75 @@ export const ValidationStates: Story = {
 		<div className="flex w-full max-w-sm flex-col gap-4">
 			<div className="grid gap-1.5">
 				<Label htmlFor="valid-input">Valid input</Label>
-				<Input
-					id="valid-input"
-					placeholder="Valid input"
-					className="border-green-500 focus-visible:ring-green-300/50"
-				/>
-				<p className="text-xs text-green-500">This is a valid input.</p>
+				<div className="relative">
+					<Input
+						id="valid-input"
+						value="valid@example.com"
+						className="pr-8 border-green-500 focus-visible:ring-green-300/50"
+					/>
+					<CheckCircle2 className="absolute right-2.5 top-2.5 h-4 w-4 text-green-500" />
+				</div>
+				<p className="text-xs text-green-500">This is a valid email address.</p>
 			</div>
+
 			<div className="grid gap-1.5">
 				<Label htmlFor="invalid-input">Invalid input</Label>
-				<Input
-					id="invalid-input"
-					placeholder="Invalid input"
-					aria-invalid="true"
-				/>
-				<p className="text-xs text-destructive">This is an invalid input.</p>
+				<div className="relative">
+					<Input
+						id="invalid-input"
+						value="invalid-email"
+						className="pr-8 border-red-500 focus-visible:ring-red-300/50"
+						aria-invalid="true"
+					/>
+					<XCircle className="absolute right-2.5 top-2.5 h-4 w-4 text-red-500" />
+				</div>
+				<p className="text-xs text-red-500">
+					Please enter a valid email address.
+				</p>
 			</div>
 		</div>
 	),
 }
 
 /**
- * Input with button
+ * Input with copy button
  */
-export const WithButton: Story = {
-	render: () => (
-		<div className="flex w-full max-w-sm items-center gap-2">
-			<Input placeholder="Email" type="email" />
-			<Button type="submit">Subscribe</Button>
-		</div>
-	),
+export const WithCopyButton: Story = {
+	render: function Render() {
+		const [copied, setCopied] = useState(false)
+		const value = "https://example.com/your-share-link"
+
+		const handleCopy = () => {
+			navigator.clipboard.writeText(value)
+			setCopied(true)
+			setTimeout(() => setCopied(false), 2000)
+		}
+
+		return (
+			<div className="w-full max-w-sm">
+				<div className="flex gap-2">
+					<div className="relative flex-1">
+						<Input value={value} readOnly className="pr-8" />
+						<button
+							type="button"
+							onClick={handleCopy}
+							className="absolute right-2.5 top-2.5 h-4 w-4 text-muted-foreground hover:text-foreground"
+							aria-label="Copy to clipboard"
+						>
+							{copied ? (
+								<CheckCircle2 className="h-4 w-4 text-green-500" />
+							) : (
+								<Copy className="h-4 w-4" />
+							)}
+						</button>
+					</div>
+					<Button onClick={handleCopy} variant="outline" size="sm">
+						{copied ? "Copied!" : "Copy"}
+					</Button>
+				</div>
+			</div>
+		)
+	},
 }
 
 /**
@@ -202,9 +241,10 @@ export const WithLoading: Story = {
 			<div className="w-full max-w-sm">
 				<div className="flex gap-2">
 					<div className="relative flex-1">
+						<Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
 						<Input
 							placeholder="Search..."
-							className={isLoading ? "pr-8" : ""}
+							className={isLoading ? "pl-8 pr-8" : "pl-8"}
 						/>
 						{isLoading && (
 							<Loader2 className="absolute right-2.5 top-2.5 h-4 w-4 animate-spin text-muted-foreground" />
@@ -220,66 +260,95 @@ export const WithLoading: Story = {
 }
 
 /**
- * File input
+ * Input with button
+ */
+export const WithButton: Story = {
+	render: () => (
+		<>
+			<div className="flex w-full max-w-sm items-center gap-2 mb-4">
+				<Input placeholder="Email" type="email" />
+				<Button type="submit">Subscribe</Button>
+			</div>
+
+			<div className="flex w-full max-w-sm flex-col sm:flex-row items-end gap-2">
+				<div className="grid w-full gap-1.5">
+					<Label htmlFor="email">Email</Label>
+					<Input id="email" placeholder="name@example.com" type="email" />
+				</div>
+				<Button type="submit">Subscribe</Button>
+			</div>
+		</>
+	),
+}
+
+/**
+ * File input variants
  */
 export const FileInput: Story = {
 	render: () => (
-		<div className="grid w-full max-w-sm gap-1.5">
-			<Label htmlFor="file">Upload file</Label>
-			<div className="flex items-center gap-2">
-				<Input id="file" type="file" className="file:text-primary" />
+		<div className="w-full max-w-sm space-y-6">
+			<div className="grid w-full gap-1.5">
+				<Label htmlFor="file">Basic file input</Label>
+				<Input id="file" type="file" />
 			</div>
-			<div className="grid w-full max-w-sm gap-1.5">
-				<Label htmlFor="custom-file">Custom file input</Label>
-				<div className="flex items-center gap-2">
-					<Input
-						id="custom-file"
-						type="file"
-						className="hidden"
-						onChange={e => {
-							// Handle file change
-							const fileName = e.target.files?.[0]?.name
-							const fileDisplay = document.getElementById("file-display")
-							if (fileDisplay) {
-								fileDisplay.textContent = fileName || "No file selected"
-							}
-						}}
-					/>
-					<Button
-						variant="outline"
-						onClick={() => document.getElementById("custom-file")?.click()}
-						className="flex items-center gap-2"
-					>
-						<FileIcon className="h-4 w-4" />
-						Choose File
-					</Button>
-					<span id="file-display" className="text-sm text-muted-foreground">
-						No file selected
-					</span>
-				</div>
+
+			<div className="grid w-full gap-1.5">
+				<Label htmlFor="styled-file">Styled file input</Label>
+				<Input
+					id="styled-file"
+					type="file"
+					className="file:mr-4 file:px-4 file:py-2 file:rounded-md file:border-0 file:bg-primary file:text-primary-foreground hover:file:bg-primary/90"
+				/>
+			</div>
+
+			<div className="grid w-full gap-1.5">
+				<Label htmlFor="image-upload">Image upload only</Label>
+				<Input
+					id="image-upload"
+					type="file"
+					accept="image/*"
+					className="file:mr-4 file:px-4 file:py-2 file:rounded-md file:border-0 file:bg-secondary file:text-secondary-foreground hover:file:bg-secondary/90"
+				/>
+				<p className="text-xs text-muted-foreground">
+					Accepts images only (.jpg, .png, etc.)
+				</p>
 			</div>
 		</div>
 	),
 }
 
 /**
- * Input with custom styling
+ * Input sizes
  */
-export const CustomStyling: Story = {
+export const Sizes: Story = {
 	render: () => (
 		<div className="flex w-full max-w-sm flex-col gap-4">
-			<Input
-				className="border-2 border-blue-300 focus-visible:border-blue-500 focus-visible:ring-blue-300/50 rounded-lg bg-blue-50 placeholder:text-blue-400"
-				placeholder="Custom blue input"
-			/>
-			<Input
-				className="border-none bg-slate-100 focus-visible:ring-slate-300/50 rounded-full px-4"
-				placeholder="Rounded input"
-			/>
-			<Input
-				className="border-b border-l-0 border-r-0 border-t-0 rounded-none focus-visible:ring-0 focus-visible:border-b-2 px-0 transition-all"
-				placeholder="Borderless input"
-			/>
+			<div className="grid gap-1.5">
+				<Label htmlFor="small" className="text-xs">
+					Small
+				</Label>
+				<Input
+					id="small"
+					className="h-7 px-2 text-xs"
+					placeholder="Small input"
+				/>
+			</div>
+
+			<div className="grid gap-1.5">
+				<Label htmlFor="default">Default</Label>
+				<Input id="default" placeholder="Default input" />
+			</div>
+
+			<div className="grid gap-1.5">
+				<Label htmlFor="large" className="text-lg">
+					Large
+				</Label>
+				<Input
+					id="large"
+					className="h-11 px-4 text-lg"
+					placeholder="Large input"
+				/>
+			</div>
 		</div>
 	),
 }

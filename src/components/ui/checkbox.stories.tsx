@@ -1,7 +1,7 @@
 import { Checkbox } from "./checkbox"
 import { Label } from "./label"
 import type { Meta, StoryObj } from "@storybook/react"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 const meta: Meta<typeof Checkbox> = {
 	title: "shadcn/Checkbox",
@@ -42,42 +42,138 @@ export const WithLabel: Story = {
 }
 
 /**
- * Disabled states
+ * Various checkbox states
  */
-export const Disabled: Story = {
-	render: () => (
-		<div className="flex flex-col gap-4">
-			<div className="flex items-center space-x-2">
-				<Checkbox id="disabled" disabled />
-				<Label htmlFor="disabled" className="text-muted-foreground">
-					Disabled unchecked
-				</Label>
+export const States: Story = {
+	render: () => {
+		// Use a function component for indeterminate state
+		const IndeterminateCheckbox = () => {
+			const checkboxRef = useRef<HTMLButtonElement>(null)
+
+			useEffect(() => {
+				if (checkboxRef.current) {
+					// Using DOM API directly
+					const element = checkboxRef.current as unknown as HTMLInputElement
+					element.indeterminate = true
+				}
+			}, [])
+
+			return (
+				<Checkbox
+					id="indeterminate"
+					ref={checkboxRef}
+					className="data-[state=indeterminate]:bg-primary data-[state=indeterminate]:border-primary"
+				/>
+			)
+		}
+
+		return (
+			<div className="flex flex-wrap gap-8">
+				<div className="flex items-center space-x-2">
+					<Checkbox id="default" />
+					<Label htmlFor="default">Default</Label>
+				</div>
+
+				<div className="flex items-center space-x-2">
+					<Checkbox id="checked" defaultChecked />
+					<Label htmlFor="checked">Checked</Label>
+				</div>
+
+				<div className="flex items-center space-x-2">
+					<Checkbox id="disabled" disabled />
+					<Label htmlFor="disabled" className="text-muted-foreground">
+						Disabled
+					</Label>
+				</div>
+
+				<div className="flex items-center space-x-2">
+					<Checkbox id="disabled-checked" disabled defaultChecked />
+					<Label htmlFor="disabled-checked" className="text-muted-foreground">
+						Disabled checked
+					</Label>
+				</div>
+
+				<div className="flex items-center space-x-2">
+					<IndeterminateCheckbox />
+					<Label htmlFor="indeterminate">Indeterminate</Label>
+				</div>
 			</div>
-			<div className="flex items-center space-x-2">
-				<Checkbox id="disabled-checked" disabled defaultChecked />
-				<Label htmlFor="disabled-checked" className="text-muted-foreground">
-					Disabled checked
-				</Label>
-			</div>
-		</div>
-	),
+		)
+	},
 }
 
 /**
- * Checkbox group
+ * Checkbox group for multiple selections
  */
 export const CheckboxGroup: Story = {
-	render: function Render() {
-		const [items, setItems] = useState({
+	render: function CheckboxGroupComponent() {
+		type ItemsState = {
+			apple: boolean
+			banana: boolean
+			orange: boolean
+			pear: boolean
+			mango: boolean
+			strawberry: boolean
+		}
+
+		const [items, setItems] = useState<ItemsState>({
 			apple: false,
 			banana: true,
 			orange: false,
 			pear: false,
+			mango: true,
+			strawberry: false,
 		})
 
+		const selectAllRef = useRef<HTMLButtonElement>(null)
+		const selectedCount = Object.values(items).filter(Boolean).length
+		const totalCount = Object.keys(items).length
+		const isIndeterminate = selectedCount > 0 && selectedCount < totalCount
+
+		useEffect(() => {
+			if (selectAllRef.current) {
+				// Using DOM API directly
+				const element = selectAllRef.current as unknown as HTMLInputElement
+				element.indeterminate = isIndeterminate
+			}
+		}, [isIndeterminate])
+
+		const handleSelectAll = () => {
+			const allSelected = Object.values(items).every(v => v === true)
+			const newValue = !allSelected
+			setItems({
+				apple: newValue,
+				banana: newValue,
+				orange: newValue,
+				pear: newValue,
+				mango: newValue,
+				strawberry: newValue,
+			})
+		}
+
 		return (
-			<div className="space-y-4">
-				<div className="text-sm font-medium">Select your favorite fruits:</div>
+			<div className="space-y-4 w-[280px]">
+				<div className="flex items-center justify-between">
+					<div className="text-sm font-medium">
+						Select your favorite fruits:
+					</div>
+					<div className="text-xs text-muted-foreground">
+						{selectedCount} of {totalCount} selected
+					</div>
+				</div>
+
+				<div className="flex items-center space-x-2 pb-2 border-b">
+					<Checkbox
+						id="select-all"
+						ref={selectAllRef}
+						checked={selectedCount === totalCount}
+						onCheckedChange={handleSelectAll}
+					/>
+					<Label htmlFor="select-all" className="font-medium">
+						{selectedCount === totalCount ? "Deselect all" : "Select all"}
+					</Label>
+				</div>
+
 				<div className="space-y-2">
 					{Object.entries(items).map(([item, checked]) => (
 						<div key={item} className="flex items-center space-x-2">
@@ -87,8 +183,7 @@ export const CheckboxGroup: Story = {
 								onCheckedChange={() =>
 									setItems(prev => ({
 										...prev,
-										[item as keyof typeof prev]:
-											!prev[item as keyof typeof prev],
+										[item as keyof ItemsState]: !prev[item as keyof ItemsState],
 									}))
 								}
 							/>
@@ -130,7 +225,7 @@ export const InForm: Story = {
 			</div>
 			<button
 				type="submit"
-				className="w-full rounded-md bg-primary px-4 py-2 text-sm font-medium text-white"
+				className="w-full rounded-md bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary/90"
 			>
 				Subscribe
 			</button>
@@ -139,7 +234,7 @@ export const InForm: Story = {
 }
 
 /**
- * Custom styled checkbox
+ * Custom styled checkboxes
  */
 export const CustomStyled: Story = {
 	render: () => (
@@ -172,6 +267,26 @@ export const CustomStyled: Story = {
 				/>
 				<Label htmlFor="custom3" className="text-purple-600">
 					Large purple checkbox
+				</Label>
+			</div>
+			<div className="flex items-center space-x-2">
+				<Checkbox
+					id="custom4"
+					className="rounded-md border-amber-500 data-[state=checked]:bg-amber-500 data-[state=checked]:text-black"
+					defaultChecked
+				/>
+				<Label htmlFor="custom4" className="text-amber-600">
+					Amber checkbox with black check mark
+				</Label>
+			</div>
+			<div className="flex items-center space-x-2">
+				<Checkbox
+					id="custom5"
+					className="border-2 border-pink-500 data-[state=checked]:bg-white data-[state=checked]:border-pink-500 data-[state=checked]:text-pink-500"
+					defaultChecked
+				/>
+				<Label htmlFor="custom5" className="text-pink-600">
+					Outlined pink checkbox
 				</Label>
 			</div>
 		</div>
