@@ -8,4 +8,4 @@ alwaysApply: true
 
 - This project is a Storybook playground for Tailwind CSS v4, tailwind-css-animate, and shadcn/ui components.
 - Prefer using Tailwind CSS v4 syntax over inline styling.
-- Follow frontend best practices for React + Tailwind + shadcn/ui apps.
+- Follow frontend best practices for React 19 + Tailwind + shadcn/ui apps.
