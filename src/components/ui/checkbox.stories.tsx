@@ -85,7 +85,11 @@ export const CheckboxGroup: Story = {
 								id={item}
 								checked={checked}
 								onCheckedChange={() =>
-									setItems(prev => ({ ...prev, [item]: !prev[item] }))
+									setItems(prev => ({
+										...prev,
+										[item as keyof typeof prev]:
+											!prev[item as keyof typeof prev],
+									}))
 								}
 							/>
 							<Label htmlFor={item} className="capitalize">

@@ -8,7 +8,7 @@ import {
 import { Label } from "./label"
 import type { Meta, StoryObj } from "@storybook/react"
 import { Check, Copy, RefreshCw } from "lucide-react"
-import React, { useState } from "react"
+import { useState } from "react"
 
 // Remove useToast import and replace with mock implementation
 const useToast = () => ({

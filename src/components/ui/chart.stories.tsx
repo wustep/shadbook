@@ -232,7 +232,7 @@ export const PieChartExample: Story = {
 							`${name} ${(percent * 100).toFixed(0)}%`
 						}
 					>
-						{pieData.map((entry, index) => (
+						{pieData.map((_, index) => (
 							<Cell
 								key={`cell-${index}`}
 								fill={COLORS[index % COLORS.length]}
@@ -609,7 +609,7 @@ export const DashboardLayout: Story = {
 											`${name} ${(percent * 100).toFixed(0)}%`
 										}
 									>
-										{pieData.map((entry, index) => (
+										{pieData.map((_, index) => (
 											<Cell
 												key={`cell-${index}`}
 												fill={COLORS[index % COLORS.length]}
