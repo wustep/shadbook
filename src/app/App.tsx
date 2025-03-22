@@ -1,11 +1,13 @@
 import { useState } from "react"
 
-import "@/app/App.css"
 import reactLogo from "@/app/assets/react.svg"
 import viteLogo from "@/app/assets/vite.svg"
 import { ThemeProvider, useTheme } from "@/components/ThemeProvider"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
+
+import "@/app/App.css"
+import "@/styles/neutral.css"
 
 function App() {
 	const [count, setCount] = useState(0)

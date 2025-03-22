@@ -12,6 +12,7 @@ const config: StorybookConfig = {
 		name: "@storybook/react-vite",
 		options: {},
 	},
+	staticDirs: ["../src/styles"],
 	viteFinal: async config => {
 		if (config.resolve) {
 			config.resolve.alias = {
