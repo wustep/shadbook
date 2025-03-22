@@ -8,7 +8,7 @@ An educational project!
 
 ```bash
 npm install
-npm run start
+npm run storybook
 ```
 
 # TODO
@@ -29,3 +29,4 @@ npm run start
 
 ## Misc.
 - [ ] Fix issue with absolute paths not being auto-fixed by eslint
+- [ ] Instructions about how to use this repo as a starter boilerplate
