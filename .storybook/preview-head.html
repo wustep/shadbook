@@ -2,19 +2,4 @@
 	.docs-story {
 		background-color: var(--background);
 	}
-
-	/* Remove direct variable usage and let Tailwind handle it */
 </style>
-
-<script>
-	try {
-		const darkMode = localStorage.getItem("sb-mode") === "dark"
-		if (darkMode) {
-			document.documentElement.classList.add("dark")
-			document.body.classList.add("dark")
-		}
-		document.body.classList.add("bg-background", "text-foreground")
-	} catch (e) {
-		// Ignore errors
-	}
-</script>

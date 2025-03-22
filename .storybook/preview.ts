@@ -3,62 +3,8 @@ import { themes } from "@storybook/theming"
 
 import "@/styles/globals.css"
 import "./storybook-theme.css" // Import Storybook theme helper styles
-
-// Get stored preferences or use defaults
-const getStoredTheme = () => {
-	try {
-		return localStorage.getItem("sb-theme") || "neutral"
-	} catch {
-		return "neutral"
-	}
-}
-
-const getStoredMode = () => {
-	try {
-		return localStorage.getItem("sb-mode") || "light"
-	} catch {
-		return "light"
-	}
-}
-
-// Function to update themes that will be called by the decorator
-const updateTheme = (theme: string, darkMode: string) => {
-	// Store preferences
-	try {
-		localStorage.setItem("sb-theme", theme)
-		localStorage.setItem("sb-mode", darkMode)
-	} catch {
-		// Ignore storage errors
-	}
-
-	// Always add the CSS for the selected theme
-	const link = document.createElement("link")
-	link.setAttribute("rel", "stylesheet")
-	link.setAttribute("type", "text/css")
-	link.setAttribute("href", `/src/styles/${theme}.css`)
-	document.head.appendChild(link)
-
-	// Dark mode toggle
-	if (darkMode === "dark") {
-		document.documentElement.classList.add("dark")
-		document.body.classList.add("dark")
-
-		// Also update the preview wrapper if it exists
-		const previewWrapper = document.getElementById("sbdocs-preview")
-		if (previewWrapper) {
-			previewWrapper.style.backgroundColor = "var(--background)"
-		}
-	} else {
-		document.documentElement.classList.remove("dark")
-		document.body.classList.remove("dark")
-
-		// Also update the preview wrapper if it exists
-		const previewWrapper = document.getElementById("sbdocs-preview")
-		if (previewWrapper) {
-			previewWrapper.style.backgroundColor = "var(--background)"
-		}
-	}
-}
+import { getStoredMode, getStoredTheme, updateMode, updateTheme } from "./utils"
+import { DocsContainer } from "./DocsContainer"
 
 const preview: Preview = {
 	parameters: {
@@ -71,13 +17,14 @@ const preview: Preview = {
 		backgrounds: { disable: true }, // Disable Storybook's background addon
 		chromatic: { disable: true },
 		docs: {
-			theme: themes.light,
+			container: DocsContainer,
 		},
 	},
 	decorators: [
 		(Story, context) => {
 			const { theme, darkMode } = context.globals
-			updateTheme(theme ?? "neutral", darkMode ?? "light")
+			updateTheme(theme ?? "neutral")
+			updateMode(darkMode ?? "light")
 			return Story()
 		},
 	],

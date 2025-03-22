@@ -15,16 +15,18 @@ npm run storybook
 ## Tailwind
 - [x] Colors to storybook
 - [x] Animations to storybook
+- [ ] Intro page
 
 ## shadcn
 - [x] Colors for Neutral to storybook
 - [x] All components to storybook
 - [ ] Add Blocks to app
 - [ ] Add Blocks to storybook
-- [ ] Add colors theme switcher
+- [x] Add colors theme switcher
+- [ ] Intro page
 
 ## Storybook
-- [ ] Fix dark mode theme switcher
+- [x] Fix dark mode theme switcher
 - [ ] Some example visual / component tests
 
 ## Misc.

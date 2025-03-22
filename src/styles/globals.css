@@ -4,6 +4,12 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@import "./neutral.css";
+@import "./gray.css";
+@import "./slate.css";
+@import "./stone.css";
+@import "./zinc.css";
+
 :root {
 	font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
 	color-scheme: light dark;

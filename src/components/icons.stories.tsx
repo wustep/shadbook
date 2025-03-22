@@ -77,7 +77,7 @@ export const IconGrid: Story = {
 				{icons.map(({ Icon, name }) => (
 					<div
 						key={name}
-						className="flex flex-col items-center justify-center p-4 border rounded-lg bg-background hover:bg-accent/20 transition-colors"
+						className="flex flex-col items-center justify-center p-4 border rounded-lg bg-background transition-colors"
 					>
 						<Icon className="h-6 w-6 mb-2" />
 						<span className="text-xs text-muted-foreground text-center">
