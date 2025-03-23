@@ -1,5 +1,6 @@
 // DocsContainer.tsx
 
+// eslint-disable-next-line no-restricted-imports
 import {
 	getStoredMode,
 	getStoredTheme,
@@ -11,7 +12,6 @@ import {
 	DocsContainer as BaseContainer,
 	DocsContainerProps,
 } from "@storybook/blocks"
-import { addons } from "@storybook/preview-api"
 import { themes } from "@storybook/theming"
 import React, { FC, PropsWithChildren, useEffect, useState } from "react"
 
