@@ -32,3 +32,4 @@ npm run storybook
 ## Misc.
 - [ ] Fix issue with absolute paths not being auto-fixed by eslint
 - [ ] Instructions about how to use this repo as a starter boilerplate
+- [ ] `npx shadbook init` / `npm run init` to create a new shadbook project from this repo
