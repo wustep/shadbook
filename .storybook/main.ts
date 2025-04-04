@@ -6,13 +6,13 @@ const config: StorybookConfig = {
 	addons: [
 		"@storybook/addon-essentials",
 		"@storybook/addon-onboarding",
-		"@chromatic-com/storybook",
+		// "@chromatic-com/storybook",
 	],
 	framework: {
 		name: "@storybook/react-vite",
 		options: {},
 	},
-	staticDirs: ["../src/styles"],
+	staticDirs: ["../src/styles", "../src/storybook/app/assets"],
 	viteFinal: async config => {
 		if (config.resolve) {
 			config.resolve.alias = {

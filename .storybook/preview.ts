@@ -21,7 +21,11 @@ const preview: Preview = {
 		},
 		options: {
 			storySort: {
-				order: ["shadcn/Typography", "shadcn/Icons", "shadcn/*"],
+				order: [
+					"Introduction",
+					"shadcn",
+					["Colors", "Typography", "Icons", "Examples", "*"],
+				],
 			},
 		},
 	},
