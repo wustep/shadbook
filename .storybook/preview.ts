@@ -1,7 +1,6 @@
 import type { Preview } from "@storybook/react"
 import { themes } from "@storybook/theming"
 import "@/styles/globals.css"
-import "./storybook-theme.css" // Import Storybook theme helper styles
 import { getStoredMode, getStoredTheme, updateMode, updateTheme } from "./utils"
 import { DocsContainer } from "./DocsContainer"
 
