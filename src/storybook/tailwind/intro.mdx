@@ -1,0 +1,437 @@
+import { Meta, Canvas, Unstyled } from "@storybook/blocks"
+import { Button } from "@/components/ui/button"
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardFooter,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Badge } from "@/components/ui/badge"
+import { Heart, Share, MessageCircle, Bookmark, Mail, User } from "lucide-react"
+
+<Meta title="Tailwind/Introduction" />
+
+# Tailwind CSS v4
+
+Tailwind CSS v4 is a utility-first CSS framework that allows you to build designs directly in your markup.
+
+## Basic Examples
+
+### Typography
+
+<div className="grid grid-cols-2 gap-4">
+	<div>
+		```jsx
+		<div className="space-y-4">
+			<h1 className="text-4xl font-bold tracking-tight">Large Heading</h1>
+			<h2 className="text-2xl font-semibold">Medium Heading</h2>
+			<p className="text-base text-muted-foreground">
+				Regular paragraph with muted text color
+			</p>
+			<p className="text-sm italic">Small italic text</p>
+			<p className="text-xs font-mono">Tiny monospace text</p>
+		</div>
+		```
+	</div>
+	<div className="flex items-center justify-center">
+		<Unstyled>
+			<div className="space-y-4">
+				<h1 className="text-4xl font-bold tracking-tight">Large Heading</h1>
+				<h2 className="text-2xl font-semibold">Medium Heading</h2>
+				<p className="text-base text-muted-foreground">
+					Regular paragraph with muted text color
+				</p>
+				<p className="text-sm italic">Small italic text</p>
+				<p className="text-xs font-mono">Tiny monospace text</p>
+			</div>
+		</Unstyled>
+	</div>
+</div>
+
+### Layout & Spacing
+
+<div className="grid grid-cols-2 gap-4">
+	<div>
+		```jsx
+		<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+			<div className="bg-blue-100 p-4 rounded">Item 1</div>
+			<div className="bg-blue-100 p-4 rounded">Item 2</div>
+			<div className="bg-blue-100 p-4 rounded">Item 3</div>
+			<div className="bg-blue-100 p-4 rounded">Item 3</div>
+		</div>
+		```
+	</div>
+	<div className="flex items-center justify-center">
+		<Unstyled>
+			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+				<div className="bg-blue-100 p-4 rounded">Item 1</div>
+				<div className="bg-blue-100 p-4 rounded">Item 2</div>
+				<div className="bg-blue-100 p-4 rounded">Item 3</div>
+			</div>
+		</Unstyled>
+	</div>
+</div>
+
+### Advanced Color Usage (Tailwind v4)
+
+<div className="grid grid-cols-2 gap-4">
+	<div>
+		```jsx
+		<div className="space-y-2">
+			<div className="bg-blue-500 text-white p-2 rounded">Standard blue</div>
+			<div className="bg-blue-500/80 text-white p-2 rounded">
+				Blue with opacity
+			</div>
+			<div className="bg-blue-500/50 text-white p-2 rounded">
+				Blue with more opacity
+			</div>
+			<div className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white p-2 rounded">
+				Gradient background
+			</div>
+		</div>
+		```
+	</div>
+	<div className="flex items-center justify-center">
+		<Unstyled>
+			<div className="space-y-2">
+				<div className="bg-blue-500 text-white p-2 rounded">Standard blue</div>
+				<div className="bg-blue-500/80 text-white p-2 rounded">
+					Blue with opacity
+				</div>
+				<div className="bg-blue-500/50 text-white p-2 rounded">
+					Blue with more opacity
+				</div>
+				<div className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white p-2 rounded">
+					Gradient background
+				</div>
+			</div>
+		</Unstyled>
+	</div>
+</div>
+
+### Hover, Focus, and Other States
+
+<div className="grid grid-cols-2 gap-4">
+	<div>
+		```jsx
+		<div className="space-y-2">
+			<button
+				className="px-4 py-2 bg-purple-500 text-white rounded 
+                   hover:bg-purple-600 focus:ring-2 focus:ring-purple-300 
+                   active:bg-purple-700 transition-all duration-200">
+				Hover and Focus Effects
+			</button>
+			<div className="group border p-4 rounded hover:bg-slate-100">
+				<p>Parent container (hover me)</p>
+				<p className="text-slate-500 group-hover:text-slate-900">
+					This text changes when parent is hovered
+				</p>
+			</div>
+		</div>
+    ```
+    </div>
+    <div className="flex items-center justify-center">
+    	<Unstyled>
+    		<div className="space-y-2">
+    			<button
+    				className="px-4 py-2 bg-purple-500 text-white rounded
+                   hover:bg-purple-600 focus:ring-2 focus:ring-purple-300
+                   active:bg-purple-700 transition-all duration-200"
+    			>
+    				Hover and Focus Effects
+    			</button>
+
+    			<div className="group border p-4 rounded hover:bg-slate-100">
+    				<p>Parent container (hover me)</p>
+    				<p className="text-slate-500 group-hover:text-slate-900">
+    					This text changes when parent is hovered
+    				</p>
+    			</div>
+    		</div>
+    	</Unstyled>
+    </div>
+
+</div>
+
+### Dark Mode Support
+
+<div className="grid grid-cols-2 gap-4">
+	<div>
+		```jsx
+		<div
+			className="p-4 rounded bg-white dark:bg-slate-800 
+               text-slate-900 dark:text-slate-100 
+               border border-slate-200 dark:border-slate-700"
+		>
+			<h3 className="font-medium">Dark Mode Compatible Component</h3>
+			<p className="text-slate-500 dark:text-slate-400">
+				This automatically adapts to light/dark mode
+			</p>
+		</div>
+		```
+	</div>
+	<div className="flex items-center justify-center">
+		<Unstyled>
+			<div
+				className="p-4 rounded bg-white dark:bg-slate-800 
+               text-slate-900 dark:text-slate-100 
+               border border-slate-200 dark:border-slate-700"
+			>
+				<h3 className="font-medium">Dark Mode Compatible Component</h3>
+				<p className="text-slate-500 dark:text-slate-400">
+					This automatically adapts to light/dark mode
+				</p>
+			</div>
+		</Unstyled>
+	</div>
+</div>
+
+### Responsive Design
+
+<div className="grid grid-cols-2 gap-4">
+	<div>
+		```jsx
+		<div className="p-4 bg-green-100 text-center sm:bg-blue-100 md:bg-purple-100 lg:bg-amber-100">
+			<p className="hidden sm:block md:hidden">Visible only on small screens</p>
+			<p className="hidden md:block lg:hidden">
+				Visible only on medium screens
+			</p>
+			<p className="hidden lg:block">Visible only on large screens</p>
+			<p className="block sm:hidden">Visible only on extra small screens</p>
+		</div>
+		```
+	</div>
+	<div className="flex items-center justify-center">
+		<Unstyled>
+			<div className="p-4 bg-green-100 text-center sm:bg-blue-100 md:bg-purple-100 lg:bg-amber-100">
+				<p className="hidden sm:block md:hidden">
+					Visible only on small screens
+				</p>
+				<p className="hidden md:block lg:hidden">
+					Visible only on medium screens
+				</p>
+				<p className="hidden lg:block">Visible only on large screens</p>
+				<p className="block sm:hidden">Visible only on extra small screens</p>
+			</div>
+		</Unstyled>
+	</div>
+</div>
+
+### Custom Animations
+
+See [animations](/storybook/tailwind/animations) for deeper animations with tailwindcss-animate!
+
+<div className="grid grid-cols-2 gap-4">
+	<div>
+		```jsx
+    <div className="animate-pulse bg-red-500 w-8 h-8 rounded-full"></div>
+    <div className="animate-spin h-8 w-8 border-4 border-blue-500 border-t-transparent rounded-full"></div>
+    	```
+    </div>
+    <div className="flex items-center justify-center gap-4">
+    		<div className="animate-pulse bg-red-500 w-8 h-8 rounded-full"></div>
+    		<div className="animate-spin h-8 w-8 border-4 border-blue-500 border-t-transparent rounded-full"></div>
+    	</div>
+
+</div>
+
+## Usage with shadcn/ui
+
+### Button
+
+<div className="grid grid-cols-2 gap-4">
+	<div>
+		```jsx
+		<Button className="bg-primary hover:bg-primary/90">Styled Button</Button>
+		```
+	</div>
+	<div className="flex items-center justify-center">
+		<Unstyled>
+			<Button className="bg-primary hover:bg-primary/90">Styled Button</Button>
+		</Unstyled>
+	</div>
+</div>
+
+### Card
+
+<div className="grid grid-cols-2 gap-4">
+	<div>
+		```jsx
+		<Card className="max-w-md border-2 border-primary/10 shadow-lg hover:shadow-xl transition-all">
+			<CardHeader className="bg-muted/20">
+				<CardTitle className="text-primary">Card Title</CardTitle>
+				<CardDescription>This is a styled shadcn/ui card</CardDescription>
+			</CardHeader>
+			<CardContent className="pt-4">
+				<p>Here is some content with Tailwind styling</p>
+			</CardContent>
+			<CardFooter className="flex justify-end gap-2 border-t bg-muted/10 p-4">
+				<Button size="sm">Submit</Button>
+				<Button variant="outline" size="sm">
+					Cancel
+				</Button>
+			</CardFooter>
+		</Card>
+		```
+	</div>
+	<div className="flex items-center justify-center">
+		<Unstyled>
+			<Card className="max-w-md border-2 border-primary/10 shadow-lg hover:shadow-xl transition-all">
+				<CardHeader className="bg-muted/20">
+					<CardTitle className="text-primary">Card Title</CardTitle>
+					<CardDescription>This is a styled shadcn/ui card</CardDescription>
+				</CardHeader>
+				<CardContent className="pt-4">
+					<p>Here is some content with Tailwind styling</p>
+				</CardContent>
+				<CardFooter className="flex justify-end gap-2 border-t bg-muted/10 p-4">
+					<Button size="sm">Submit</Button>
+					<Button variant="outline" size="sm">
+						Cancel
+					</Button>
+				</CardFooter>
+			</Card>
+		</Unstyled>
+	</div>
+</div>
+
+### Avatar with Styling
+
+<div className="grid grid-cols-2 gap-4">
+	<div>
+		```jsx
+		<div className="flex items-center space-x-4 p-4 bg-muted/10 rounded-lg">
+			<Avatar className="h-12 w-12 ring-2 ring-primary/50 ring-offset-2">
+				<AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+				<AvatarFallback className="bg-primary/20">CN</AvatarFallback>
+			</Avatar>
+			<div>
+				<p className="font-medium">shadcn</p>
+				<p className="text-sm text-muted-foreground">UI Developer</p>
+			</div>
+		</div>
+		```
+	</div>
+	<div className="flex items-center justify-center">
+		<Unstyled>
+			<div className="flex items-center space-x-4 p-4 bg-muted/10 rounded-lg">
+				<Avatar className="h-12 w-12 ring-2 ring-primary/50 ring-offset-2">
+					<AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+					<AvatarFallback className="bg-primary/20">CN</AvatarFallback>
+				</Avatar>
+				<div>
+					<p className="font-medium">shadcn</p>
+					<p className="text-sm text-muted-foreground">UI Developer</p>
+				</div>
+			</div>
+		</Unstyled>
+	</div>
+</div>
+
+### Social Media Card
+
+<div className="grid grid-cols-2 gap-4">
+	<div>
+		```jsx
+		<Card className="max-w-md overflow-hidden border-none shadow-md dark:bg-slate-900">
+			<div className="relative h-40 bg-gradient-to-r from-primary to-primary/60">
+				<div className="absolute -bottom-10 left-4">
+					<Avatar className="h-20 w-20 border-4 border-background">
+						<AvatarImage src="https://github.com/shadcn.png" />
+						<AvatarFallback className="text-lg">SC</AvatarFallback>
+					</Avatar>
+				</div>
+			</div>
+			<CardHeader className="pt-12">
+				<div className="flex justify-between">
+					<div>
+						<CardTitle className="text-xl">Sarah Connor</CardTitle>
+						<CardDescription>@sarahconnor</CardDescription>
+					</div>
+					<Badge className="bg-primary/10 text-primary hover:bg-primary/20">
+						Following
+					</Badge>
+				</div>
+			</CardHeader>
+			<CardContent>
+				<p>UI designer and developer. Creator of @shadcn/ui.</p>
+				<div className="mt-4 flex space-x-4 text-muted-foreground">
+					<div className="flex items-center">
+						<Heart className="mr-1 h-4 w-4" />
+						<span>2.5k</span>
+					</div>
+					<div className="flex items-center">
+						<MessageCircle className="mr-1 h-4 w-4" />
+						<span>1.2k</span>
+					</div>
+					<div className="flex items-center">
+						<Share className="mr-1 h-4 w-4" />
+						<span>342</span>
+					</div>
+					<div className="flex items-center">
+						<Bookmark className="mr-1 h-4 w-4" />
+						<span>Save</span>
+					</div>
+				</div>
+			</CardContent>
+		</Card>
+		```
+	</div>
+	<div className="flex items-center justify-center">
+		<Unstyled>
+			<Card className="max-w-md overflow-hidden border-none shadow-md dark:bg-slate-900">
+				<div className="relative h-40 bg-gradient-to-r from-primary to-primary/60">
+					<div className="absolute -bottom-10 left-4">
+						<Avatar className="h-20 w-20 border-4 border-background">
+							<AvatarImage src="https://github.com/shadcn.png" />
+							<AvatarFallback className="text-lg">SC</AvatarFallback>
+						</Avatar>
+					</div>
+				</div>
+				<CardHeader className="pt-12">
+					<div className="flex justify-between">
+						<div>
+							<CardTitle className="text-xl">Sarah Connor</CardTitle>
+							<CardDescription>@sarahconnor</CardDescription>
+						</div>
+						<Badge className="bg-primary/10 text-primary hover:bg-primary/20">
+							Following
+						</Badge>
+					</div>
+				</CardHeader>
+				<CardContent>
+					<p>UI designer and developer. Creator of @shadcn/ui.</p>
+					<div className="mt-4 flex space-x-4 text-muted-foreground">
+						<div className="flex items-center">
+							<Heart className="mr-1 h-4 w-4" />
+							<span>2.5k</span>
+						</div>
+						<div className="flex items-center">
+							<MessageCircle className="mr-1 h-4 w-4" />
+							<span>1.2k</span>
+						</div>
+						<div className="flex items-center">
+							<Share className="mr-1 h-4 w-4" />
+							<span>342</span>
+						</div>
+						<div className="flex items-center">
+							<Bookmark className="mr-1 h-4 w-4" />
+							<span>Save</span>
+						</div>
+					</div>
+				</CardContent>
+			</Card>
+		</Unstyled>
+	</div>
+</div>
+
+## Resources
+
+- [Official Tailwind CSS Documentation](https://tailwindcss.com/docs)
+- [Tailwind CSS v4 Release Notes](https://tailwindcss.com/blog/tailwindcss-v4)
+- [Tailwind CSS GitHub Repository](https://github.com/tailwindlabs/tailwindcss)
+- [Tailwind CSS Playground](https://play.tailwindcss.com/)
+- [shadcn/ui Documentation](https://ui.shadcn.com/)

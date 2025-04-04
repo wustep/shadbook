@@ -1,0 +1,49 @@
+import { Meta } from "@storybook/blocks"
+
+import { Button } from "@/components/ui/button"
+
+<Meta title="Introduction" />
+
+# Introduction
+
+Welcome to <b>shadbook</b>! This site is a storybook playground for shadcn/ui, tailwindcss, and tailwind-css-animate.
+
+You can also use this repo as a starting point for your own project, or simply use this as a reference for how to use these libraries.
+
+## Using this repo
+
+<Button variant="outline" size="sm">
+	<a href="https://github.com/wustep/shadbook">View this repo on GitHub</a>
+</Button>
+
+To get started, you can clone the repository and run the storybook server:
+
+```bash
+git clone https://github.com/wustep/shadbook.git
+npm install
+npm run storybook
+```
+
+You can also run a very barebones app in dev mode:
+
+```bash
+npm run dev
+```
+
+To build, run:
+
+```bash
+npm run build
+```
+
+## Folder structure
+
+```bash
+src/
+├── app/         # React app
+├── components/  # Core UI shadcn components & associated .stories.tsx files
+├── hooks/       # React hooks
+├── storybook/   # Storybook-only components and docs
+├── styles/      # Tailwind styles
+└── lib/         # Library of utility functions
+```

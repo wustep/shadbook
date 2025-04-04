@@ -68,7 +68,6 @@ export function ThemeProvider({
 		() => ({
 			theme,
 			setTheme: (theme: Theme, persist?: boolean) => {
-				console.log("setTheme", theme, persist)
 				if (persist) {
 					localStorage.setItem(storageKey, theme)
 				}
@@ -77,7 +76,6 @@ export function ThemeProvider({
 				root.classList.add(theme)
 			},
 			toggleTheme: (persist?: boolean) => {
-				console.log("toggleTheme", persist)
 				if (persist) {
 					localStorage.setItem(storageKey, theme === "dark" ? "light" : "dark")
 				}

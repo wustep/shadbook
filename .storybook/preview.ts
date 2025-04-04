@@ -1,6 +1,5 @@
 import type { Preview } from "@storybook/react"
 import { themes } from "@storybook/theming"
-
 import "@/styles/globals.css"
 import "./storybook-theme.css" // Import Storybook theme helper styles
 import { getStoredMode, getStoredTheme, updateMode, updateTheme } from "./utils"
@@ -24,7 +23,9 @@ const preview: Preview = {
 				order: [
 					"Introduction",
 					"shadcn",
-					["Colors", "Typography", "Icons", "Examples", "*"],
+					["Examples", "Colors", "Typography", "Icons", "*"],
+					"Tailwind",
+					["Introduction", "Colors", "Animations", "*"],
 				],
 			},
 		},

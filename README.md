@@ -1,8 +1,8 @@
 # shadbook
 
-A storybook for shadcn/ui, tailwind, and tailwind-css-animate.
+A [storybook](https://storybook.js.org/) for [shadcn/ui](https://ui.shadcn.com/), [tailwind](https://tailwindcss.com/), and [tailwind-css-animate](https://github.com/jamiebuilds/tailwindcss-animate).
 
-An educational project!
+An educational project.
 
 ## How to run
 

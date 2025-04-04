@@ -197,33 +197,23 @@ This plugin is included in the shadcn/ui package and used across its components.
 
 <div className="grid grid-cols-2 gap-8">
 	<div>
-		<Card className="mb-4">
-			<CardHeader>
-				<CardTitle>Code Example</CardTitle>
-				<CardDescription>
-					Add these classes to create entrance animations
-				</CardDescription>
-			</CardHeader>
-			<CardContent>
-				```jsx
-				<div className="animate-in fade-in zoom-in duration-500">
-					Fade and Zoom In
-				</div>
-				<div className="animate-in slide-in-from-top duration-500">
-					Slide In From Top
-				</div>
-				<div className="animate-in slide-in-from-bottom duration-500">
-					Slide In From Bottom
-				</div>
-				<div className="animate-in slide-in-from-right duration-500">
-					Slide In From Right
-				</div>
-				<div className="animate-in slide-in-from-left duration-500">
-					Slide In From Left
-				</div>
-				```
-			</CardContent>
-		</Card>
+		```jsx
+		<div className="animate-in fade-in zoom-in duration-500">
+			Fade and Zoom In
+		</div>
+		<div className="animate-in slide-in-from-top duration-500">
+			Slide In From Top
+		</div>
+		<div className="animate-in slide-in-from-bottom duration-500">
+			Slide In From Bottom
+		</div>
+		<div className="animate-in slide-in-from-right duration-500">
+			Slide In From Right
+		</div>
+		<div className="animate-in slide-in-from-left duration-500">
+			Slide In From Left
+		</div>
+		```
 	</div>
 	<div className="space-y-4">
 		<Card
@@ -263,33 +253,23 @@ This plugin is included in the shadcn/ui package and used across its components.
 
 <div className="grid grid-cols-2 gap-8">
 	<div>
-		<Card className="mb-4">
-			<CardHeader>
-				<CardTitle>Code Example</CardTitle>
-				<CardDescription>
-					Add these classes to create exit animations
-				</CardDescription>
-			</CardHeader>
-			<CardContent>
-				```jsx
-				<div className="animate-out fade-out zoom-out duration-500">
-					Fade and Zoom Out
-				</div>
-				<div className="animate-out slide-out-to-top duration-500">
-					Slide Out To Top
-				</div>
-				<div className="animate-out slide-out-to-bottom duration-500">
-					Slide Out To Bottom
-				</div>
-				<div className="animate-out slide-out-to-right duration-500">
-					Slide Out To Right
-				</div>
-				<div className="animate-out slide-out-to-left duration-500">
-					Slide Out To Left
-				</div>
-				```
-			</CardContent>
-		</Card>
+		```jsx
+		<div className="animate-out fade-out zoom-out duration-500">
+			Fade and Zoom Out
+		</div>
+		<div className="animate-out slide-out-to-top duration-500">
+			Slide Out To Top
+		</div>
+		<div className="animate-out slide-out-to-bottom duration-500">
+			Slide Out To Bottom
+		</div>
+		<div className="animate-out slide-out-to-right duration-500">
+			Slide Out To Right
+		</div>
+		<div className="animate-out slide-out-to-left duration-500">
+			Slide Out To Left
+		</div>
+		```
 	</div>
 	<div className="space-y-4">
 		<Card
@@ -325,27 +305,15 @@ This plugin is included in the shadcn/ui package and used across its components.
 	</div>
 </div>
 
-## Animation Controls
-
 ### Duration
 
 <div className="grid grid-cols-2 gap-8">
 	<div>
-		<Card className="mb-4">
-			<CardHeader>
-				<CardTitle>Duration Control</CardTitle>
-				<CardDescription>
-					Control how long the animation takes to complete
-				</CardDescription>
-			</CardHeader>
-			<CardContent>
-				```jsx
-				<div className="animate-in fade-in duration-150">Fast (150ms)</div>
-				<div className="animate-in fade-in duration-300">Medium (300ms)</div>
-				<div className="animate-in fade-in duration-700">Slow (700ms)</div>
-				```
-			</CardContent>
-		</Card>
+		```jsx
+		<div className="animate-in fade-in duration-150">Fast (150ms)</div>
+		<div className="animate-in fade-in duration-300">Medium (300ms)</div>
+		<div className="animate-in fade-in duration-700">Slow (700ms)</div>
+		```
 	</div>
 	<div className="space-y-4">
 		<Card
@@ -611,7 +579,7 @@ This plugin is included in the shadcn/ui package and used across its components.
 	</div>
 </div>
 
-## Accessibility
+### Accessibility
 
 <div className="grid grid-cols-2 gap-4">
 	<div>
@@ -673,7 +641,7 @@ This plugin is included in the shadcn/ui package and used across its components.
 
 ### Enter Animation Variations
 
-#### Opacity
+<b>Opacity</b>
 
 <div className="grid grid-cols-2 gap-4">
 	<div>
@@ -712,7 +680,7 @@ This plugin is included in the shadcn/ui package and used across its components.
 	</div>
 </div>
 
-#### Rotation
+<b>Rotation</b>
 
 <div className="grid grid-cols-2 gap-4">
 	<div>
@@ -744,7 +712,7 @@ This plugin is included in the shadcn/ui package and used across its components.
 	</div>
 </div>
 
-#### Scale
+<b>Scale</b>
 
 <div className="grid grid-cols-2 gap-4">
 	<div>
@@ -776,7 +744,7 @@ This plugin is included in the shadcn/ui package and used across its components.
 	</div>
 </div>
 
-#### Translation
+<b>Translation</b>
 
 <div className="grid grid-cols-2 gap-4">
 	<div className="z-[0]">
@@ -813,25 +781,3 @@ This plugin is included in the shadcn/ui package and used across its components.
 		</Card>
 	</div>
 </div>
-
-## Installation
-
-Follow these steps to add animations to your project.
-
-```bash
-npm install -D tailwindcss-animate
-```
-
-Add the plugin to your `tailwind.config.js`:
-
-```js
-module.exports = {
-	theme: {
-		// ...
-	},
-	plugins: [
-		require("tailwindcss-animate"),
-		// ...
-	],
-}
-```
