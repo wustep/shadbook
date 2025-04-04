@@ -22,7 +22,14 @@ const preview: Preview = {
 				order: [
 					"Introduction",
 					"shadcn",
-					["Examples", "Colors", "Typography", "Icons", "*"],
+					[
+						"Examples",
+						["Components", "Blocks", "Charts"],
+						"Colors",
+						"Typography",
+						"Icons",
+						"*",
+					],
 					"Tailwind",
 					["Introduction", "Colors", "Animations", "*"],
 				],

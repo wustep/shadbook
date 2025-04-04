@@ -33,9 +33,7 @@ function App() {
 					</div>
 					<h1 className="text-2xl font-bold text-center p-4">Vite + React</h1>
 					<CardContent className="space-y-4 flex flex-col items-center">
-						<Button variant="outline" onClick={increment}>
-							count is {count}
-						</Button>
+						<Button onClick={increment}>count is {count}</Button>
 						<ThemeToggle />
 					</CardContent>
 				</Card>
@@ -46,11 +44,7 @@ function App() {
 
 function ThemeToggle() {
 	const { theme, toggleTheme } = useTheme()
-	return (
-		<Button variant="outline" onClick={() => toggleTheme()}>
-			Toggle theme: {theme}
-		</Button>
-	)
+	return <Button onClick={() => toggleTheme()}>Toggle theme: {theme}</Button>
 }
 
 export default App
