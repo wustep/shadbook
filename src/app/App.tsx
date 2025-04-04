@@ -6,8 +6,6 @@ import { ThemeProvider, useTheme } from "@/components/ThemeProvider"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 
-import "@/styles/globals.css"
-
 function App() {
 	const [count, setCount] = useState(0)
 	const increment = () => setCount(count => count + 1)
