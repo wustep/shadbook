@@ -8,7 +8,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/registry/new-york-v4/ui/select"
+} from "@/components/ui/select"
 
 export function ThemeSelector() {
   const { activeTheme, setActiveTheme } = useThemeConfig()

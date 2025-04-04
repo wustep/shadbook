@@ -19,6 +19,11 @@ const preview: Preview = {
 		docs: {
 			container: DocsContainer,
 		},
+		options: {
+			storySort: {
+				order: ["shadcn/Typography", "shadcn/Icons", "shadcn/*"],
+			},
+		},
 	},
 	decorators: [
 		(Story, context) => {

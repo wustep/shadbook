@@ -35,6 +35,7 @@ export default tseslint.config(
 							group: [".*", "./*", "../*"],
 							message:
 								"Use absolute imports starting with '@/' instead of relative imports",
+							excludedPaths: ["src/storybook/**"],
 						},
 					],
 				},
