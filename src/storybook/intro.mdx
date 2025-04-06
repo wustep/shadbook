@@ -1,4 +1,4 @@
-import { Meta } from "@storybook/blocks"
+import { Meta, Unstyled } from "@storybook/blocks"
 
 import { Button } from "@/components/ui/button"
 
@@ -12,9 +12,11 @@ You can also use this repo as a starting point for your own project's design sys
 
 ## Using this repo
 
-<Button variant="outline" size="sm">
-	<a href="https://github.com/wustep/shadbook">View this repo on GitHub</a>
-</Button>
+<Unstyled>
+	<Button size="sm" className="mt-2">
+		<a href="https://github.com/wustep/shadbook">View this repo on GitHub</a>
+	</Button>
+</Unstyled>
 
 To get started, you can clone the repository and run the storybook server:
 
