@@ -47,3 +47,6 @@ src/
 ## Credits
 - Tailwind colors are from [Tailwind's docs](https://tailwindcss.com/docs/colors).
 - Some shadcn examples (particularly in the "Blocks" and "Components" docs) are lifted from [shadcn's component registry](https://github.com/shadcn-ui/ui/tree/shadcn/09-tailwind-v4/apps/v4/registry/new-york-v4).
+
+## TODO
+- [DataTable component](https://ui.shadcn.com/docs/components/data-table)
