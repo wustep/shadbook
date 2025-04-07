@@ -115,7 +115,7 @@ This plugin is included in the shadcn/ui package and used across its components.
     			document.head.removeChild(style);
     		}, 500);
     	}}
-    	className="gap-2"
+    	className="gap-2 mr-6"
     >
     	<RefreshCw className="h-4 w-4" />
     	<span>Replay All</span>
@@ -188,6 +188,55 @@ This plugin is included in the shadcn/ui package and used across its components.
   [data-state="paused"] .paused-state {
     display: flex;
   }
+
+  /* Mobile-friendly styles */
+  .animation-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .code-container {
+    min-width: 250px;
+    overflow-x: auto;
+  }
+
+  .preview-container {
+    min-width: 300px;
+		font-size: 0.9rem;
+  }
+
+  /* Responsive grid for medium screens and up */
+  @media (min-width: 768px) {
+    .animation-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  /* For very small screens, ensure minimum spacing */
+  @media (max-width: 420px) {
+    .animation-grid {
+      gap: 1rem;
+    }
+  }
+
+  /* Add bottom padding in single-column layout */
+  @media (max-width: 768px) {
+    .preview-container {
+      padding-bottom: 2rem;
+    }
+    
+    /* Fill Mode cards need more height for animations */
+    .fill-mode-card {
+      height: 150px !important;
+    }
+  }
+
+  /* Improve overflow handling for code blocks */
+  pre {
+    overflow-x: auto;
+    max-width: 100%;
+  }
 `}
 </style>
 
@@ -195,8 +244,8 @@ This plugin is included in the shadcn/ui package and used across its components.
 
 ### Enter Animations
 
-<div className="grid grid-cols-2 gap-8">
-	<div>
+<div className="animation-grid">
+	<div className="code-container">
 		```jsx
 		<div className="animate-in fade-in zoom-in duration-500">
 			Fade and Zoom In
@@ -215,44 +264,46 @@ This plugin is included in the shadcn/ui package and used across its components.
 		</div>
 		```
 	</div>
-	<div className="space-y-4">
-		<Card
-			className="animate-in fade-in zoom-in duration-500 bg-red-200"
-			data-animation-container
-		>
-			<CardContent className="p-4">Fade and Zoom In</CardContent>
-		</Card>
-		<Card
-			className="animate-in slide-in-from-top duration-500 bg-orange-200"
-			data-animation-container
-		>
-			<CardContent className="p-4">Slide In From Top</CardContent>
-		</Card>
-		<Card
-			className="animate-in slide-in-from-bottom duration-500 bg-green-200"
-			data-animation-container
-		>
-			<CardContent className="p-4">Slide In From Bottom</CardContent>
-		</Card>
-		<Card
-			className="animate-in slide-in-from-right duration-500 bg-blue-200"
-			data-animation-container
-		>
-			<CardContent className="p-4">Slide In From Right</CardContent>
-		</Card>
-		<Card
-			className="animate-in slide-in-from-left duration-500 bg-violet-200"
-			data-animation-container
-		>
-			<CardContent className="p-4">Slide In From Left</CardContent>
-		</Card>
-	</div>
+	<Unstyled>
+		<div className="preview-container space-y-4">
+			<Card
+				className="animate-in fade-in zoom-in duration-500 bg-red-200"
+				data-animation-container
+			>
+				<CardContent className="p-4">Fade and Zoom In</CardContent>
+			</Card>
+			<Card
+				className="animate-in slide-in-from-top duration-500 bg-orange-200"
+				data-animation-container
+			>
+				<CardContent className="p-4">Slide In From Top</CardContent>
+			</Card>
+			<Card
+				className="animate-in slide-in-from-bottom duration-500 bg-green-200"
+				data-animation-container
+			>
+				<CardContent className="p-4">Slide In From Bottom</CardContent>
+			</Card>
+			<Card
+				className="animate-in slide-in-from-right duration-500 bg-blue-200"
+				data-animation-container
+			>
+				<CardContent className="p-4">Slide In From Right</CardContent>
+			</Card>
+			<Card
+				className="animate-in slide-in-from-left duration-500 bg-violet-200"
+				data-animation-container
+			>
+				<CardContent className="p-4">Slide In From Left</CardContent>
+			</Card>
+		</div>
+	</Unstyled>
 </div>
 
 ### Exit Animations
 
-<div className="grid grid-cols-2 gap-8">
-	<div>
+<div className="animation-grid">
+	<div className="code-container">
 		```jsx
 		<div className="animate-out fade-out zoom-out duration-500">
 			Fade and Zoom Out
@@ -271,108 +322,114 @@ This plugin is included in the shadcn/ui package and used across its components.
 		</div>
 		```
 	</div>
-	<div className="space-y-4">
-		<Card
-			className="animate-out fade-out zoom-out duration-500 bg-red-200"
-			data-animation-container
-		>
-			<CardContent className="p-4">Fade and Zoom Out</CardContent>
-		</Card>
-		<Card
-			className="animate-out slide-out-to-top duration-500 bg-orange-200"
-			data-animation-container
-		>
-			<CardContent className="p-4">Slide Out To Top</CardContent>
-		</Card>
-		<Card
-			className="animate-out slide-out-to-bottom duration-500 bg-green-200"
-			data-animation-container
-		>
-			<CardContent className="p-4">Slide Out To Bottom</CardContent>
-		</Card>
-		<Card
-			className="animate-out slide-out-to-right duration-500 bg-violet-200"
-			data-animation-container
-		>
-			<CardContent className="p-4">Slide Out To Right</CardContent>
-		</Card>
-		<Card
-			className="animate-out slide-out-to-left duration-500 bg-blue-200"
-			data-animation-container
-		>
-			<CardContent className="p-4">Slide Out To Left</CardContent>
-		</Card>
-	</div>
+	<Unstyled>
+		<div className="preview-container space-y-4">
+			<Card
+				className="animate-out fade-out zoom-out duration-500 bg-red-200"
+				data-animation-container
+			>
+				<CardContent className="p-4">Fade and Zoom Out</CardContent>
+			</Card>
+			<Card
+				className="animate-out slide-out-to-top duration-500 bg-orange-200"
+				data-animation-container
+			>
+				<CardContent className="p-4">Slide Out To Top</CardContent>
+			</Card>
+			<Card
+				className="animate-out slide-out-to-bottom duration-500 bg-green-200"
+				data-animation-container
+			>
+				<CardContent className="p-4">Slide Out To Bottom</CardContent>
+			</Card>
+			<Card
+				className="animate-out slide-out-to-right duration-500 bg-violet-200"
+				data-animation-container
+			>
+				<CardContent className="p-4">Slide Out To Right</CardContent>
+			</Card>
+			<Card
+				className="animate-out slide-out-to-left duration-500 bg-blue-200"
+				data-animation-container
+			>
+				<CardContent className="p-4">Slide Out To Left</CardContent>
+			</Card>
+		</div>
+	</Unstyled>
 </div>
 
 ### Duration
 
-<div className="grid grid-cols-2 gap-8">
-	<div>
+<div className="animation-grid">
+	<div className="code-container">
 		```jsx
 		<div className="animate-in fade-in duration-150">Fast (150ms)</div>
 		<div className="animate-in fade-in duration-300">Medium (300ms)</div>
 		<div className="animate-in fade-in duration-700">Slow (700ms)</div>
 		```
 	</div>
-	<div className="space-y-4">
-		<Card
-			className="animate-in fade-in duration-150 bg-red-200"
-			data-animation-container
-		>
-			<CardContent className="p-4">Fast (150ms)</CardContent>
-		</Card>
-		<Card
-			className="animate-in fade-in duration-300 bg-orange-200"
-			data-animation-container
-		>
-			<CardContent className="p-4">Medium (300ms)</CardContent>
-		</Card>
-		<Card
-			className="animate-in fade-in duration-700 bg-green-200"
-			data-animation-container
-		>
-			<CardContent className="p-4">Slow (700ms)</CardContent>
-		</Card>
-	</div>
+	<Unstyled>
+		<div className="preview-container space-y-4">
+			<Card
+				className="animate-in fade-in duration-150 bg-red-200"
+				data-animation-container
+			>
+				<CardContent className="p-4">Fast (150ms)</CardContent>
+			</Card>
+			<Card
+				className="animate-in fade-in duration-300 bg-orange-200"
+				data-animation-container
+			>
+				<CardContent className="p-4">Medium (300ms)</CardContent>
+			</Card>
+			<Card
+				className="animate-in fade-in duration-700 bg-green-200"
+				data-animation-container
+			>
+				<CardContent className="p-4">Slow (700ms)</CardContent>
+			</Card>
+		</div>
+	</Unstyled>
 </div>
 
 ### Delay
 
-<div className="grid grid-cols-2 gap-4">
-	<div>
+<div className="animation-grid">
+	<div className="code-container">
 		```jsx
 		<div className="animate-in fade-in delay-150">Short delay (150ms)</div>
 		<div className="animate-in fade-in delay-300">Medium delay (300ms)</div>
 		<div className="animate-in fade-in delay-700">Long delay (700ms)</div>
 		```
 	</div>
-	<div className="space-y-4">
-		<Card
-			className="animate-in fade-in delay-150 bg-red-200"
-			data-animation-container
-		>
-			<CardContent className="p-4">Short delay (150ms)</CardContent>
-		</Card>
-		<Card
-			className="animate-in fade-in delay-300 bg-orange-200"
-			data-animation-container
-		>
-			<CardContent className="p-4">Medium delay (300ms)</CardContent>
-		</Card>
-		<Card
-			className="animate-in fade-in delay-700 bg-green-200"
-			data-animation-container
-		>
-			<CardContent className="p-4">Long delay (700ms)</CardContent>
-		</Card>
-	</div>
+	<Unstyled>
+		<div className="preview-container space-y-4">
+			<Card
+				className="animate-in fade-in delay-150 bg-red-200"
+				data-animation-container
+			>
+				<CardContent className="p-4">Short delay (150ms)</CardContent>
+			</Card>
+			<Card
+				className="animate-in fade-in delay-300 bg-orange-200"
+				data-animation-container
+			>
+				<CardContent className="p-4">Medium delay (300ms)</CardContent>
+			</Card>
+			<Card
+				className="animate-in fade-in delay-700 bg-green-200"
+				data-animation-container
+			>
+				<CardContent className="p-4">Long delay (700ms)</CardContent>
+			</Card>
+		</div>
+	</Unstyled>
 </div>
 
 ### Animation Direction
 
-<div className="grid grid-cols-2 gap-4">
-	<div className="z-[0]">
+<div className="animation-grid">
+	<div className="code-container z-[0]">
 		```jsx
 		<div className="animate-in slide-in-from-right duration-2000 repeat-infinite direction-normal">
 			Normal
@@ -388,46 +445,48 @@ This plugin is included in the shadcn/ui package and used across its components.
 		</div>
 		```
 	</div>
-	<div className="space-y-4">
-		<Card
-			className="animate-in slide-in-from-right duration-2000 repeat-infinite direction-normal bg-red-200"
-			data-animation-container
-		>
-			<CardContent className="p-4 flex items-center justify-between">
-				<span>Normal (Left → Right)</span>
-			</CardContent>
-		</Card>
-		<Card
-			className="animate-in slide-in-from-right duration-2000 repeat-infinite direction-reverse bg-orange-200"
-			data-animation-container
-		>
-			<CardContent className="p-4 flex items-center justify-between">
-				<span>Reverse (Right → Left)</span>
-			</CardContent>
-		</Card>
-		<Card
-			className="animate-in slide-in-from-right duration-2000 repeat-infinite direction-alternate bg-green-200"
-			data-animation-container
-		>
-			<CardContent className="p-4 flex items-center justify-between">
-				<span>Alternate (Right ↔ Left)</span>
-			</CardContent>
-		</Card>
-		<Card
-			className="animate-in slide-in-from-right duration-2000 repeat-infinite direction-alternate-reverse bg-blue-200"
-			data-animation-container
-		>
-			<CardContent className="p-4 flex items-center justify-between">
-				<span>Alternate Reverse (Left ↔ Right)</span>
-			</CardContent>
-		</Card>
-	</div>
+	<Unstyled>
+		<div className="preview-container space-y-4">
+			<Card
+				className="animate-in slide-in-from-right duration-2000 repeat-infinite direction-normal bg-red-200"
+				data-animation-container
+			>
+				<CardContent className="p-4 flex items-center justify-between">
+					<span>Normal (Left → Right)</span>
+				</CardContent>
+			</Card>
+			<Card
+				className="animate-in slide-in-from-right duration-2000 repeat-infinite direction-reverse bg-orange-200"
+				data-animation-container
+			>
+				<CardContent className="p-4 flex items-center justify-between">
+					<span>Reverse (Right → Left)</span>
+				</CardContent>
+			</Card>
+			<Card
+				className="animate-in slide-in-from-right duration-2000 repeat-infinite direction-alternate bg-green-200"
+				data-animation-container
+			>
+				<CardContent className="p-4 flex items-center justify-between">
+					<span>Alternate (Right ↔ Left)</span>
+				</CardContent>
+			</Card>
+			<Card
+				className="animate-in slide-in-from-right duration-2000 repeat-infinite direction-alternate-reverse bg-blue-200"
+				data-animation-container
+			>
+				<CardContent className="p-4 flex items-center justify-between">
+					<span>Alternate Reverse (Left ↔ Right)</span>
+				</CardContent>
+			</Card>
+		</div>
+	</Unstyled>
 </div>
 
 ### Fill Mode
 
-<div className="grid grid-cols-2 gap-4">
-	<div>
+<div className="animation-grid">
+	<div className="code-container">
 		```jsx
 		<div className="animate-out zoom-in-50 slide-out-to-bottom duration-1000 fill-mode-none">
 			None
@@ -443,107 +502,113 @@ This plugin is included in the shadcn/ui package and used across its components.
 		</div>
 		```
 	</div>
-	<div className="space-y-4 flex flex-row gap-5 justify-center">
-		<Card
-			className="zoom-out-50 animate-out slide-out-to-bottom duration-1000 fill-mode-none bg-red-200 h-30 w-30 justify-center items-center"
-			data-animation-container
-		>
-			<CardContent className="p-4 text-center">
-				<div>None</div>
-				<div className="text-xs mt-1">Returns to initial state</div>
-			</CardContent>
-		</Card>
-		<Card
-			className="zoom-out-50 animate-out slide-out-to-bottom duration-1000 fill-mode-forwards bg-orange-200 h-30 w-30 justify-center items-center"
-			data-animation-container
-		>
-			<CardContent className="p-4 text-center">
-				<div>Forwards</div>
-				<div className="text-xs mt-1">Keeps final state</div>
-			</CardContent>
-		</Card>
-		<Card
-			className="zoom-out-50 animate-out slide-out-to-bottom duration-1000 fill-mode-backwards bg-green-200 h-30 w-30 justify-center items-center"
-			data-animation-container
-		>
-			<CardContent className="p-4 text-center">
-				<div>Backwards</div>
-				<div className="text-xs mt-1">Uses initial state</div>
-			</CardContent>
-		</Card>
-		<Card
-			className="zoom-out-50 animate-out slide-out-to-bottom duration-1000 fill-mode-both bg-blue-200 h-30 w-30 justify-center items-center"
-			data-animation-container
-		>
-			<CardContent className="p-4 text-center">
-				<div>Both</div>
-				<div className="text-xs mt-1">Applies both</div>
-			</CardContent>
-		</Card>
-	</div>
+	<Unstyled>
+		<div className="preview-container flex flex-row flex-wrap gap-2 justify-center min-h-[200px]">
+			<Card
+				className="zoom-out-50 animate-out slide-out-to-bottom duration-1000 fill-mode-none bg-red-200 w-[110px] h-[110px] flex justify-center items-center"
+				data-animation-container
+			>
+				<CardContent className="p-4 text-center">
+					<div>None</div>
+					<div className="text-xs mt-1">Returns to initial state</div>
+				</CardContent>
+			</Card>
+			<Card
+				className="zoom-out-50 animate-out slide-out-to-bottom duration-1000 fill-mode-forwards bg-orange-200 w-[110px] h-[110px] flex justify-center items-center"
+				data-animation-container
+			>
+				<CardContent className="p-4 text-center">
+					<div>Forwards</div>
+					<div className="text-xs mt-1">Keeps final state</div>
+				</CardContent>
+			</Card>
+			<Card
+				className="zoom-out-50 animate-out slide-out-to-bottom duration-1000 fill-mode-backwards bg-green-200 w-[110px] h-[110px] flex justify-center items-center"
+				data-animation-container
+			>
+				<CardContent className="p-4 text-center">
+					<div>Backwards</div>
+					<div className="text-xs mt-1">Uses initial state</div>
+				</CardContent>
+			</Card>
+			<Card
+				className="zoom-out-50 animate-out slide-out-to-bottom duration-1000 fill-mode-both bg-blue-200 w-[110px] h-[110px] flex justify-center items-center"
+				data-animation-container
+			>
+				<CardContent className="p-4 text-center">
+					<div>Both</div>
+					<div className="text-xs mt-1">Applies both</div>
+				</CardContent>
+			</Card>
+		</div>
+	</Unstyled>
 </div>
 
 ### Iteration Count
 
-<div className="grid grid-cols-2 gap-4">
-	<div>
+<div className="animation-grid">
+	<div className="code-container">
 		```jsx
 		<div className="animate-spin repeat-0">No Repeat</div>
 		<div className="animate-spin repeat-1">Once</div>
 		<div className="animate-spin repeat-infinite">Infinite</div>
 		```
 	</div>
-	<div className="space-y-4 flex flex-row gap-5 justify-center">
-		<Card
-			className="animate-spin repeat-0 bg-red-200 w-30 h-30 justify-center items-center"
-			data-animation-container
-		>
-			<CardContent className="p-4">No Repeat</CardContent>
-		</Card>
-		<Card
-			className="animate-spin repeat-1 bg-orange-200 w-30 h-30 justify-center items-center"
-			data-animation-container
-		>
-			<CardContent className="p-4">Once</CardContent>
-		</Card>
-		<Card
-			className="animate-spin repeat-infinite bg-green-200 w-30 h-30 justify-center items-center"
-			data-animation-container
-		>
-			<CardContent className="p-4">Infinite</CardContent>
-		</Card>
-	</div>
+	<Unstyled>
+		<div className="preview-container flex flex-row flex-wrap gap-4 justify-center">
+			<Card
+				className="animate-spin repeat-0 bg-red-200 w-[110px] h-[110px] flex justify-center items-center"
+				data-animation-container
+			>
+				<CardContent className="p-4">No Repeat</CardContent>
+			</Card>
+			<Card
+				className="animate-spin repeat-1 bg-orange-200 w-[110px] h-[110px] flex justify-center items-center"
+				data-animation-container
+			>
+				<CardContent className="p-4">Once</CardContent>
+			</Card>
+			<Card
+				className="animate-spin repeat-infinite bg-green-200 w-[110px] h-[110px] flex justify-center items-center"
+				data-animation-container
+			>
+				<CardContent className="p-4">Infinite</CardContent>
+			</Card>
+		</div>
+	</Unstyled>
 </div>
 
 ### Play State
 
-<div className="grid grid-cols-2 gap-4">
-	<div>
+<div className="animation-grid">
+	<div className="code-container">
 		```jsx
 		<div className="animate-ping running">Running</div>
 		<div className="animate-ping paused">Paused</div>
 		```
 	</div>
-	<div className="space-y-4 flex flex-row gap-5 justify-center">
-		<Card
-			className="animate-ping running bg-red-200 w-30 h-30 justify-center items-center"
-			data-animation-container
-		>
-			<CardContent className="p-4">Running</CardContent>
-		</Card>
-		<Card
-			className="animate-ping paused bg-orange-200 w-30 h-30 justify-center items-center"
-			data-animation-container
-		>
-			<CardContent className="p-4">Paused</CardContent>
-		</Card>
-	</div>
+	<Unstyled>
+		<div className="preview-container flex flex-row flex-wrap gap-4 justify-center">
+			<Card
+				className="animate-ping running bg-red-200 w-[110px] h-[110px] flex justify-center items-center"
+				data-animation-container
+			>
+				<CardContent className="p-4">Running</CardContent>
+			</Card>
+			<Card
+				className="animate-ping paused bg-orange-200 w-[110px] h-[110px] flex justify-center items-center"
+				data-animation-container
+			>
+				<CardContent className="p-4">Paused</CardContent>
+			</Card>
+		</div>
+	</Unstyled>
 </div>
 
 ### Timing Function
 
-<div className="grid grid-cols-2 gap-4">
-	<div>
+<div className="animation-grid">
+	<div className="code-container">
 		```jsx
 		<div className="animate-spin ease-linear">Linear</div>
 		<div className="animate-spin ease-in">Ease In</div>
@@ -551,38 +616,40 @@ This plugin is included in the shadcn/ui package and used across its components.
 		<div className="animate-spin ease-in-out">Ease In Out</div>
 		```
 	</div>
-	<div className="space-y-4 flex flex-row gap-5 justify-center">
-		<Card
-			className="animate-spin ease-linear bg-red-200 w-30 h-30 justify-center items-center"
-			data-animation-container
-		>
-			<CardContent className="p-4">Linear</CardContent>
-		</Card>
-		<Card
-			className="animate-spin ease-in bg-orange-200 w-30 h-30 justify-center items-center "
-			data-animation-container
-		>
-			<CardContent className="p-4">Ease In</CardContent>
-		</Card>
-		<Card
-			className="animate-spin ease-out bg-green-200 w-30 h-30 justify-center items-center"
-			data-animation-container
-		>
-			<CardContent className="p-4">Ease Out</CardContent>
-		</Card>
-		<Card
-			className="animate-spin ease-in-out bg-blue-200 w-30 h-30 justify-center items-center"
-			data-animation-container
-		>
-			<CardContent className="p-4">Ease In Out</CardContent>
-		</Card>
-	</div>
+	<Unstyled>
+		<div className="preview-container flex flex-row flex-wrap gap-1 justify-center">
+			<Card
+				className="animate-spin ease-linear bg-red-200 w-[110px] h-[110px] flex justify-center items-center"
+				data-animation-container
+			>
+				<CardContent className="p-4">Linear</CardContent>
+			</Card>
+			<Card
+				className="animate-spin ease-in bg-orange-200 w-[110px] h-[110px] flex justify-center items-center "
+				data-animation-container
+			>
+				<CardContent className="p-4">Ease In</CardContent>
+			</Card>
+			<Card
+				className="animate-spin ease-out bg-green-200 w-[110px] h-[110px] flex justify-center items-center"
+				data-animation-container
+			>
+				<CardContent className="p-4">Ease Out</CardContent>
+			</Card>
+			<Card
+				className="animate-spin ease-in-out bg-blue-200 w-[110px] h-[110px] flex justify-center items-center"
+				data-animation-container
+			>
+				<CardContent className="p-4">Ease In Out</CardContent>
+			</Card>
+		</div>
+	</Unstyled>
 </div>
 
 ### Accessibility
 
-<div className="grid grid-cols-2 gap-4">
-	<div>
+<div className="animation-grid">
+	<div className="code-container">
 		```jsx
 		<div className="motion-safe:animate-bounce" data-animation-container>
 			Only animates if user hasn't enabled reduced motion
@@ -592,32 +659,34 @@ This plugin is included in the shadcn/ui package and used across its components.
 		</div>
 		```
 	</div>
-	<div className="space-y-4">
-		<Card
-			className="motion-safe:animate-bounce bg-red-200"
-			data-animation-container
-		>
-			<CardContent className="p-4">
-				Only animates if user hasn't enabled reduced motion
-			</CardContent>
-		</Card>
-		<Card
-			className="motion-reduce:animate-none bg-orange-200"
-			data-animation-container
-		>
-			<CardContent className="p-4">
-				Won't animate if user has enabled reduced motion
-			</CardContent>
-		</Card>
-	</div>
+	<Unstyled>
+		<div className="preview-container space-y-4">
+			<Card
+				className="motion-safe:animate-bounce bg-red-200"
+				data-animation-container
+			>
+				<CardContent className="p-4">
+					Only animates if user hasn't enabled reduced motion
+				</CardContent>
+			</Card>
+			<Card
+				className="motion-reduce:animate-none bg-orange-200"
+				data-animation-container
+			>
+				<CardContent className="p-4">
+					Won't animate if user has enabled reduced motion
+				</CardContent>
+			</Card>
+		</div>
+	</Unstyled>
 </div>
 
 ## Advanced Usage
 
 ### Combining Multiple Properties
 
-<div className="grid grid-cols-2 gap-4">
-	<div>
+<div className="animation-grid">
+	<div className="code-container">
 		```jsx
 		<div
 			className="animate-in fade-in zoom-in duration-700 delay-500"
@@ -627,24 +696,26 @@ This plugin is included in the shadcn/ui package and used across its components.
 		</div>
 		```
 	</div>
-	<div>
-		<Card
-			className="animate-in fade-in zoom-in duration-700 delay-500 bg-red-200"
-			data-animation-container
-		>
-			<CardContent className="p-4">
-				Fade and zoom with custom timing
-			</CardContent>
-		</Card>
-	</div>
+	<Unstyled>
+		<div className="preview-container">
+			<Card
+				className="animate-in fade-in zoom-in duration-700 delay-500 bg-red-200"
+				data-animation-container
+			>
+				<CardContent className="p-4">
+					Fade and zoom with custom timing
+				</CardContent>
+			</Card>
+		</div>
+	</Unstyled>
 </div>
 
 ### Enter Animation Variations
 
 <b>Opacity</b>
 
-<div className="grid grid-cols-2 gap-4">
-	<div>
+<div className="animation-grid">
+	<div className="code-container">
 		```jsx
 		<div className="animate-in fade-in-0 duration-2000">0% opacity start</div>
 		<div className="animate-in fade-in-25 duration-2000">25% opacity start</div>
@@ -652,102 +723,108 @@ This plugin is included in the shadcn/ui package and used across its components.
 		<div className="animate-in fade-in-75 duration-2000">75% opacity start</div>
 		```
 	</div>
-	<div className="space-y-4 flex flex-row gap-5 justify-center">
-		<Card
-			className="animate-in fade-in-0 duration-2000 bg-red-200 w-30 h-30 justify-center items-center"
-			data-animation-container
-		>
-			<CardContent className="p-4">0% opacity start</CardContent>
-		</Card>
-		<Card
-			className="animate-in fade-in-25 duration-2000 bg-orange-200 w-30 h-30 justify-center items-center"
-			data-animation-container
-		>
-			<CardContent className="p-4">25% opacity start</CardContent>
-		</Card>
-		<Card
-			className="animate-in fade-in-50 duration-2000 bg-green-200 w-30 h-30 justify-center items-center"
-			data-animation-container
-		>
-			<CardContent className="p-4">50% opacity start</CardContent>
-		</Card>
-		<Card
-			className="animate-in fade-in-75 duration-2000 bg-blue-200 w-30 h-30 justify-center items-center"
-			data-animation-container
-		>
-			<CardContent className="p-4">75% opacity start</CardContent>
-		</Card>
-	</div>
+	<Unstyled>
+		<div className="preview-container flex flex-row flex-wrap gap-1 justify-center">
+			<Card
+				className="animate-in fade-in-0 duration-2000 bg-red-200 w-[110px] h-[110px] flex justify-center items-center"
+				data-animation-container
+			>
+				<CardContent className="p-4">0% opacity start</CardContent>
+			</Card>
+			<Card
+				className="animate-in fade-in-25 duration-2000 bg-orange-200 w-[110px] h-[110px] flex justify-center items-center"
+				data-animation-container
+			>
+				<CardContent className="p-4">25% opacity start</CardContent>
+			</Card>
+			<Card
+				className="animate-in fade-in-50 duration-2000 bg-green-200 w-[110px] h-[110px] flex justify-center items-center"
+				data-animation-container
+			>
+				<CardContent className="p-4">50% opacity start</CardContent>
+			</Card>
+			<Card
+				className="animate-in fade-in-75 duration-2000 bg-blue-200 w-[110px] h-[110px] flex justify-center items-center"
+				data-animation-container
+			>
+				<CardContent className="p-4">75% opacity start</CardContent>
+			</Card>
+		</div>
+	</Unstyled>
 </div>
 
 <b>Rotation</b>
 
-<div className="grid grid-cols-2 gap-4">
-	<div>
+<div className="animation-grid">
+	<div className="code-container">
 		```jsx
 		<div className="animate-in spin-in-30 duration-1000">30° rotation</div>
 		<div className="animate-in spin-in-90 duration-1000">90° rotation</div>
 		<div className="animate-in spin-in-180 duration-1000">180° rotation</div>
 		```
 	</div>
-	<div className="space-y-4 flex flex-row gap-5 justify-center">
-		<Card
-			className="animate-in spin-in-30 duration-1000 bg-red-200 w-30 h-30 justify-center items-center"
-			data-animation-container
-		>
-			<CardContent className="p-4">30° rotation</CardContent>
-		</Card>
-		<Card
-			className="animate-in spin-in-90 duration-1000 bg-orange-200 w-30 h-30 justify-center items-center"
-			data-animation-container
-		>
-			<CardContent className="p-4">90° rotation</CardContent>
-		</Card>
-		<Card
-			className="animate-in spin-in-180 duration-1000 bg-green-200 w-30 h-30 justify-center items-center"
-			data-animation-container
-		>
-			<CardContent className="p-4">180° rotation</CardContent>
-		</Card>
-	</div>
+	<Unstyled>
+		<div className="preview-container flex flex-row flex-wrap gap-4 justify-center">
+			<Card
+				className="animate-in spin-in-30 duration-1000 bg-red-200 w-[110px] h-[110px] flex justify-center items-center"
+				data-animation-container
+			>
+				<CardContent className="p-4">30° rotation</CardContent>
+			</Card>
+			<Card
+				className="animate-in spin-in-90 duration-1000 bg-orange-200 w-[110px] h-[110px] flex justify-center items-center"
+				data-animation-container
+			>
+				<CardContent className="p-4">90° rotation</CardContent>
+			</Card>
+			<Card
+				className="animate-in spin-in-180 duration-1000 bg-green-200 w-[110px] h-[110px] flex justify-center items-center"
+				data-animation-container
+			>
+				<CardContent className="p-4">180° rotation</CardContent>
+			</Card>
+		</div>
+	</Unstyled>
 </div>
 
 <b>Scale</b>
 
-<div className="grid grid-cols-2 gap-4">
-	<div>
+<div className="animation-grid">
+	<div className="code-container">
 		```jsx
 		<div className="animate-in zoom-in-0 duration-1000">0% scale start</div>
 		<div className="animate-in zoom-in-50 duration-1000">50% scale start</div>
 		<div className="animate-in zoom-in-95 duration-1000">95% scale start</div>
 		```
 	</div>
-	<div className="space-y-4 flex flex-row gap-5 justify-center">
-		<Card
-			className="animate-in zoom-in-0 duration-1000 bg-red-200 w-30 h-30 justify-center items-center"
-			data-animation-container
-		>
-			<CardContent className="p-4">0% scale start</CardContent>
-		</Card>
-		<Card
-			className="animate-in zoom-in-50 duration-1000 	bg-orange-200 w-30 h-30 justify-center items-center"
-			data-animation-container
-		>
-			<CardContent className="p-4">50% scale start</CardContent>
-		</Card>
-		<Card
-			className="animate-in zoom-in-95 duration-1000 bg-green-200 w-30 h-30 justify-center items-center"
-			data-animation-container
-		>
-			<CardContent className="p-4">95% scale start</CardContent>
-		</Card>
-	</div>
+	<Unstyled>
+		<div className="preview-container flex flex-row flex-wrap gap-4 justify-center">
+			<Card
+				className="animate-in zoom-in-0 duration-1000 bg-red-200 w-[110px] h-[110px] flex justify-center items-center"
+				data-animation-container
+			>
+				<CardContent className="p-4">0% scale start</CardContent>
+			</Card>
+			<Card
+				className="animate-in zoom-in-50 duration-1000 	bg-orange-200 w-[110px] h-[110px] flex justify-center items-center"
+				data-animation-container
+			>
+				<CardContent className="p-4">50% scale start</CardContent>
+			</Card>
+			<Card
+				className="animate-in zoom-in-95 duration-1000 bg-green-200 w-[110px] h-[110px] flex justify-center items-center"
+				data-animation-container
+			>
+				<CardContent className="p-4">95% scale start</CardContent>
+			</Card>
+		</div>
+	</Unstyled>
 </div>
 
 <b>Translation</b>
 
-<div className="grid grid-cols-2 gap-4">
-	<div className="z-[0]">
+<div className="animation-grid">
+	<div className="code-container z-[0]">
 		```jsx
 		<div className="animate-in slide-in-from-top-24 duration-1000">
 			From top 6rem
@@ -760,24 +837,26 @@ This plugin is included in the shadcn/ui package and used across its components.
 		</div>
 		```
 	</div>
-	<div className="space-y-4">
-		<Card
-			className="animate-in slide-in-from-top-24 duration-1000 bg-red-200"
-			data-animation-container
-		>
-			<CardContent className="p-4">From top 6rem</CardContent>
-		</Card>
-		<Card
-			className="animate-in slide-in-from-bottom-36 duration-1000 bg-orange-200"
-			data-animation-container
-		>
-			<CardContent className="p-4">From bottom 12rem</CardContent>
-		</Card>
-		<Card
-			className="animate-in slide-in-from-left-48 duration-1000 bg-green-200"
-			data-animation-container
-		>
-			<CardContent className="p-4">From left 18rem</CardContent>
-		</Card>
-	</div>
+	<Unstyled>
+		<div className="preview-container space-y-4">
+			<Card
+				className="animate-in slide-in-from-top-24 duration-1000 bg-red-200"
+				data-animation-container
+			>
+				<CardContent className="p-4">From top 6rem</CardContent>
+			</Card>
+			<Card
+				className="animate-in slide-in-from-bottom-36 duration-1000 bg-orange-200"
+				data-animation-container
+			>
+				<CardContent className="p-4">From bottom 12rem</CardContent>
+			</Card>
+			<Card
+				className="animate-in slide-in-from-left-48 duration-1000 bg-green-200"
+				data-animation-container
+			>
+				<CardContent className="p-4">From left 18rem</CardContent>
+			</Card>
+		</div>
+	</Unstyled>
 </div>
