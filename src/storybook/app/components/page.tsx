@@ -50,9 +50,6 @@ import { TooltipDemo } from "./tooltip-demo"
 export function Page() {
 	return (
 		<div className="@container grid flex-1 gap-4 p-4">
-			<ComponentWrapper name="chart" className="w-full">
-				<ChartDemo />
-			</ComponentWrapper>
 			<ComponentWrapper name="accordion">
 				<AccordionDemo />
 			</ComponentWrapper>
@@ -85,6 +82,9 @@ export function Page() {
 			</ComponentWrapper>
 			<ComponentWrapper name="carousel">
 				<CarouselDemo />
+			</ComponentWrapper>
+			<ComponentWrapper name="chart" className="w-full">
+				<ChartDemo />
 			</ComponentWrapper>
 			<ComponentWrapper name="checkbox">
 				<CheckboxDemo />
