@@ -42,10 +42,13 @@ import {
 	Settings2,
 	Search,
 	ChevronRightIcon,
+	ComponentIcon,
 } from "lucide-react"
 import { Label as UILabel } from "@/components/ui/label"
 import { useState } from "react"
 import { Separator } from "@/components/ui/separator"
+
+type Page = "dashboard" | "components"
 
 /**
  * Example app.
@@ -53,6 +56,10 @@ import { Separator } from "@/components/ui/separator"
  * This is largely lifted from: https://ui.shadcn.com/examples/dashboard
  */
 function App() {
+	// You should probably use a real routing solution instead, like next.js,
+	// React Router, or TanStack router.
+	const [page, setPage] = useState<Page>("dashboard")
+
 	return (
 		<ThemeProvider>
 			<SidebarProvider
@@ -63,28 +70,32 @@ function App() {
 					} as React.CSSProperties
 				}
 			>
-				<AppSidebar />
+				<AppSidebar page={page} setPage={setPage} />
 				<SidebarInset>
-					<AppContent />
+					<AppContent page={page} />
 				</SidebarInset>
 			</SidebarProvider>
 		</ThemeProvider>
 	)
 }
 
-function AppContent() {
+function AppContent({ page }: { page: Page }) {
 	return (
 		<>
 			<AppContentHeader />
 			<div className="flex flex-1 flex-col">
 				<div className="@container/main flex flex-1 flex-col gap-2">
 					<div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
-						<SectionCards />
-						<div className="px-4 lg:px-6">
-							<ChartAreaInteractive />
-						</div>
-						<DataTable data={data} />
-						<ComponentsPage />
+						{page === "dashboard" && (
+							<>
+								<SectionCards />
+								<div className="px-4 lg:px-6">
+									<ChartAreaInteractive />
+								</div>
+								<DataTable data={data} />
+							</>
+						)}
+						{page === "components" && <ComponentsPage />}
 					</div>
 				</div>
 			</div>
@@ -119,7 +130,13 @@ function AppContentHeader() {
 	)
 }
 
-function AppSidebar() {
+function AppSidebar({
+	page,
+	setPage,
+}: {
+	page: Page
+	setPage: (page: Page) => void
+}) {
 	const [searchQuery, setSearchQuery] = useState("")
 
 	// This is sample data.
@@ -148,16 +165,28 @@ function AppSidebar() {
 		],
 		navMain: [
 			{
-				title: "Documentation",
+				title: "Dashboard",
 				url: "#",
 				icon: BookOpen,
+				pageId: "dashboard",
 			},
 			{
-				title: "Settings",
+				title: "Components",
 				url: "#",
-				icon: Settings2,
+				icon: ComponentIcon,
+				pageId: "components",
 			},
-		],
+		] as Array<{
+			title: string
+			url: string
+			icon: React.ComponentType
+			pageId: Page
+			items?: Array<{
+				title: string
+				url: string
+				pageId?: Page
+			}>
+		}>,
 		components: Object.values(Index)
 			.filter(item => item.type === "registry:ui")
 			.concat([
@@ -177,14 +206,17 @@ function AppSidebar() {
 
 	// Filter navMain items based on search query
 	const filteredNavMain = data.navMain.filter(item => {
-		// Check if main nav title matches
-		const titleMatches = item.title
-			.toLowerCase()
-			.includes(searchQuery.toLowerCase())
+		// Check if main nav title or pageId matches
+		const titleMatches =
+			item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+			item.pageId.toLowerCase().includes(searchQuery.toLowerCase())
 
 		// Check if any subitems match
-		const hasMatchingSubItems = item.items?.some(subItem =>
-			subItem.title.toLowerCase().includes(searchQuery.toLowerCase()),
+		const hasMatchingSubItems = item.items?.some(
+			subItem =>
+				subItem.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+				(subItem.pageId &&
+					subItem.pageId.toLowerCase().includes(searchQuery.toLowerCase())),
 		)
 
 		return titleMatches || hasMatchingSubItems
@@ -215,7 +247,6 @@ function AppSidebar() {
 			<SidebarContent>
 				{(filteredNavMain.length > 0 || searchQuery === "") && (
 					<SidebarGroup>
-						<SidebarGroupLabel>Platform</SidebarGroupLabel>
 						<SidebarMenu>
 							{filteredNavMain.map(item =>
 								item?.items && item?.items.length > 0 ? (
@@ -237,29 +268,60 @@ function AppSidebar() {
 												<SidebarMenuSub>
 													{item.items
 														.filter(
-															subItem =>
+															(subItem: {
+																title: string
+																url: string
+																pageId?: Page
+															}) =>
 																searchQuery === "" ||
 																subItem.title
 																	.toLowerCase()
 																	.includes(searchQuery.toLowerCase()),
 														)
-														.map(subItem => (
-															<SidebarMenuSubItem key={subItem.title}>
-																<SidebarMenuSubButton asChild>
-																	<a href={subItem.url}>
-																		<span>{subItem.title}</span>
-																	</a>
-																</SidebarMenuSubButton>
-															</SidebarMenuSubItem>
-														))}
+														.map(
+															(subItem: {
+																title: string
+																url: string
+																pageId?: Page
+															}) => (
+																<SidebarMenuSubItem key={subItem.title}>
+																	<SidebarMenuSubButton
+																		asChild
+																		isActive={subItem.pageId === page}
+																	>
+																		<a
+																			href={subItem.url}
+																			onClick={e => {
+																				e.preventDefault()
+																				if (subItem.pageId) {
+																					setPage(subItem.pageId)
+																				}
+																			}}
+																		>
+																			<span>{subItem.title}</span>
+																		</a>
+																	</SidebarMenuSubButton>
+																</SidebarMenuSubItem>
+															),
+														)}
 												</SidebarMenuSub>
 											</CollapsibleContent>
 										</SidebarMenuItem>
 									</Collapsible>
 								) : (
 									<SidebarMenuItem key={item.title}>
-										<SidebarMenuButton asChild tooltip={item.title}>
-											<a href={item.url}>
+										<SidebarMenuButton
+											asChild
+											tooltip={item.title}
+											isActive={item.pageId === page}
+										>
+											<a
+												href={item.url}
+												onClick={e => {
+													e.preventDefault()
+													setPage(item.pageId)
+												}}
+											>
 												{item.icon && <item.icon />}
 												<span>{item.title}</span>
 											</a>
@@ -270,22 +332,23 @@ function AppSidebar() {
 						</SidebarMenu>
 					</SidebarGroup>
 				)}
-				{(filteredComponents.length > 0 || searchQuery === "") && (
-					<SidebarGroup className="group-data-[collapsible=icon]:hidden">
-						<SidebarGroupLabel>Components</SidebarGroupLabel>
-						<SidebarMenu>
-							{filteredComponents.map(item => (
-								<SidebarMenuItem key={item.name}>
-									<SidebarMenuButton asChild>
-										<a href={`/#${item.name}`}>
-											<span>{getComponentName(item.name)}</span>
-										</a>
-									</SidebarMenuButton>
-								</SidebarMenuItem>
-							))}
-						</SidebarMenu>
-					</SidebarGroup>
-				)}
+				{page === "components" &&
+					(filteredComponents.length > 0 || searchQuery === "") && (
+						<SidebarGroup className="group-data-[collapsible=icon]:hidden">
+							<SidebarGroupLabel>Components</SidebarGroupLabel>
+							<SidebarMenu>
+								{filteredComponents.map(item => (
+									<SidebarMenuItem key={item.name}>
+										<SidebarMenuButton asChild>
+											<a href={`/#${item.name}`}>
+												<span>{getComponentName(item.name)}</span>
+											</a>
+										</SidebarMenuButton>
+									</SidebarMenuItem>
+								))}
+							</SidebarMenu>
+						</SidebarGroup>
+					)}
 			</SidebarContent>
 			<SidebarFooter>
 				<NavUser user={data.user} />
