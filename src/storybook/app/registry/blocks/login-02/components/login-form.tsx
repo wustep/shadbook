@@ -1,8 +1,10 @@
-import { cn } from "@/lib/utils"
+import { FormEvent } from "react"
+
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { FormEvent } from "react"
+import { cn } from "@/lib/utils"
+
 
 interface LoginFormProps extends React.ComponentProps<"form"> {
 	onClickLogin?: () => void

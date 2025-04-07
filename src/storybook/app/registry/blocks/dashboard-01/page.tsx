@@ -1,11 +1,12 @@
+import data from "./data.json"
+
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/storybook/app/registry/blocks/dashboard-01/components/app-sidebar"
 import { ChartAreaInteractive } from "@/storybook/app/registry/blocks/dashboard-01/components/chart-area-interactive"
 import { DataTable } from "@/storybook/app/registry/blocks/dashboard-01/components/data-table"
 import { SectionCards } from "@/storybook/app/registry/blocks/dashboard-01/components/section-cards"
 import { SiteHeader } from "@/storybook/app/registry/blocks/dashboard-01/components/site-header"
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 
-import data from "./data.json"
 
 export function Page() {
 	return (

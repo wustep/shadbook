@@ -1,7 +1,5 @@
 import * as React from "react"
 
-import { SearchForm } from "@/storybook/app/registry/blocks/sidebar-01/components/search-form"
-import { VersionSwitcher } from "@/storybook/app/registry/blocks/sidebar-01/components/version-switcher"
 import {
 	Sidebar,
 	SidebarContent,
@@ -14,6 +12,8 @@ import {
 	SidebarMenuItem,
 	SidebarRail,
 } from "@/components/ui/sidebar"
+import { SearchForm } from "@/storybook/app/registry/blocks/sidebar-01/components/search-form"
+import { VersionSwitcher } from "@/storybook/app/registry/blocks/sidebar-01/components/version-switcher"
 
 // This is sample data.
 const data = {

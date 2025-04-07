@@ -1,6 +1,5 @@
 "use client"
 
-import * as React from "react"
 import {
 	AudioWaveform,
 	Blocks,
@@ -14,18 +13,19 @@ import {
 	Sparkles,
 	Trash2,
 } from "lucide-react"
+import * as React from "react"
 
-import { NavFavorites } from "@/storybook/app/registry/blocks/sidebar-15/components/nav-favorites"
-import { NavMain } from "@/storybook/app/registry/blocks/sidebar-15/components/nav-main"
-import { NavSecondary } from "@/storybook/app/registry/blocks/sidebar-15/components/nav-secondary"
-import { NavWorkspaces } from "@/storybook/app/registry/blocks/sidebar-15/components/nav-workspaces"
-import { TeamSwitcher } from "@/storybook/app/registry/blocks/sidebar-15/components/team-switcher"
 import {
 	Sidebar,
 	SidebarContent,
 	SidebarHeader,
 	SidebarRail,
 } from "@/components/ui/sidebar"
+import { NavFavorites } from "@/storybook/app/registry/blocks/sidebar-15/components/nav-favorites"
+import { NavMain } from "@/storybook/app/registry/blocks/sidebar-15/components/nav-main"
+import { NavSecondary } from "@/storybook/app/registry/blocks/sidebar-15/components/nav-secondary"
+import { NavWorkspaces } from "@/storybook/app/registry/blocks/sidebar-15/components/nav-workspaces"
+import { TeamSwitcher } from "@/storybook/app/registry/blocks/sidebar-15/components/team-switcher"
 
 // This is sample data.
 const data = {

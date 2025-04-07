@@ -1,6 +1,11 @@
 "use client"
 
-import * as React from "react"
+
+import { NavFavorites } from "./nav-favorites"
+import { NavMain } from "./nav-main"
+import { NavSecondary } from "./nav-secondary"
+import { NavWorkspaces } from "./nav-workspaces"
+import { TeamSwitcher } from "./team-switcher"
 import {
 	AudioWaveform,
 	Blocks,
@@ -14,12 +19,8 @@ import {
 	Sparkles,
 	Trash2,
 } from "lucide-react"
+import * as React from "react"
 
-import { NavFavorites } from "./nav-favorites"
-import { NavMain } from "./nav-main"
-import { NavSecondary } from "./nav-secondary"
-import { NavWorkspaces } from "./nav-workspaces"
-import { TeamSwitcher } from "./team-switcher"
 import {
 	Sidebar,
 	SidebarContent,

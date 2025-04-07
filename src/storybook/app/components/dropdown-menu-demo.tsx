@@ -1,6 +1,5 @@
 "use client"
 
-import * as React from "react"
 import {
   BadgeCheckIcon,
   BellIcon,
@@ -16,6 +15,7 @@ import {
   TrashIcon,
   UserIcon,
 } from "lucide-react"
+import * as React from "react"
 
 import {
   Avatar,

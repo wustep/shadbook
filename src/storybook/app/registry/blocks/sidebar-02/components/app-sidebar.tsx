@@ -1,8 +1,6 @@
-import * as React from "react"
 import { ChevronRight } from "lucide-react"
+import * as React from "react"
 
-import { SearchForm } from "@/storybook/app/registry/blocks/sidebar-02/components/search-form"
-import { VersionSwitcher } from "@/storybook/app/registry/blocks/sidebar-02/components/version-switcher"
 import {
 	Collapsible,
 	CollapsibleContent,
@@ -20,6 +18,8 @@ import {
 	SidebarMenuItem,
 	SidebarRail,
 } from "@/components/ui/sidebar"
+import { SearchForm } from "@/storybook/app/registry/blocks/sidebar-02/components/search-form"
+import { VersionSwitcher } from "@/storybook/app/registry/blocks/sidebar-02/components/version-switcher"
 
 // This is sample data.
 const data = {

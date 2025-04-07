@@ -1,4 +1,3 @@
-import { AppSidebar } from "@/storybook/app/registry/blocks/sidebar-05/components/app-sidebar"
 import {
 	Breadcrumb,
 	BreadcrumbItem,
@@ -13,6 +12,7 @@ import {
 	SidebarProvider,
 	SidebarTrigger,
 } from "@/components/ui/sidebar"
+import { AppSidebar } from "@/storybook/app/registry/blocks/sidebar-05/components/app-sidebar"
 
 export function Page() {
 	return (

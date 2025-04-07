@@ -1,6 +1,5 @@
 "use client"
 
-import * as React from "react"
 import {
 	IconCamera,
 	IconChartBar,
@@ -18,11 +17,8 @@ import {
 	IconSettings,
 	IconUsers,
 } from "@tabler/icons-react"
+import * as React from "react"
 
-import { NavDocuments } from "@/storybook/app/registry/blocks/dashboard-01/components/nav-documents"
-import { NavMain } from "@/storybook/app/registry/blocks/dashboard-01/components/nav-main"
-import { NavSecondary } from "@/storybook/app/registry/blocks/dashboard-01/components/nav-secondary"
-import { NavUser } from "@/storybook/app/registry/blocks/dashboard-01/components/nav-user"
 import {
 	Sidebar,
 	SidebarContent,
@@ -32,6 +28,10 @@ import {
 	SidebarMenuButton,
 	SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { NavDocuments } from "@/storybook/app/registry/blocks/dashboard-01/components/nav-documents"
+import { NavMain } from "@/storybook/app/registry/blocks/dashboard-01/components/nav-main"
+import { NavSecondary } from "@/storybook/app/registry/blocks/dashboard-01/components/nav-secondary"
+import { NavUser } from "@/storybook/app/registry/blocks/dashboard-01/components/nav-user"
 
 const data = {
 	user: {

@@ -1,7 +1,7 @@
 import { ChartAreaDemo } from "./chart-area-demo"
 import { ChartBarDemo } from "./chart-bar-demo"
-import { ChartLineDemo } from "./chart-line-demo"
 import { ChartBarMixed } from "./chart-bar-mixed"
+import { ChartLineDemo } from "./chart-line-demo"
 
 export function ChartDemo() {
 	return (

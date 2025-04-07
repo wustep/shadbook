@@ -1,6 +1,6 @@
 // DocsContainer.tsx
 
-// eslint-disable-next-line no-restricted-imports
+ 
 import {
 	getStoredMode,
 	getStoredTheme,

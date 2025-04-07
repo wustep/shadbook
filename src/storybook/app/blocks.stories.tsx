@@ -1,4 +1,3 @@
-import type { Meta, StoryObj } from "@storybook/react"
 
 import { Page as Dashboard001 } from "./registry/blocks/dashboard-01/page"
 import { Page as Login001 } from "./registry/blocks/login-01/page"
@@ -23,6 +22,7 @@ import { Page as Sidebar013 } from "./registry/blocks/sidebar-13/page"
 import { Page as Sidebar014 } from "./registry/blocks/sidebar-14/page"
 import { Page as Sidebar015 } from "./registry/blocks/sidebar-15/page"
 import { Page as Sidebar016 } from "./registry/blocks/sidebar-16/page"
+import type { Meta, StoryObj } from "@storybook/react"
 
 const meta: Meta = {
 	title: "shadcn/Examples/Blocks",

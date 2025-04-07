@@ -2,7 +2,6 @@
 
 import { SidebarIcon } from "lucide-react"
 
-import { SearchForm } from "@/storybook/app/registry/blocks/sidebar-16/components/search-form"
 import {
 	Breadcrumb,
 	BreadcrumbItem,
@@ -14,6 +13,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { useSidebar } from "@/components/ui/sidebar"
+import { SearchForm } from "@/storybook/app/registry/blocks/sidebar-16/components/search-form"
 
 export function SiteHeader() {
 	const { toggleSidebar } = useSidebar()

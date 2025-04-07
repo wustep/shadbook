@@ -1,5 +1,5 @@
-import { ComponentWrapper } from "../components/component-wrapper"
 import * as Charts from "./charts"
+import { ComponentWrapper } from "../components/component-wrapper"
 
 export function ChartsPage() {
 	return (

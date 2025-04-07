@@ -1,4 +1,4 @@
-/* eslint-disable no-restricted-imports */
+ 
 import * as projectAnnotations from "./preview"
 import { setProjectAnnotations } from "@storybook/react"
 import { beforeAll } from "vitest"

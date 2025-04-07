@@ -17,8 +17,10 @@ import {
 	Globe,
 	Mail,
 	MapPin,
+	MessageSquare,
 	MoreHorizontal,
 	Phone,
+	Users,
 } from "lucide-react"
 import { useState } from "react"
 

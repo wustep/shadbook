@@ -1,6 +1,5 @@
 "use client"
 
-import * as React from "react"
 import {
 	Bell,
 	Check,
@@ -15,6 +14,7 @@ import {
 	Settings,
 	Video,
 } from "lucide-react"
+import * as React from "react"
 
 import {
 	Breadcrumb,

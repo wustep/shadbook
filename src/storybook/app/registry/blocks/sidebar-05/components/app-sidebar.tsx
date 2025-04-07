@@ -1,7 +1,6 @@
-import * as React from "react"
 import { GalleryVerticalEnd, Minus, Plus } from "lucide-react"
+import * as React from "react"
 
-import { SearchForm } from "@/storybook/app/registry/blocks/sidebar-05/components/search-form"
 import {
 	Collapsible,
 	CollapsibleContent,
@@ -20,6 +19,7 @@ import {
 	SidebarMenuSubItem,
 	SidebarRail,
 } from "@/components/ui/sidebar"
+import { SearchForm } from "@/storybook/app/registry/blocks/sidebar-05/components/search-form"
 
 // This is sample data.
 const data = {

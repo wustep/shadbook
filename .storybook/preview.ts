@@ -1,8 +1,7 @@
-import type { Preview } from "@storybook/react"
-import { themes } from "@storybook/theming"
 import "@/styles/globals.css"
-import { getStoredMode, getStoredTheme, updateMode, updateTheme } from "./utils"
 import { DocsContainer } from "./DocsContainer"
+import { getStoredMode, getStoredTheme, updateMode, updateTheme } from "./utils"
+import type { Preview } from "@storybook/react"
 
 const preview: Preview = {
 	parameters: {

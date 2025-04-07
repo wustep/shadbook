@@ -1,6 +1,5 @@
 "use client"
 
-import * as React from "react"
 import {
 	BookOpen,
 	Bot,
@@ -13,11 +12,8 @@ import {
 	Settings2,
 	SquareTerminal,
 } from "lucide-react"
+import * as React from "react"
 
-import { NavMain } from "@/storybook/app/registry/blocks/sidebar-16/components/nav-main"
-import { NavProjects } from "@/storybook/app/registry/blocks/sidebar-16/components/nav-projects"
-import { NavSecondary } from "@/storybook/app/registry/blocks/sidebar-16/components/nav-secondary"
-import { NavUser } from "@/storybook/app/registry/blocks/sidebar-16/components/nav-user"
 import {
 	Sidebar,
 	SidebarContent,
@@ -27,6 +23,10 @@ import {
 	SidebarMenuButton,
 	SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { NavMain } from "@/storybook/app/registry/blocks/sidebar-16/components/nav-main"
+import { NavProjects } from "@/storybook/app/registry/blocks/sidebar-16/components/nav-projects"
+import { NavSecondary } from "@/storybook/app/registry/blocks/sidebar-16/components/nav-secondary"
+import { NavUser } from "@/storybook/app/registry/blocks/sidebar-16/components/nav-user"
 
 const data = {
 	user: {

@@ -1,8 +1,6 @@
-import * as React from "react"
 import { GalleryVerticalEnd } from "lucide-react"
+import * as React from "react"
 
-import { NavMain } from "@/storybook/app/registry/blocks/sidebar-06/components/nav-main"
-import { SidebarOptInForm } from "@/storybook/app/registry/blocks/sidebar-06/components/sidebar-opt-in-form"
 import {
 	Sidebar,
 	SidebarContent,
@@ -13,6 +11,8 @@ import {
 	SidebarMenuItem,
 	SidebarRail,
 } from "@/components/ui/sidebar"
+import { NavMain } from "@/storybook/app/registry/blocks/sidebar-06/components/nav-main"
+import { SidebarOptInForm } from "@/storybook/app/registry/blocks/sidebar-06/components/sidebar-opt-in-form"
 
 // This is sample data.
 const data = {

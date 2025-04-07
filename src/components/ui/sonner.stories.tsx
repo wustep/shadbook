@@ -15,7 +15,7 @@ import {
 	ThumbsUp,
 	X,
 } from "lucide-react"
-import React, { useState } from "react"
+import { useState } from "react"
 import { toast } from "sonner"
 
 // Note: In a real Storybook setup, you would use a proper decorator

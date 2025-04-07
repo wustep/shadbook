@@ -1,7 +1,5 @@
 "use client"
 
-import * as React from "react"
-import { Index } from "@/storybook/app/__registry__"
 import {
 	AudioWaveform,
 	BookOpen,
@@ -13,9 +11,8 @@ import {
 	Settings2,
 	SquareTerminal,
 } from "lucide-react"
+import * as React from "react"
 
-import { NavUser } from "@/storybook/app/registry/blocks/sidebar-07/components/nav-user"
-import { TeamSwitcher } from "@/storybook/app/registry/blocks/sidebar-07/components/team-switcher"
 import {
 	Collapsible,
 	CollapsibleContent,
@@ -39,6 +36,9 @@ import {
 	SidebarMenuSubItem,
 	SidebarRail,
 } from "@/components/ui/sidebar"
+import { Index } from "@/storybook/app/__registry__"
+import { NavUser } from "@/storybook/app/registry/blocks/sidebar-07/components/nav-user"
+import { TeamSwitcher } from "@/storybook/app/registry/blocks/sidebar-07/components/team-switcher"
 
 // This is sample data.
 const data = {

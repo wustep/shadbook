@@ -1,85 +1,75 @@
-import { ThemeProvider, useTheme } from "@/components/ThemeProvider"
-import { Button } from "@/components/ui/button"
-import {
-	SidebarGroup,
-	SidebarMenu,
-	SidebarContent,
-	SidebarFooter,
-	Sidebar,
-	SidebarInset,
-	SidebarRail,
-	SidebarMenuItem,
-	SidebarMenuButton,
-	SidebarGroupLabel,
-	SidebarMenuSub,
-	SidebarMenuSubItem,
-	SidebarHeader,
-	SidebarGroupContent,
-	SidebarInput,
-	SidebarMenuSubButton,
-	SidebarTrigger,
-	useSidebar,
-} from "@/components/ui/sidebar"
-import { SidebarProvider } from "@/components/ui/sidebar"
-import { ChartAreaInteractive } from "@/storybook/app/charts/charts"
-import { DataTable } from "@/storybook/app/registry/blocks/dashboard-01/components/data-table"
-import { SectionCards } from "@/storybook/app/registry/blocks/dashboard-01/components/section-cards"
-import { Page as ComponentsPage } from "@/storybook/app/components/page"
-
-import data from "@/storybook/app/registry/blocks/dashboard-01/data.json"
-import { Index } from "@/storybook/app/__registry__"
-import { Page as AuthPage } from "@/storybook/app/registry/blocks/login-02/page"
 import {
 	Collapsible,
-	CollapsibleTrigger,
 	CollapsibleContent,
+	CollapsibleTrigger,
 } from "@radix-ui/react-collapsible"
 import {
-	GalleryVerticalEnd,
 	AudioWaveform,
-	Command,
-	BookOpen,
-	Search,
-	ChevronRightIcon,
-	ComponentIcon,
-	Moon,
-	Sun,
-	Paintbrush,
-	Check,
-	ChevronsUpDown,
-	Plus,
-	Settings,
-	LogOut,
 	BadgeCheck,
-	Bell,
+	BookOpen,
+	Check,
+	ChevronRightIcon,
+	ChevronsUpDown,
+	Command,
+	ComponentIcon,
 	CreditCard,
+	GalleryVerticalEnd,
+	LogOut,
+	Moon,
+	Paintbrush,
+	Plus,
+	Search,
+	Settings,
 	Sparkles,
+	Sun,
 } from "lucide-react"
-import { Label as UILabel } from "@/components/ui/label"
-import { useState, useEffect } from "react"
-import { Separator } from "@/components/ui/separator"
+import { useEffect, useState } from "react"
+
+import { ThemeProvider, useTheme } from "@/components/ThemeProvider"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Button } from "@/components/ui/button"
 import {
 	DropdownMenu,
 	DropdownMenuContent,
+	DropdownMenuGroup,
+	DropdownMenuItem,
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-	DropdownMenuRadioGroup,
-	DropdownMenuRadioItem,
-	DropdownMenuItem,
 	DropdownMenuShortcut,
-	DropdownMenuGroup,
+	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { Label as UILabel } from "@/components/ui/label"
+import { Separator } from "@/components/ui/separator"
 import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger,
-	DialogFooter,
-} from "@/components/ui/dialog"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+	Sidebar,
+	SidebarContent,
+	SidebarFooter,
+	SidebarGroup,
+	SidebarGroupContent,
+	SidebarGroupLabel,
+	SidebarHeader,
+	SidebarInput,
+	SidebarInset,
+	SidebarMenu,
+	SidebarMenuButton,
+	SidebarMenuItem,
+	SidebarMenuSub,
+	SidebarMenuSubButton,
+	SidebarMenuSubItem,
+	SidebarProvider,
+	SidebarRail,
+	SidebarTrigger,
+ useSidebar } from "@/components/ui/sidebar"
+import { Index } from "@/storybook/app/__registry__"
+import { ChartAreaInteractive } from "@/storybook/app/charts/charts"
+import { Page as ComponentsPage } from "@/storybook/app/components/page"
+import { DataTable } from "@/storybook/app/registry/blocks/dashboard-01/components/data-table"
+import { SectionCards } from "@/storybook/app/registry/blocks/dashboard-01/components/section-cards"
+import data from "@/storybook/app/registry/blocks/dashboard-01/data.json"
+import { Page as AuthPage } from "@/storybook/app/registry/blocks/login-02/page"
+
+
+
 
 type Page = "dashboard" | "components" | "auth"
 

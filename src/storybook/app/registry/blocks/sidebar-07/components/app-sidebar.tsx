@@ -1,6 +1,10 @@
 "use client"
 
-import * as React from "react"
+
+import { NavMain } from "./nav-main"
+import { NavProjects } from "./nav-projects"
+import { NavUser } from "./nav-user"
+import { TeamSwitcher } from "./team-switcher"
 import {
 	AudioWaveform,
 	BookOpen,
@@ -13,11 +17,8 @@ import {
 	Settings2,
 	SquareTerminal,
 } from "lucide-react"
+import * as React from "react"
 
-import { NavMain } from "./nav-main"
-import { NavProjects } from "./nav-projects"
-import { NavUser } from "./nav-user"
-import { TeamSwitcher } from "./team-switcher"
 import {
 	Sidebar,
 	SidebarContent,

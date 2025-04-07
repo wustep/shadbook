@@ -1,9 +1,10 @@
-import * as React from "react"
-import { Plus } from "lucide-react"
 
 import { Calendars } from "./calendars"
 import { DatePicker } from "./date-picker"
 import { NavUser } from "./nav-user"
+import { Plus } from "lucide-react"
+import * as React from "react"
+
 import {
 	Sidebar,
 	SidebarContent,

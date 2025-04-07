@@ -1,9 +1,6 @@
-import * as React from "react"
 import { Plus } from "lucide-react"
+import * as React from "react"
 
-import { Calendars } from "@/storybook/app/registry/blocks/sidebar-15/components/calendars"
-import { DatePicker } from "@/storybook/app/registry/blocks/sidebar-15/components/date-picker"
-import { NavUser } from "@/storybook/app/registry/blocks/sidebar-15/components/nav-user"
 import {
 	Sidebar,
 	SidebarContent,
@@ -14,6 +11,9 @@ import {
 	SidebarMenuItem,
 	SidebarSeparator,
 } from "@/components/ui/sidebar"
+import { Calendars } from "@/storybook/app/registry/blocks/sidebar-15/components/calendars"
+import { DatePicker } from "@/storybook/app/registry/blocks/sidebar-15/components/date-picker"
+import { NavUser } from "@/storybook/app/registry/blocks/sidebar-15/components/nav-user"
 
 // This is sample data.
 const data = {
