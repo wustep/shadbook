@@ -28,7 +28,6 @@ import { Page as ComponentsPage } from "@/storybook/app/components/page"
 import data from "@/storybook/app/registry/blocks/dashboard-01/data.json"
 import { NavUser } from "@/storybook/app/components/nav-user"
 import { Index } from "@/storybook/app/__registry__"
-import { TeamSwitcher } from "@/storybook/app/components/team-switcher"
 import {
 	Collapsible,
 	CollapsibleTrigger,
@@ -39,16 +38,82 @@ import {
 	AudioWaveform,
 	Command,
 	BookOpen,
-	Settings2,
 	Search,
 	ChevronRightIcon,
 	ComponentIcon,
+	Moon,
+	Sun,
+	Paintbrush,
+	Check,
+	ChevronsUpDown,
+	Plus,
 } from "lucide-react"
 import { Label as UILabel } from "@/components/ui/label"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Separator } from "@/components/ui/separator"
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuLabel,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+	DropdownMenuRadioGroup,
+	DropdownMenuRadioItem,
+	DropdownMenuItem,
+	DropdownMenuShortcut,
+} from "@/components/ui/dropdown-menu"
 
 type Page = "dashboard" | "components"
+
+// Define a Team interface without using the external types file
+interface Team {
+	name: string
+	logo: React.ElementType
+	plan: string
+}
+
+// Available theme colors
+type ThemeColor = "neutral" | "gray" | "slate" | "stone" | "zinc"
+
+// Define page configuration in one central place
+const pageConfig: Record<
+	Page,
+	{
+		title: string
+		url: string
+		icon: React.ComponentType<React.SVGProps<SVGSVGElement>>
+	}
+> = {
+	dashboard: {
+		title: "Dashboard",
+		url: "#",
+		icon: BookOpen,
+	},
+	components: {
+		title: "Components",
+		url: "#",
+		icon: ComponentIcon,
+	},
+}
+
+// Team data
+const teamsData: Team[] = [
+	{
+		name: "Acme Inc",
+		logo: GalleryVerticalEnd,
+		plan: "Enterprise",
+	},
+	{
+		name: "Acme Corp.",
+		logo: AudioWaveform,
+		plan: "Startup",
+	},
+	{
+		name: "Evil Corp.",
+		logo: Command,
+		plan: "Free",
+	},
+]
 
 /**
  * Example app.
@@ -59,6 +124,7 @@ function App() {
 	// You should probably use a real routing solution instead, like next.js,
 	// React Router, or TanStack router.
 	const [page, setPage] = useState<Page>("dashboard")
+	const [selectedTeam, setSelectedTeam] = useState<Team>(teamsData[0])
 
 	return (
 		<ThemeProvider>
@@ -70,7 +136,12 @@ function App() {
 					} as React.CSSProperties
 				}
 			>
-				<AppSidebar page={page} setPage={setPage} />
+				<AppSidebar
+					page={page}
+					setPage={setPage}
+					selectedTeam={selectedTeam}
+					setSelectedTeam={setSelectedTeam}
+				/>
 				<SidebarInset>
 					<AppContent page={page} />
 				</SidebarInset>
@@ -82,7 +153,7 @@ function App() {
 function AppContent({ page }: { page: Page }) {
 	return (
 		<>
-			<AppContentHeader />
+			<AppContentHeader page={page} />
 			<div className="flex flex-1 flex-col">
 				<div className="@container/main flex flex-1 flex-col gap-2">
 					<div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
@@ -103,7 +174,10 @@ function AppContent({ page }: { page: Page }) {
 	)
 }
 
-function AppContentHeader() {
+function AppContentHeader({ page }: { page: Page }) {
+	const currentPage = pageConfig[page]
+	const IconComponent = currentPage.icon
+
 	return (
 		<header className="flex h-(--header-height) shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)">
 			<div className="flex w-full items-center gap-1 px-4 lg:gap-2 lg:px-6">
@@ -112,7 +186,10 @@ function AppContentHeader() {
 					orientation="vertical"
 					className="mx-2 data-[orientation=vertical]:h-4"
 				/>
-				<h1 className="text-base font-medium">Documents</h1>
+				<h1 className="text-base font-medium flex items-center">
+					<IconComponent className="mr-2 size-4" />
+					{currentPage.title}
+				</h1>
 				<div className="ml-auto flex items-center gap-2">
 					<Button variant="ghost" asChild size="sm" className="hidden sm:flex">
 						<a
@@ -133,9 +210,13 @@ function AppContentHeader() {
 function AppSidebar({
 	page,
 	setPage,
+	selectedTeam,
+	setSelectedTeam,
 }: {
 	page: Page
 	setPage: (page: Page) => void
+	selectedTeam: Team
+	setSelectedTeam: (team: Team) => void
 }) {
 	const [searchQuery, setSearchQuery] = useState("")
 
@@ -146,40 +227,16 @@ function AppSidebar({
 			email: "m@example.com",
 			avatar: "/avatars/shadcn.jpg",
 		},
-		teams: [
-			{
-				name: "Acme Inc",
-				logo: GalleryVerticalEnd,
-				plan: "Enterprise",
-			},
-			{
-				name: "Acme Corp.",
-				logo: AudioWaveform,
-				plan: "Startup",
-			},
-			{
-				name: "Evil Corp.",
-				logo: Command,
-				plan: "Free",
-			},
-		],
-		navMain: [
-			{
-				title: "Dashboard",
-				url: "#",
-				icon: BookOpen,
-				pageId: "dashboard",
-			},
-			{
-				title: "Components",
-				url: "#",
-				icon: ComponentIcon,
-				pageId: "components",
-			},
-		] as Array<{
+		teams: teamsData,
+		navMain: Object.entries(pageConfig).map(([id, config]) => ({
+			title: config.title,
+			url: config.url,
+			icon: config.icon,
+			pageId: id as Page,
+		})) as Array<{
 			title: string
 			url: string
-			icon: React.ComponentType
+			icon: React.ComponentType<React.SVGProps<SVGSVGElement>>
 			pageId: Page
 			items?: Array<{
 				title: string
@@ -197,21 +254,17 @@ function AppSidebar({
 			.sort((a, b) => a.name.localeCompare(b.name)),
 	}
 
-	// Filter components based on search query
 	const filteredComponents = data.components.filter(component =>
 		getComponentName(component.name)
 			.toLowerCase()
 			.includes(searchQuery.toLowerCase()),
 	)
 
-	// Filter navMain items based on search query
 	const filteredNavMain = data.navMain.filter(item => {
-		// Check if main nav title or pageId matches
 		const titleMatches =
 			item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
 			item.pageId.toLowerCase().includes(searchQuery.toLowerCase())
 
-		// Check if any subitems match
 		const hasMatchingSubItems = item.items?.some(
 			subItem =>
 				subItem.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -225,7 +278,11 @@ function AppSidebar({
 	return (
 		<Sidebar collapsible="icon" variant="inset">
 			<SidebarHeader>
-				<TeamSwitcher teams={data.teams} />
+				<TeamSwitcher
+					teams={data.teams}
+					selectedTeam={selectedTeam}
+					onTeamChange={setSelectedTeam}
+				/>
 				<SidebarGroup className="py-0 group-data-[collapsible=icon]:hidden">
 					<SidebarGroupContent>
 						<form className="relative" onSubmit={e => e.preventDefault()}>
@@ -351,6 +408,10 @@ function AppSidebar({
 					)}
 			</SidebarContent>
 			<SidebarFooter>
+				<div className="flex flex-col gap-2 px-2 pb-2">
+					<ThemeToggle />
+					<ColorThemeSelector />
+				</div>
 				<NavUser user={data.user} />
 			</SidebarFooter>
 			<SidebarRail />
@@ -362,9 +423,182 @@ function getComponentName(name: string) {
 	return name.replace(/-/g, " ").replace(/\b\w/g, char => char.toUpperCase())
 }
 
+function TeamSwitcher({
+	teams,
+	selectedTeam,
+	onTeamChange,
+}: {
+	teams: Team[]
+	selectedTeam: Team
+	onTeamChange: (team: Team) => void
+}) {
+	if (!selectedTeam) {
+		return null
+	}
+
+	return (
+		<SidebarMenu>
+			<SidebarMenuItem>
+				<DropdownMenu>
+					<DropdownMenuTrigger asChild>
+						<SidebarMenuButton
+							size="lg"
+							className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+						>
+							<div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
+								<selectedTeam.logo className="size-4" />
+							</div>
+							<div className="grid flex-1 text-left text-sm leading-tight">
+								<span className="truncate font-semibold">
+									{selectedTeam.name}
+								</span>
+								<span className="truncate text-xs">{selectedTeam.plan}</span>
+							</div>
+							<ChevronsUpDown className="ml-auto" />
+						</SidebarMenuButton>
+					</DropdownMenuTrigger>
+					<DropdownMenuContent
+						className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
+						align="start"
+						side="bottom"
+						sideOffset={4}
+					>
+						<DropdownMenuLabel className="text-muted-foreground text-xs">
+							Teams
+						</DropdownMenuLabel>
+						{teams.map((team, index) => (
+							<DropdownMenuItem
+								key={team.name}
+								onClick={() => onTeamChange(team)}
+								className="gap-2 p-2"
+							>
+								<div className="flex size-6 items-center justify-center rounded-xs border">
+									<team.logo className="size-4 shrink-0" />
+								</div>
+								{team.name}
+								<DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
+							</DropdownMenuItem>
+						))}
+						<DropdownMenuSeparator />
+						<DropdownMenuItem className="gap-2 p-2">
+							<div className="bg-background flex size-6 items-center justify-center rounded-md border">
+								<Plus className="size-4" />
+							</div>
+							<div className="text-muted-foreground font-medium">Add team</div>
+						</DropdownMenuItem>
+					</DropdownMenuContent>
+				</DropdownMenu>
+			</SidebarMenuItem>
+		</SidebarMenu>
+	)
+}
+
 function ThemeToggle() {
 	const { theme, toggleTheme } = useTheme()
-	return <Button onClick={() => toggleTheme()}>Toggle theme: {theme}</Button>
+	return (
+		<Button
+			variant="outline"
+			size="sm"
+			className="w-full justify-start gap-2"
+			onClick={() => toggleTheme()}
+		>
+			{theme === "dark" ? (
+				<Moon className="size-4" />
+			) : (
+				<Sun className="size-4" />
+			)}
+			<span>{theme === "dark" ? "Dark" : "Light"} Mode</span>
+		</Button>
+	)
+}
+
+function ColorThemeSelector() {
+	const [color, setColor] = useState<ThemeColor>("neutral")
+
+	// Update the document's HTML class when color changes
+	useEffect(() => {
+		// Remove existing theme colors
+		document.documentElement.classList.remove(
+			"theme-neutral",
+			"theme-gray",
+			"theme-slate",
+			"theme-stone",
+			"theme-zinc",
+		)
+
+		// Add the new theme color
+		document.documentElement.classList.add(`theme-${color}`)
+
+		// Store the preference
+		localStorage.setItem("theme-color", color)
+	}, [color])
+
+	// Load the stored preference on component mount
+	useEffect(() => {
+		const storedColor = localStorage.getItem("theme-color") as ThemeColor
+		if (storedColor) {
+			setColor(storedColor)
+		}
+	}, [])
+
+	return (
+		<DropdownMenu>
+			<DropdownMenuTrigger asChild>
+				<Button
+					variant="outline"
+					size="sm"
+					className="w-full justify-start gap-2"
+				>
+					<Paintbrush className="size-4" />
+					<span className="capitalize">{color} Theme</span>
+				</Button>
+			</DropdownMenuTrigger>
+			<DropdownMenuContent align="end" className="w-56">
+				<div>
+					<DropdownMenuItem
+						className="gap-2 pl-2 cursor-pointer"
+						onClick={() => setColor("neutral")}
+					>
+						<div className="size-4 rounded-full bg-neutral-600 dark:bg-neutral-200 border border-border" />
+						Neutral
+						{color === "neutral" && <Check className="ml-auto size-4" />}
+					</DropdownMenuItem>
+					<DropdownMenuItem
+						className="gap-2 pl-2 cursor-pointer"
+						onClick={() => setColor("gray")}
+					>
+						<div className="size-4 rounded-full bg-gray-400 dark:bg-gray-400 border border-border" />
+						Gray
+						{color === "gray" && <Check className="ml-auto size-4" />}
+					</DropdownMenuItem>
+					<DropdownMenuItem
+						className="gap-2 pl-2 cursor-pointer"
+						onClick={() => setColor("slate")}
+					>
+						<div className="size-4 rounded-full bg-slate-400 dark:bg-slate-400 border border-border" />
+						Slate
+						{color === "slate" && <Check className="ml-auto size-4" />}
+					</DropdownMenuItem>
+					<DropdownMenuItem
+						className="gap-2 pl-2 cursor-pointer"
+						onClick={() => setColor("stone")}
+					>
+						<div className="size-4 rounded-full bg-stone-400 dark:bg-stone-400 border border-border" />
+						Stone
+						{color === "stone" && <Check className="ml-auto size-4" />}
+					</DropdownMenuItem>
+					<DropdownMenuItem
+						className="gap-2 pl-2 cursor-pointer"
+						onClick={() => setColor("zinc")}
+					>
+						<div className="size-4 rounded-full bg-zinc-400 dark:bg-zinc-500 border border-border" />
+						Zinc
+						{color === "zinc" && <Check className="ml-auto size-4" />}
+					</DropdownMenuItem>
+				</div>
+			</DropdownMenuContent>
+		</DropdownMenu>
+	)
 }
 
 export default App
