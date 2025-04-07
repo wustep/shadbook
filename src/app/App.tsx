@@ -28,6 +28,7 @@ import { Page as ComponentsPage } from "@/storybook/app/components/page"
 
 import data from "@/storybook/app/registry/blocks/dashboard-01/data.json"
 import { Index } from "@/storybook/app/__registry__"
+import { Page as AuthPage } from "@/storybook/app/registry/blocks/login-02/page"
 import {
 	Collapsible,
 	CollapsibleTrigger,
@@ -80,7 +81,7 @@ import {
 } from "@/components/ui/dialog"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
-type Page = "dashboard" | "components"
+type Page = "dashboard" | "components" | "auth"
 
 // Define a Team interface without using the external types file
 interface Team {
@@ -94,7 +95,7 @@ type ThemeColor = "neutral" | "gray" | "slate" | "stone" | "zinc"
 
 // Define page configuration in one central place
 const pageConfig: Record<
-	Page,
+	Exclude<Page, "auth">,
 	{
 		title: string
 		url: string
@@ -153,15 +154,21 @@ function App() {
 					} as React.CSSProperties
 				}
 			>
-				<AppSidebar
-					page={page}
-					setPage={setPage}
-					selectedTeam={selectedTeam}
-					setSelectedTeam={setSelectedTeam}
-				/>
-				<SidebarInset>
-					<AppContent page={page} />
-				</SidebarInset>
+				{page === "auth" ? (
+					<AuthPage onClickLogin={() => setPage("dashboard")} />
+				) : (
+					<>
+						<AppSidebar
+							page={page}
+							setPage={setPage}
+							selectedTeam={selectedTeam}
+							setSelectedTeam={setSelectedTeam}
+						/>
+						<SidebarInset>
+							<AppContent page={page} />
+						</SidebarInset>
+					</>
+				)}
 			</SidebarProvider>
 		</ThemeProvider>
 	)
@@ -192,7 +199,7 @@ function AppContent({ page }: { page: Page }) {
 }
 
 function AppContentHeader({ page }: { page: Page }) {
-	const currentPage = pageConfig[page]
+	const currentPage = pageConfig[page as keyof typeof pageConfig]
 	const IconComponent = currentPage.icon
 
 	return (
@@ -255,20 +262,21 @@ function AppSidebar({
 			avatar: "/avatars/shadcn.jpg",
 		},
 		teams: teamsData,
+		// Only include dashboard and components in navigation, not auth
 		navMain: Object.entries(pageConfig).map(([id, config]) => ({
 			title: config.title,
 			url: config.url,
 			icon: config.icon,
-			pageId: id as Page,
+			pageId: id as Exclude<Page, "auth">,
 		})) as Array<{
 			title: string
 			url: string
 			icon: React.ComponentType<React.SVGProps<SVGSVGElement>>
-			pageId: Page
+			pageId: Exclude<Page, "auth">
 			items?: Array<{
 				title: string
 				url: string
-				pageId?: Page
+				pageId?: Exclude<Page, "auth">
 			}>
 		}>,
 		components: Object.values(Index)
@@ -355,7 +363,7 @@ function AppSidebar({
 															(subItem: {
 																title: string
 																url: string
-																pageId?: Page
+																pageId?: Exclude<Page, "auth">
 															}) =>
 																searchQuery === "" ||
 																subItem.title
@@ -366,7 +374,7 @@ function AppSidebar({
 															(subItem: {
 																title: string
 																url: string
-																pageId?: Page
+																pageId?: Exclude<Page, "auth">
 															}) => (
 																<SidebarMenuSubItem key={subItem.title}>
 																	<SidebarMenuSubButton
@@ -439,7 +447,7 @@ function AppSidebar({
 					<ThemeToggle />
 					<ColorThemeSelector />
 				</div>
-				<UserNav user={data.user} />
+				<UserNav user={data.user} setPage={setPage} />
 			</SidebarFooter>
 			<SidebarRail />
 		</Sidebar>
@@ -630,12 +638,14 @@ function ColorThemeSelector() {
 
 function UserNav({
 	user,
+	setPage,
 }: {
 	user: {
 		name: string
 		email: string
 		avatar: string
 	}
+	setPage: (page: Page) => void
 }) {
 	const { isMobile } = useSidebar()
 
@@ -700,7 +710,14 @@ function UserNav({
 							</DropdownMenuItem>
 						</DropdownMenuGroup>
 						<DropdownMenuSeparator />
-						<DropdownMenuItem>
+						<DropdownMenuItem
+							onClick={() => {
+								// Route to the auth page when "Log out" is clicked
+								window.localStorage.removeItem("auth")
+								window.location.href = "#auth"
+								setPage("auth")
+							}}
+						>
 							<LogOut />
 							Log out
 						</DropdownMenuItem>

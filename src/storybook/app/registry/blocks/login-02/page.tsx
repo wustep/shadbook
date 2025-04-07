@@ -2,7 +2,11 @@ import { GalleryVerticalEnd } from "lucide-react"
 
 import { LoginForm } from "@/storybook/app/registry/blocks/login-02/components/login-form"
 
-export function Page() {
+interface PageProps {
+	onClickLogin?: () => void
+}
+
+export function Page({ onClickLogin }: PageProps) {
 	return (
 		<div className="grid min-h-svh lg:grid-cols-2">
 			<div className="flex flex-col gap-4 p-6 md:p-10">
@@ -16,7 +20,7 @@ export function Page() {
 				</div>
 				<div className="flex flex-1 items-center justify-center">
 					<div className="w-full max-w-xs">
-						<LoginForm />
+						<LoginForm onClickLogin={onClickLogin} />
 					</div>
 				</div>
 			</div>
