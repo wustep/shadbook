@@ -61,29 +61,29 @@ export const Default: Story = {
 				<DropdownMenuSeparator />
 				<DropdownMenuGroup>
 					<DropdownMenuItem>
-						<User className="mr-2 h-4 w-4" />
+						<User className="h-4 w-4" />
 						<span>Profile</span>
 						<DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
 					</DropdownMenuItem>
 					<DropdownMenuItem>
-						<CreditCard className="mr-2 h-4 w-4" />
+						<CreditCard className="h-4 w-4" />
 						<span>Billing</span>
 						<DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
 					</DropdownMenuItem>
 					<DropdownMenuItem>
-						<Settings className="mr-2 h-4 w-4" />
+						<Settings className="h-4 w-4" />
 						<span>Settings</span>
 						<DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
 					</DropdownMenuItem>
 					<DropdownMenuItem>
-						<Keyboard className="mr-2 h-4 w-4" />
+						<Keyboard className="h-4 w-4" />
 						<span>Keyboard shortcuts</span>
 						<DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
 					</DropdownMenuItem>
 				</DropdownMenuGroup>
 				<DropdownMenuSeparator />
 				<DropdownMenuItem>
-					<LogOut className="mr-2 h-4 w-4" />
+					<LogOut className="h-4 w-4" />
 					<span>Log out</span>
 					<DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
 				</DropdownMenuItem>
@@ -187,42 +187,42 @@ export const WithSubmenus: Story = {
 				<DropdownMenuSeparator />
 				<DropdownMenuGroup>
 					<DropdownMenuItem>
-						<User className="mr-2 h-4 w-4" />
+						<User className="h-4 w-4" />
 						<span>Profile</span>
 					</DropdownMenuItem>
 					<DropdownMenuSub>
 						<DropdownMenuSubTrigger>
-							<Users className="mr-2 h-4 w-4" />
+							<Users className="mr-2 h-4 w-4 text-muted-foreground" />
 							<span>Team</span>
 						</DropdownMenuSubTrigger>
 						<DropdownMenuPortal>
 							<DropdownMenuSubContent>
 								<DropdownMenuItem>
-									<UserPlus className="mr-2 h-4 w-4" />
+									<UserPlus className="h-4 w-4" />
 									<span>Add Member</span>
 								</DropdownMenuItem>
 								<DropdownMenuItem>
-									<Mail className="mr-2 h-4 w-4" />
+									<Mail className="h-4 w-4" />
 									<span>Invite Member</span>
 								</DropdownMenuItem>
 								<DropdownMenuSeparator />
 								<DropdownMenuItem>
-									<Users className="mr-2 h-4 w-4" />
+									<Users className="h-4 w-4" />
 									<span>View Team</span>
 								</DropdownMenuItem>
 								<DropdownMenuSub>
 									<DropdownMenuSubTrigger>
-										<Plus className="mr-2 h-4 w-4" />
+										<Plus className="mr-2 h-4 w-4 text-muted-foreground" />
 										<span>New Team</span>
 									</DropdownMenuSubTrigger>
 									<DropdownMenuPortal>
 										<DropdownMenuSubContent>
 											<DropdownMenuItem>
-												<PlusCircle className="mr-2 h-4 w-4" />
+												<PlusCircle className="h-4 w-4" />
 												<span>Create Team</span>
 											</DropdownMenuItem>
 											<DropdownMenuItem>
-												<Cloud className="mr-2 h-4 w-4" />
+												<Cloud className="h-4 w-4" />
 												<span>Join Team</span>
 											</DropdownMenuItem>
 										</DropdownMenuSubContent>
@@ -234,17 +234,17 @@ export const WithSubmenus: Story = {
 					<DropdownMenuSeparator />
 					<DropdownMenuSub>
 						<DropdownMenuSubTrigger>
-							<Settings className="mr-2 h-4 w-4" />
+							<Settings className="mr-2 h-4 w-4 text-muted-foreground" />
 							<span>Settings</span>
 						</DropdownMenuSubTrigger>
 						<DropdownMenuPortal>
 							<DropdownMenuSubContent>
 								<DropdownMenuItem>
-									<User className="mr-2 h-4 w-4" />
+									<User className="h-4 w-4" />
 									<span>Profile Settings</span>
 								</DropdownMenuItem>
 								<DropdownMenuItem>
-									<CreditCard className="mr-2 h-4 w-4" />
+									<CreditCard className="h-4 w-4" />
 									<span>Billing Settings</span>
 								</DropdownMenuItem>
 							</DropdownMenuSubContent>
@@ -253,16 +253,16 @@ export const WithSubmenus: Story = {
 				</DropdownMenuGroup>
 				<DropdownMenuSeparator />
 				<DropdownMenuItem>
-					<LifeBuoy className="mr-2 h-4 w-4" />
+					<LifeBuoy className="h-4 w-4" />
 					<span>Support</span>
 				</DropdownMenuItem>
 				<DropdownMenuItem>
-					<Github className="mr-2 h-4 w-4" />
+					<Github className="h-4 w-4" />
 					<span>GitHub</span>
 				</DropdownMenuItem>
 				<DropdownMenuSeparator />
 				<DropdownMenuItem>
-					<LogOut className="mr-2 h-4 w-4" />
+					<LogOut className="h-4 w-4" />
 					<span>Log out</span>
 				</DropdownMenuItem>
 			</DropdownMenuContent>
@@ -283,16 +283,16 @@ export const WithDestructiveItems: Story = {
 				<DropdownMenuLabel>Actions</DropdownMenuLabel>
 				<DropdownMenuSeparator />
 				<DropdownMenuItem>
-					<MessageSquare className="mr-2 h-4 w-4" />
+					<MessageSquare className="h-4 w-4" />
 					<span>Comment</span>
 				</DropdownMenuItem>
 				<DropdownMenuItem>
-					<Users className="mr-2 h-4 w-4" />
+					<Users className="h-4 w-4" />
 					<span>Share</span>
 				</DropdownMenuItem>
 				<DropdownMenuSeparator />
 				<DropdownMenuItem variant="destructive">
-					<LogOut className="mr-2 h-4 w-4" />
+					<LogOut className="h-4 w-4" />
 					<span>Remove</span>
 				</DropdownMenuItem>
 			</DropdownMenuContent>
@@ -316,17 +316,17 @@ export const CustomStyled: Story = {
 				<DropdownMenuSeparator className="bg-blue-200 dark:bg-blue-800" />
 				<DropdownMenuGroup>
 					<DropdownMenuItem className="focus:bg-blue-100 dark:focus:bg-blue-900 focus:text-blue-700 dark:focus:text-blue-300">
-						<User className="mr-2 h-4 w-4 text-blue-500" />
+						<User className="h-4 w-4 text-blue-500" />
 						<span>Profile</span>
 					</DropdownMenuItem>
 					<DropdownMenuItem className="focus:bg-blue-100 dark:focus:bg-blue-900 focus:text-blue-700 dark:focus:text-blue-300">
-						<Settings className="mr-2 h-4 w-4 text-blue-500" />
+						<Settings className="h-4 w-4 text-blue-500" />
 						<span>Settings</span>
 					</DropdownMenuItem>
 				</DropdownMenuGroup>
 				<DropdownMenuSeparator className="bg-blue-200 dark:bg-blue-800" />
 				<DropdownMenuItem className="focus:bg-blue-100 dark:focus:bg-blue-900 focus:text-blue-700 dark:focus:text-blue-300">
-					<LogOut className="mr-2 h-4 w-4 text-blue-500" />
+					<LogOut className="h-4 w-4 text-blue-500" />
 					<span>Log out</span>
 				</DropdownMenuItem>
 			</DropdownMenuContent>
