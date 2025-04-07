@@ -50,7 +50,5 @@ src/
 
 ## TODO
 - [DataTable component](https://ui.shadcn.com/docs/components/data-table)
-- [App] Theme & Color switcher
-- [App] Settings modal
-- [App] Auth page
-- [App] More page & simple routing (Dashboard, etc)
+- [App] Settings modal examples
+- [App] More form examples
