@@ -25,7 +25,7 @@ const preview: Preview = {
 					"Components",
 					[
 						"Examples",
-						["All Components", "Blocks", "Charts"],
+						["All Components", "Blocks", "Cards", "Charts"],
 						"Colors",
 						"Typography",
 						"Icons",

@@ -49,7 +49,7 @@ import { TooltipDemo } from "./tooltip-demo"
 
 export function Page() {
 	return (
-		<div className="@container grid flex-1 gap-4 p-4">
+		<div className="@container grid flex-1 gap-4">
 			<ComponentWrapper name="accordion">
 				<AccordionDemo />
 			</ComponentWrapper>

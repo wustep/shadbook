@@ -3,7 +3,7 @@ import { ComponentWrapper } from "../components/component-wrapper"
 
 export function ChartsPage() {
 	return (
-		<div className="grid flex-1 grid-cols-3 items-start gap-4 p-4 2xl:grid-cols-4">
+		<div className="grid flex-1 grid-cols-3 items-start gap-4 2xl:grid-cols-4">
 			{Object.entries(Charts)
 				.sort()
 				.map(([key, Component]) => (
