@@ -21,7 +21,7 @@ import {
 import { useState } from "react"
 
 const meta: Meta<typeof Command> = {
-	title: "shadcn/Command",
+	title: "Components/Command",
 	component: Command,
 	parameters: {
 		layout: "centered",

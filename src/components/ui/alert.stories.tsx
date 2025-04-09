@@ -17,7 +17,7 @@ import {
 import { cn } from "@/lib/utils"
 
 const meta: Meta<typeof Alert> = {
-	title: "shadcn/Alert",
+	title: "Components/Alert",
 	component: Alert,
 	parameters: {
 		layout: "centered",

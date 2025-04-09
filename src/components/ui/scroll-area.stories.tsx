@@ -2,7 +2,7 @@ import { ScrollArea } from "./scroll-area"
 import type { Meta, StoryObj } from "@storybook/react"
 
 const meta: Meta<typeof ScrollArea> = {
-	title: "shadcn/ScrollArea",
+	title: "Components/ScrollArea",
 	component: ScrollArea,
 	parameters: {
 		layout: "centered",

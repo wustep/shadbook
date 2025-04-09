@@ -18,7 +18,7 @@ import {
 import { useState } from "react"
 
 const meta: Meta<typeof Collapsible> = {
-	title: "shadcn/Collapsible",
+	title: "Components/Collapsible",
 	component: Collapsible,
 	parameters: {
 		layout: "centered",

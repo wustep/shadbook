@@ -29,7 +29,7 @@ import {
 } from "lucide-react"
 
 const meta: Meta<typeof ContextMenu> = {
-	title: "shadcn/ContextMenu",
+	title: "Components/ContextMenu",
 	component: ContextMenu,
 	parameters: {
 		layout: "centered",

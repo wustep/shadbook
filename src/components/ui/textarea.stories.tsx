@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from "@storybook/react"
 import { useState } from "react"
 
 const meta: Meta<typeof Textarea> = {
-	title: "shadcn/Textarea",
+	title: "Components/Textarea",
 	component: Textarea,
 	parameters: {
 		layout: "centered",

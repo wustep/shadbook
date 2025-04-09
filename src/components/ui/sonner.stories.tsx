@@ -22,7 +22,7 @@ import { toast } from "sonner"
 // to mock the useTheme hook from next-themes
 
 const meta: Meta<typeof Toaster> = {
-	title: "shadcn/Sonner",
+	title: "Components/Sonner",
 	component: Toaster,
 	parameters: {
 		layout: "centered",

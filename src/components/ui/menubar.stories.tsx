@@ -27,7 +27,7 @@ import {
 import { useState } from "react"
 
 const meta: Meta<typeof Menubar> = {
-	title: "shadcn/Menubar",
+	title: "Components/Menubar",
 	component: Menubar,
 	parameters: {
 		layout: "centered",

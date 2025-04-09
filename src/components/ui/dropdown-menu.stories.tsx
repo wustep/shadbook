@@ -36,7 +36,7 @@ import {
 import { useState } from "react"
 
 const meta: Meta<typeof DropdownMenu> = {
-	title: "shadcn/DropdownMenu",
+	title: "Components/DropdownMenu",
 	component: DropdownMenu,
 	parameters: {
 		layout: "centered",

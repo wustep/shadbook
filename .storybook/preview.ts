@@ -20,17 +20,17 @@ const preview: Preview = {
 			storySort: {
 				order: [
 					"Introduction",
-					"shadcn",
+					"Tailwind",
+					["Introduction", "Colors", "Animations", "*"],
+					"Components",
 					[
 						"Examples",
-						["Components", "Blocks", "Charts"],
+						["All Components", "Blocks", "Charts"],
 						"Colors",
 						"Typography",
 						"Icons",
 						"*",
 					],
-					"Tailwind",
-					["Introduction", "Colors", "Animations", "*"],
 				],
 			},
 		},

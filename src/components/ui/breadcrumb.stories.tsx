@@ -18,7 +18,7 @@ import {
 } from "lucide-react"
 
 const meta: Meta<typeof Breadcrumb> = {
-	title: "shadcn/Breadcrumb",
+	title: "Components/Breadcrumb",
 	component: Breadcrumb,
 	parameters: {
 		layout: "centered",

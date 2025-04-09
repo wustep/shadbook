@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from "@storybook/react"
 import { useEffect, useRef, useState } from "react"
 
 const meta: Meta<typeof Checkbox> = {
-	title: "shadcn/Checkbox",
+	title: "Components/Checkbox",
 	component: Checkbox,
 	parameters: {
 		layout: "centered",

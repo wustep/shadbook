@@ -38,7 +38,7 @@ import { Toaster } from "@/components/ui/sonner"
  * where users need to enter codes received via SMS, email, or authenticator apps.
  */
 const meta = {
-	title: "shadcn/InputOTP",
+	title: "Components/InputOTP",
 	component: InputOTP,
 	parameters: {
 		layout: "centered",

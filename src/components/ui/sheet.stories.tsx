@@ -15,7 +15,7 @@ import type { Meta, StoryObj } from "@storybook/react"
 import { Settings, User } from "lucide-react"
 
 const meta: Meta<typeof Sheet> = {
-	title: "shadcn/Sheet",
+	title: "Components/Sheet",
 	component: Sheet,
 	parameters: {
 		layout: "centered",

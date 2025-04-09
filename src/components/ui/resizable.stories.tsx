@@ -16,7 +16,7 @@ import {
 } from "lucide-react"
 
 const meta: Meta<typeof ResizablePanelGroup> = {
-	title: "shadcn/Resizable",
+	title: "Components/Resizable",
 	component: ResizablePanelGroup,
 	parameters: {
 		layout: "centered",

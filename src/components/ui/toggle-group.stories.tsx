@@ -15,7 +15,7 @@ import {
 import { useState } from "react"
 
 const meta: Meta<typeof ToggleGroup> = {
-	title: "shadcn/ToggleGroup",
+	title: "Components/ToggleGroup",
 	component: ToggleGroup,
 	parameters: {
 		layout: "centered",

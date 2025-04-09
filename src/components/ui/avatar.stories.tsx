@@ -17,7 +17,7 @@ import {
 } from "lucide-react"
 
 const meta: Meta<typeof Avatar> = {
-	title: "shadcn/Avatar",
+	title: "Components/Avatar",
 	component: Avatar,
 	parameters: {
 		layout: "centered",

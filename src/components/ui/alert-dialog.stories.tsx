@@ -13,7 +13,7 @@ import { Button } from "./button"
 import type { Meta, StoryObj } from "@storybook/react"
 
 const meta: Meta<typeof AlertDialog> = {
-	title: "shadcn/AlertDialog",
+	title: "Components/AlertDialog",
 	component: AlertDialog,
 	parameters: {
 		layout: "centered",

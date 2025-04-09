@@ -28,7 +28,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { cn } from "@/lib/utils"
 
 const meta: Meta<typeof Form> = {
-	title: "shadcn/Form",
+	title: "Components/Form",
 	component: Form,
 	parameters: {
 		layout: "centered",

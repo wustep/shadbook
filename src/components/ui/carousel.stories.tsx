@@ -25,7 +25,7 @@ import {
 import { useEffect, useState } from "react"
 
 const meta: Meta<typeof Carousel> = {
-	title: "shadcn/Carousel",
+	title: "Components/Carousel",
 	component: Carousel,
 	parameters: {
 		layout: "centered",

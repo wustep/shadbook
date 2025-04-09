@@ -10,7 +10,7 @@ import {
 import type { Meta, StoryObj } from "@storybook/react"
 
 const meta: Meta<typeof Pagination> = {
-	title: "shadcn/Pagination",
+	title: "Components/Pagination",
 	component: Pagination,
 	parameters: {
 		layout: "centered",

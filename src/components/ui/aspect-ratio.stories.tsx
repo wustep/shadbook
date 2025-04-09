@@ -2,7 +2,7 @@ import { AspectRatio } from "./aspect-ratio"
 import type { Meta, StoryObj } from "@storybook/react"
 
 const meta: Meta<typeof AspectRatio> = {
-	title: "shadcn/AspectRatio",
+	title: "Components/AspectRatio",
 	component: AspectRatio,
 	parameters: {
 		layout: "centered",

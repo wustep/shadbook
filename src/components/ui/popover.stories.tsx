@@ -6,7 +6,7 @@ import type { Meta, StoryObj } from "@storybook/react"
 import { Bell, Calendar, Plus, Settings, User } from "lucide-react"
 
 const meta: Meta<typeof Popover> = {
-	title: "shadcn/Popover",
+	title: "Components/Popover",
 	component: Popover,
 	parameters: {
 		layout: "centered",

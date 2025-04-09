@@ -15,7 +15,7 @@ import type { Meta, StoryObj } from "@storybook/react"
 import { useState } from "react"
 
 const meta: Meta<typeof Dialog> = {
-	title: "shadcn/Dialog",
+	title: "Components/Dialog",
 	component: Dialog,
 	parameters: {
 		layout: "centered",

@@ -7,7 +7,7 @@ import type { Meta, StoryObj } from "@storybook/react"
 import { AlertCircle, HelpCircle } from "lucide-react"
 
 const meta: Meta<typeof Label> = {
-	title: "shadcn/Label",
+	title: "Components/Label",
 	component: Label,
 	parameters: {
 		layout: "centered",

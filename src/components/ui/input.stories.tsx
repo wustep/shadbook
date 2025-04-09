@@ -16,7 +16,7 @@ import {
 import { useState } from "react"
 
 const meta: Meta<typeof Input> = {
-	title: "shadcn/Input",
+	title: "Components/Input",
 	component: Input,
 	parameters: {
 		layout: "centered",

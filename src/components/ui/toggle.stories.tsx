@@ -13,7 +13,7 @@ import {
 } from "lucide-react"
 
 const meta: Meta<typeof Toggle> = {
-	title: "shadcn/Toggle",
+	title: "Components/Toggle",
 	component: Toggle,
 	parameters: {
 		layout: "centered",

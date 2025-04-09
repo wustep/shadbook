@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from "@storybook/react"
 import { useState } from "react"
 
 const meta: Meta<typeof Switch> = {
-	title: "shadcn/Switch",
+	title: "Components/Switch",
 	component: Switch,
 	parameters: {
 		layout: "centered",

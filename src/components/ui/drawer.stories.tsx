@@ -25,7 +25,7 @@ import {
 import { useState } from "react"
 
 const meta: Meta<typeof Drawer> = {
-	title: "shadcn/Drawer",
+	title: "Components/Drawer",
 	component: Drawer,
 	parameters: {
 		layout: "centered",

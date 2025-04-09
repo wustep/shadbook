@@ -30,7 +30,7 @@ import {
 import { cn } from "@/lib/utils"
 
 const meta: Meta = {
-	title: "shadcn/Icons",
+	title: "Components/Icons",
 	parameters: {
 		layout: "centered",
 	},

@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from "@storybook/react"
 import { useEffect, useState } from "react"
 
 const meta: Meta<typeof Progress> = {
-	title: "shadcn/Progress",
+	title: "Components/Progress",
 	component: Progress,
 	parameters: {
 		layout: "centered",

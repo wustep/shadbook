@@ -13,7 +13,7 @@ import { DateRange } from "react-day-picker"
 import { cn } from "@/lib/utils"
 
 const meta: Meta<typeof Calendar> = {
-	title: "shadcn/Calendar",
+	title: "Components/Calendar",
 	component: Calendar,
 	parameters: {
 		layout: "centered",

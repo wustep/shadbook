@@ -4,7 +4,7 @@ import { Music, Sun, Volume2, VolumeX, Zap } from "lucide-react"
 import { useState } from "react"
 
 const meta: Meta<typeof Slider> = {
-	title: "shadcn/Slider",
+	title: "Components/Slider",
 	component: Slider,
 	parameters: {
 		layout: "centered",

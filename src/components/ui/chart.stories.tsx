@@ -27,7 +27,7 @@ import {
 } from "recharts"
 
 const meta: Meta<typeof ChartContainer> = {
-	title: "shadcn/Chart",
+	title: "Components/Chart",
 	component: ChartContainer,
 	parameters: {
 		layout: "centered",

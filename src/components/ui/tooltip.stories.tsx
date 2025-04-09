@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/tooltip"
 
 const meta: Meta<typeof Tooltip> = {
-	title: "shadcn/Tooltip",
+	title: "Components/Tooltip",
 	component: Tooltip,
 	parameters: {
 		layout: "centered",

@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/accordion"
 
 const meta: Meta<typeof Accordion> = {
-	title: "shadcn/Accordion",
+	title: "Components/Accordion",
 	component: Accordion,
 	parameters: {
 		layout: "centered",

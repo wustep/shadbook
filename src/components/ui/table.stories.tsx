@@ -24,7 +24,7 @@ import { ArrowUpDown, MoreHorizontal } from "lucide-react"
 import { useState } from "react"
 
 const meta: Meta<typeof Table> = {
-	title: "shadcn/Table",
+	title: "Components/Table",
 	component: Table,
 	parameters: {
 		layout: "centered",

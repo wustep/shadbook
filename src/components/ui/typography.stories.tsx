@@ -5,7 +5,7 @@ import type { Meta, StoryObj } from "@storybook/react"
 import { Check, FileText, Info, Terminal } from "lucide-react"
 
 const meta: Meta = {
-	title: "shadcn/Typography",
+	title: "Components/Typography",
 	parameters: {
 		layout: "centered",
 	},

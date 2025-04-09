@@ -19,7 +19,7 @@ import {
 } from "lucide-react"
 
 const meta: Meta<typeof Tabs> = {
-	title: "shadcn/Tabs",
+	title: "Components/Tabs",
 	component: Tabs,
 	parameters: {
 		layout: "centered",

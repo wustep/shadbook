@@ -29,7 +29,7 @@ import {
 import * as React from "react"
 
 const meta: Meta<typeof SidebarProvider> = {
-	title: "shadcn/Sidebar",
+	title: "Components/Sidebar",
 	component: SidebarProvider,
 	parameters: {
 		layout: "fullscreen",

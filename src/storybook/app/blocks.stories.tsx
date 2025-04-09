@@ -1,4 +1,3 @@
-
 import { Page as Dashboard001 } from "./registry/blocks/dashboard-01/page"
 import { Page as Login001 } from "./registry/blocks/login-01/page"
 import { Page as Login002 } from "./registry/blocks/login-02/page"
@@ -25,7 +24,7 @@ import { Page as Sidebar016 } from "./registry/blocks/sidebar-16/page"
 import type { Meta, StoryObj } from "@storybook/react"
 
 const meta: Meta = {
-	title: "shadcn/Examples/Blocks",
+	title: "Components/Examples/Blocks",
 	parameters: {
 		layout: "fullscreen",
 	},

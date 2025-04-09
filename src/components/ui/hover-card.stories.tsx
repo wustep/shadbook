@@ -5,7 +5,7 @@ import type { Meta, StoryObj } from "@storybook/react"
 import { CalendarDays, Github, Link, Twitter, User } from "lucide-react"
 
 const meta: Meta<typeof HoverCard> = {
-	title: "shadcn/HoverCard",
+	title: "Components/HoverCard",
 	component: HoverCard,
 	parameters: {
 		layout: "centered",

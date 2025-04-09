@@ -6,7 +6,7 @@ import type { Meta, StoryObj } from "@storybook/react"
 import { Clock, MessageSquare, ThumbsUp, User } from "lucide-react"
 
 const meta: Meta<typeof Skeleton> = {
-	title: "shadcn/Skeleton",
+	title: "Components/Skeleton",
 	component: Skeleton,
 	parameters: {
 		layout: "centered",

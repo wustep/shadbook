@@ -25,7 +25,7 @@ import {
 import { useState } from "react"
 
 const meta: Meta<typeof Select> = {
-	title: "shadcn/Select",
+	title: "Components/Select",
 	component: Select,
 	parameters: {
 		layout: "centered",

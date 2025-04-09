@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from "@storybook/react"
 import { useState } from "react"
 
 const meta: Meta<typeof RadioGroup> = {
-	title: "shadcn/RadioGroup",
+	title: "Components/RadioGroup",
 	component: RadioGroup,
 	parameters: {
 		layout: "centered",

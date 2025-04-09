@@ -24,7 +24,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 
 const meta: Meta<typeof Badge> = {
-	title: "shadcn/Badge",
+	title: "Components/Badge",
 	component: Badge,
 	parameters: {
 		layout: "centered",
