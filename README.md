@@ -32,6 +32,12 @@ To build, run:
 npm run build
 ```
 
+To compare differences between shadcn/ui and this repo, run:
+
+```bash
+npm run diff
+```
+
 ## Folder structure
 
 ```bash
