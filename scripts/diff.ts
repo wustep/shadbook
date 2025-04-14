@@ -1,8 +1,10 @@
 #!/usr/bin/env node
 
+import chalk from "chalk"
 import { exec, execSync } from "child_process"
 import fs from "fs/promises"
 import OpenAI from "openai"
+import ora from "ora"
 import path from "path"
 
 const TEMPLATE_REPO = "https://github.com/shadcn-ui/ui.git"
@@ -50,16 +52,22 @@ async function runCommand(command: string): Promise<string> {
 	})
 }
 
-async function generateDiff(
-	file1: string,
-	file2: string,
-): Promise<string | null> {
+interface DiffResult {
+	diff: string | null
+	added: number
+	removed: number
+}
+
+async function generateDiff(file1: string, file2: string): Promise<DiffResult> {
+	let added = 0
+	let removed = 0
+	let diffOutput: string | null = null
+
 	try {
 		// Use execSync for diff on original files
-		const diffOutput = execSync(`diff -w -b --unified "${file1}" "${file2}"`, {
+		diffOutput = execSync(`diff -w -b --unified "${file1}" "${file2}"`, {
 			encoding: "utf8",
 		})
-		return diffOutput
 	} catch (error: unknown) {
 		// Type guard to check properties
 		if (error && typeof error === "object") {
@@ -71,16 +79,18 @@ async function generateDiff(
 			}
 			// If exit code is 1, it means files are different, which is expected
 			if (execError.status === 1 && execError.stdout) {
-				return execError.stdout.toString()
+				diffOutput = execError.stdout.toString()
+			} else {
+				// For other errors, log stderr or message
+				console.error(
+					`Error generating diff for ${path.basename(
+						file1,
+					)} and ${path.basename(file2)}: ${
+						execError.stderr?.toString() || execError.message || "Unknown error"
+					}`,
+				)
+				diffOutput = null // Ensure diff is null on error
 			}
-			// For other errors, log stderr or message
-			console.error(
-				`Error generating diff for ${path.basename(file1)} and ${path.basename(
-					file2,
-				)}: ${
-					execError.stderr?.toString() || execError.message || "Unknown error"
-				}`,
-			)
 		} else {
 			// Handle cases where the error is not an object
 			console.error(
@@ -88,9 +98,22 @@ async function generateDiff(
 					file2,
 				)}: ${String(error)}`,
 			)
+			diffOutput = null // Ensure diff is null on error
 		}
-		return null
 	}
+
+	// Count added/removed lines if diff exists
+	if (diffOutput) {
+		diffOutput.split("\n").forEach(line => {
+			if (line.startsWith("+") && !line.startsWith("+++")) {
+				added++
+			} else if (line.startsWith("-") && !line.startsWith("---")) {
+				removed++
+			}
+		})
+	}
+
+	return { diff: diffOutput, added, removed } // Return object
 }
 
 async function getGptSummary(
@@ -122,16 +145,17 @@ async function main() {
 	const args = parseArgs()
 	const localDirFullPath = path.resolve(args.localDir)
 	const reportFilePath = path.resolve(args.outputFile)
-
-	// Define the fixed clone target directory relative to the project root
 	const cloneTarget = path.resolve("temp")
+	let spinner
+	const filesWithDiffs: { filename: string; added: number; removed: number }[] =
+		[]
 
 	try {
 		// --- Setup ---
-		// Ensure the target directory exists and is empty
-		console.log(`Preparing clone directory: ${cloneTarget}`)
-		await fs.rm(cloneTarget, { recursive: true, force: true }) // Remove if exists
-		await fs.mkdir(cloneTarget, { recursive: true }) // Create it
+		spinner = ora(`Preparing clone directory: ${cloneTarget}`).start()
+		await fs.rm(cloneTarget, { recursive: true, force: true })
+		await fs.mkdir(cloneTarget, { recursive: true })
+		spinner.succeed(`Prepared clone directory: ${cloneTarget}`)
 
 		// Update the path where upstream files are expected after cloning
 		const templateDir = path.join(
@@ -143,20 +167,23 @@ async function main() {
 			"ui",
 		)
 
-		console.log(`Cloning latest shadcn-ui templates into ${cloneTarget}...`)
+		spinner = ora(
+			`Cloning latest shadcn-ui templates into ${cloneTarget}...`,
+		).start()
 		await runCommand(`git clone --depth 1 "${TEMPLATE_REPO}" "${cloneTarget}"`)
+		spinner.succeed(`Cloned latest shadcn-ui templates into ${cloneTarget}`)
 
 		// Verify upstream directory exists
 		try {
 			await fs.access(templateDir)
 		} catch (e) {
-			console.error(
+			spinner?.fail(
 				`Error: Upstream directory not found after clone: ${templateDir}`,
 			)
 			throw e
 		}
 
-		// Check for prettier config files in the root directory
+		// Check for prettier config files
 		const prettierConfigJsPath = path.resolve(
 			process.cwd(),
 			"prettier.config.js",
@@ -169,55 +196,54 @@ async function main() {
 			await fs.access(prettierConfigJsPath)
 			foundPrettierConfigPath = prettierConfigJsPath
 			useLocalPrettierConfig = true
-			console.log(`Using prettier config from: ${foundPrettierConfigPath}`)
+			ora(`Using prettier config from: ${foundPrettierConfigPath}`).info()
 			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		} catch (e) {
-			// prettier.config.js not found, try .prettierrc
 			try {
 				await fs.access(prettierrcPath)
 				foundPrettierConfigPath = prettierrcPath
 				useLocalPrettierConfig = true
-				console.log(`Using prettier config from: ${foundPrettierConfigPath}`)
+				ora(`Using prettier config from: ${foundPrettierConfigPath}`).info()
 				// eslint-disable-next-line @typescript-eslint/no-unused-vars
 			} catch (e2) {
-				// Neither config file found
-				console.log(
+				ora(
 					"No prettier.config.js or .prettierrc found in root directory. Using default discovery.",
-				)
+				).warn()
 			}
 		}
 
 		// Format the entire upstream directory once
+		spinner = ora(
+			`Formatting entire upstream directory: ${templateDir}...`,
+		).start()
 		try {
-			console.log(`Formatting entire upstream directory: ${templateDir}...`)
-			// Construct the prettier command
 			let prettierCommand = `npx prettier --write "${templateDir}/**/*.tsx" --parser typescript --log-level warn`
 			if (useLocalPrettierConfig && foundPrettierConfigPath) {
 				prettierCommand += ` --config "${foundPrettierConfigPath}"`
 			}
-			// Use quotes around the glob pattern for shell compatibility
 			await runCommand(prettierCommand)
-			console.log("Upstream formatting complete.")
+			spinner.succeed(`Formatted upstream directory: ${templateDir}`)
 		} catch (formatError) {
-			console.warn(
-				"Warning: Prettier command failed for the upstream directory. Diffing against unformatted files.",
-				formatError,
+			spinner.warn(
+				`Warning: Prettier command failed for upstream directory: ${templateDir}. Diffing against unformatted files.`,
 			)
+			console.warn(formatError)
 		}
 
 		// Get list of upstream files for filtering
 		let upstreamFileNames = new Set<string>()
+		spinner = ora(`Reading upstream directory: ${templateDir}`).start()
 		try {
 			const upstreamFiles = await fs.readdir(templateDir)
 			upstreamFileNames = new Set(upstreamFiles.filter(f => f.endsWith(".tsx")))
-			console.log(
+			spinner.succeed(
 				`Found ${upstreamFileNames.size} upstream .tsx files in: ${templateDir}`,
 			)
 		} catch (cloneError) {
-			console.error(
+			spinner.fail(
 				`Error: Could not read upstream directory at ${templateDir}. Check clone step and path.`,
 			)
-			throw cloneError // Stop execution if clone failed
+			throw cloneError
 		}
 
 		// --- Initialize Report ---
@@ -225,97 +251,110 @@ async function main() {
 		const globalSummaries: string[] = []
 
 		// --- Generate Diffs ---
-		console.log("Generating diffs and collecting summaries...")
+		spinner = ora("Processing local files and generating diffs...").start()
 		const localFiles = await fs.readdir(localDirFullPath)
 
 		const apiKey = process.env.OPENAI_API_KEY
 		if (!apiKey) {
-			console.log("Skipping summary: OPENAI_API_KEY not set.")
+			spinner.info("Skipping summary: OPENAI_API_KEY not set.")
 		}
 
-		// Process files only if they exist upstream
 		for (const filename of localFiles) {
-			// Skip if not a .tsx file OR if not present in the upstream directory
 			if (!filename.endsWith(".tsx") || !upstreamFileNames.has(filename)) {
 				continue
 			}
 
+			spinner.text = `Processing: ${filename}`
 			const localFile = path.join(localDirFullPath, filename)
 			const upstreamFile = path.join(templateDir, filename)
 
-			// We already know the upstream file exists from the Set check
 			try {
-				// Add the plain header to file report
 				fileReportContent += `\\n\\n## ${filename}\\n\\n`
+				const diffResult = await generateDiff(localFile, upstreamFile)
 
-				// Pass the main tempDir to generateDiff for placing formatted files
-				const diffOutput = await generateDiff(localFile, upstreamFile)
+				if (diffResult.diff && diffResult.diff.length > 0) {
+					// Store filename and counts
+					filesWithDiffs.push({
+						filename: filename,
+						added: diffResult.added,
+						removed: diffResult.removed,
+					})
 
-				if (diffOutput && diffOutput.length > 0) {
-					// Add plain diff to file report
-					fileReportContent += `\`\`\`diff\\n${diffOutput}\\n\`\`\`\\n`
+					fileReportContent += `\`\`\`diff\\n${diffResult.diff}\\n\`\`\`\\n`
 
-					// --- LLM Summaries (if API key is available) ---
 					if (apiKey) {
 						const openai = new OpenAI({ apiKey })
 						const componentBaseName = filename.replace(".tsx", "")
-						console.log(`Summarizing ${filename} with ${OPENAI_MODEL}...`)
+						spinner.text = `Summarizing ${filename} with ${OPENAI_MODEL}...`
 						const summary = await getGptSummary(
-							diffOutput,
+							diffResult.diff,
 							componentBaseName,
 							openai,
 						)
-						// Add plain summary to file report
 						const summarySection = `### Summary: ${componentBaseName}\\n\\n${summary}\\n`
 						fileReportContent += `\\n${summarySection}`
-						// Add to global summaries (plain text)
 						globalSummaries.push(
 							`### \`${componentBaseName}\`\\n\\n${summary}\\n`,
 						)
 					}
 				} else {
-					// This block now correctly handles cases where the first if was false
-					// (i.e., diffOutput is "" or null)
-					if (diffOutput === "") {
-						// Add plain message to file report for identical files
+					if (diffResult.diff === "") {
 						const noChangesMsg = `_No changes detected._\\n`
 						fileReportContent += noChangesMsg
 					} else {
-						// Add plain error message to file report (diffOutput must be null here)
 						const errorMsg = `_Error generating diff._\\n`
 						fileReportContent += errorMsg
 					}
 				}
 			} catch (error) {
-				// This catch block should now primarily handle errors from generateDiff or summary generation
-				console.error(`Error processing file ${filename}:`, error)
-				// Add plain error message to file report
+				spinner.fail(`Error processing file ${filename}`)
+				console.error(error)
 				const errorMsg = `\\n_Error processing file: ${
 					(error as Error).message
 				}_\\n`
 				fileReportContent += errorMsg
+				spinner = ora("Continuing file processing...").start()
 			}
+		}
+
+		// --- Finalize processing ---
+		if (filesWithDiffs.length > 0) {
+			spinner.succeed(
+				`Processing complete. Found differences in: ${filesWithDiffs
+					.map(
+						f =>
+							`${chalk.yellow(f.filename)} (${chalk.green(
+								`+${f.added}`,
+							)}, ${chalk.red(`-${f.removed}`)})`,
+					)
+					.join(", ")}`,
+			)
+		} else {
+			spinner.succeed("Processing complete. No differences found.")
 		}
 
 		// --- Add Global Summary ---
 		if (globalSummaries.length > 0) {
 			const globalSummaryHeader = `\\n\\n---\\n\\n# Global Summary\\n\\n`
-			const globalSummaryBody = globalSummaries.join("\n")
+			const globalSummaryBody = globalSummaries.join("\\n")
 			fileReportContent += globalSummaryHeader + globalSummaryBody
 		}
 
 		// --- Write FILE Report (Plain) ---
-		const finalFileReport = fileReportContent.replace(/\\n/g, "\n") // Fix newlines for file
+		spinner = ora(`Generating report file: ${reportFilePath}`).start()
+		const finalFileReport = fileReportContent.replace(/\\n/g, "\\n")
 		await fs.writeFile(reportFilePath, finalFileReport)
-		console.log(`Report generated: ${reportFilePath}`)
+		spinner.succeed(`Report generated: ${reportFilePath}`)
 	} catch (error) {
+		if (spinner) {
+			spinner.fail("Script execution failed.")
+		} else {
+			console.error("Script execution failed before spinner initialization.")
+		}
 		console.error("An error occurred during script execution:", error)
-		process.exitCode = 1 // Indicate failure
+		process.exitCode = 1
 	} finally {
-		// --- Cleanup ---
-		// No cleanup needed for the fixed 'temp' directory unless specifically required.
-		// The old logic for the os.tmpdir() based directory is removed.
-		console.log(`Cloned repository located at: ${cloneTarget}`)
+		ora(`Cloned repository located at: ${cloneTarget}`).info()
 	}
 }
 
