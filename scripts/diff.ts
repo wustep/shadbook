@@ -272,12 +272,16 @@ async function main() {
 						globalSummaries.push(
 							`### \`${componentBaseName}\`\\n\\n${summary}\\n`,
 						)
-					} else if (diffOutput === "") {
-						// Add plain message to file report
+					}
+				} else {
+					// This block now correctly handles cases where the first if was false
+					// (i.e., diffOutput is "" or null)
+					if (diffOutput === "") {
+						// Add plain message to file report for identical files
 						const noChangesMsg = `_No changes detected._\\n`
 						fileReportContent += noChangesMsg
 					} else {
-						// Add plain error message to file report
+						// Add plain error message to file report (diffOutput must be null here)
 						const errorMsg = `_Error generating diff._\\n`
 						fileReportContent += errorMsg
 					}
