@@ -157,7 +157,10 @@ async function main() {
 		}
 
 		// Check for prettier config files in the root directory
-		const prettierConfigJsPath = path.resolve(process.cwd(), "prettier.config.js")
+		const prettierConfigJsPath = path.resolve(
+			process.cwd(),
+			"prettier.config.js",
+		)
 		const prettierrcPath = path.resolve(process.cwd(), ".prettierrc")
 		let foundPrettierConfigPath: string | null = null
 		let useLocalPrettierConfig = false
@@ -167,7 +170,7 @@ async function main() {
 			foundPrettierConfigPath = prettierConfigJsPath
 			useLocalPrettierConfig = true
 			console.log(`Using prettier config from: ${foundPrettierConfigPath}`)
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		} catch (e) {
 			// prettier.config.js not found, try .prettierrc
 			try {
@@ -175,7 +178,7 @@ async function main() {
 				foundPrettierConfigPath = prettierrcPath
 				useLocalPrettierConfig = true
 				console.log(`Using prettier config from: ${foundPrettierConfigPath}`)
-			// eslint-disable-next-line @typescript-eslint/no-unused-vars
+				// eslint-disable-next-line @typescript-eslint/no-unused-vars
 			} catch (e2) {
 				// Neither config file found
 				console.log(
@@ -250,7 +253,7 @@ async function main() {
 
 				if (diffOutput && diffOutput.length > 0) {
 					// Add plain diff to file report
-					fileReportContent += `\\\`\\\`\\\`diff\\n${diffOutput}\\n\\\`\\\`\\\`\\n`
+					fileReportContent += `\`\`\`diff\\n${diffOutput}\\n\`\`\`\\n`
 
 					// --- LLM Summaries (if API key is available) ---
 					if (apiKey) {
@@ -267,7 +270,7 @@ async function main() {
 						fileReportContent += `\\n${summarySection}`
 						// Add to global summaries (plain text)
 						globalSummaries.push(
-							`### \\\`${componentBaseName}\\\`\\n\\n${summary}\\n`,
+							`### \`${componentBaseName}\`\\n\\n${summary}\\n`,
 						)
 					} else if (diffOutput === "") {
 						// Add plain message to file report
