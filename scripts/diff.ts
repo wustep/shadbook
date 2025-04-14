@@ -19,6 +19,7 @@ const OPENAI_MODEL = "gpt-4" // Or your preferred model
 interface Args {
 	localDir: string
 	outputFile: string
+	filter?: string // Add optional filter property
 }
 
 function parseArgs(): Args {
@@ -26,20 +27,43 @@ function parseArgs(): Args {
 	const parsedArgs: Args = {
 		localDir: DEFAULT_LOCAL_DIR,
 		outputFile: DEFAULT_REPORT_FILE,
+		filter: undefined, // Initialize filter
 	}
+	const usedIndices = new Set<number>()
 
+	// First pass: handle options
 	for (let i = 0; i < args.length; i++) {
+		if (usedIndices.has(i)) continue
+
 		if (args[i] === "--local" && args[i + 1]) {
 			parsedArgs.localDir = args[i + 1]
+			usedIndices.add(i)
+			usedIndices.add(i + 1)
 			i++
 		} else if (args[i] === "--output" && args[i + 1]) {
 			parsedArgs.outputFile = args[i + 1]
+			usedIndices.add(i)
+			usedIndices.add(i + 1)
 			i++
-		} else {
-			console.error(`Unknown option: ${args[i]}`)
-			process.exit(1)
 		}
 	}
+
+	// Second pass: handle positional argument (filter)
+	for (let i = 0; i < args.length; i++) {
+		if (!usedIndices.has(i)) {
+			if (parsedArgs.filter === undefined) {
+				parsedArgs.filter = args[i]
+				usedIndices.add(i)
+			} else {
+				console.error(`Unknown or duplicate positional argument: ${args[i]}`)
+				console.error(
+					"Usage: script.ts [filter] [--local <dir>] [--output <file>]",
+				)
+				process.exit(1)
+			}
+		}
+	}
+
 	return parsedArgs
 }
 
@@ -334,7 +358,19 @@ async function main() {
 
 		// --- Generate Diffs (Phase 1: Local Processing) ---
 		spinner = ora("Processing local files and generating diffs...").start()
-		const localFiles = await fs.readdir(localDirFullPath)
+		let localFiles = await fs.readdir(localDirFullPath)
+
+		// Apply filter if provided
+		if (args.filter) {
+			spinner.text = `Filtering local files by name: "${args.filter}"`
+			localFiles = localFiles.filter(filename =>
+				filename.includes(args.filter!),
+			)
+			spinner.succeed(
+				`Filtered local files. Found ${localFiles.length} matching "${args.filter}".`,
+			)
+			spinner.start("Processing filtered files and generating diffs...") // Restart spinner
+		}
 
 		for (const filename of localFiles) {
 			if (!filename.endsWith(".tsx") || !upstreamFileNames.has(filename)) {
@@ -490,10 +526,12 @@ async function main() {
 		await fs.writeFile(reportFilePath, fileReportContent)
 		spinner.succeed(`Report generated: ${reportFilePath}`)
 
-		// Log the overall summary to the console
-		console.log(chalk.bold.blue("-------- Overall Summary --------"))
-		console.log(overallSummary)
-		console.log(chalk.bold.blue("----------------------------"))
+		if (overallSummary.length > 0) {
+			// Log the overall summary to the console
+			console.log(chalk.bold.blue("-------- Overall Summary --------"))
+			console.log(overallSummary)
+			console.log(chalk.bold.blue("----------------------------"))
+		}
 	} catch (error) {
 		if (spinner) {
 			spinner.fail("Script execution failed.")
