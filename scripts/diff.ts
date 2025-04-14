@@ -125,7 +125,19 @@ async function getGptSummary(
 	componentName: string,
 	openai: OpenAI,
 ): Promise<string> {
-	const prompt = `Summarize the following Git diff between two versions of the ${componentName} component from shadcn/ui. Use very concise and precise bullet points. Focus on user-facing changes, breaking changes, and any styling or behavior updates:\n\n${diff}`
+	const prompt = `You are an expert technical writer summarizing changes between two versions of a React component.
+Analyze the following Git diff for the \`${componentName}\` component, originally from shadcn/ui.
+Provide a concise summary using bullet points.
+
+Instructions:
+- Focus on user-facing changes, breaking changes, significant prop updates, styling modifications (especially Tailwind CSS classes), and behavior alterations.
+- Ignore minor changes like whitespace, comments, or internal refactoring unless they directly impact the component's usage or appearance.
+- Use Markdown format for your response.
+- Wrap all component names, prop names, CSS class names, file names, and other code concepts in backticks (\`).
+- Be precise and brief in each bullet point.
+
+Diff:
+\n\n${diff}`
 
 	try {
 		const response = await openai.chat.completions.create({
@@ -152,8 +164,19 @@ async function getOverallSummary(
 		return "No component summaries were generated to create an overall summary."
 	}
 
-	const combinedSummaries = summaries.join("\n\n---\n\n")
-	const prompt = `The following are summaries of changes for individual UI components based on Git diffs. Please synthesize these into a single, high-level summary suitable for a report introduction. Focus on the most impactful changes, trends, or common themes across components. Be concise. Use bullet points.\n\nIndividual Summaries:\n${combinedSummaries}`
+	const combinedSummaries = summaries.join("\\n\\n---\\n\\n")
+	const prompt = `You are an AI assistant tasked with creating a high-level overview from individual component change summaries.
+The following summaries describe modifications between local and upstream versions of shadcn/ui components.
+Synthesize these into a single, introductory summary for a diff report.
+
+Instructions:
+- Identify the most impactful changes, common themes, or notable trends observed across *multiple* components.
+- Use concise bullet points in Markdown format.
+- Wrap all component names, prop names, CSS class names, file names, and other code concepts in backticks (\`).
+- Aim for a brief overview suitable for the start of a technical report. Avoid repeating details from individual summaries unless necessary to illustrate a trend.
+
+Individual Summaries:
+\n\n---\n\n${combinedSummaries}`
 
 	try {
 		const response = await openai.chat.completions.create({
