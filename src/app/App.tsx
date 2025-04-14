@@ -555,7 +555,7 @@ function TeamSwitcher({
 function ThemeToggle() {
 	const { theme, toggleTheme } = useTheme()
 	return (
-		<Button
+		<SidebarMenuButton
 			variant="outline"
 			size="sm"
 			className="w-full justify-start gap-2"
@@ -567,7 +567,7 @@ function ThemeToggle() {
 				<Sun className="size-4" />
 			)}
 			<span>{theme === "dark" ? "Dark" : "Light"} Mode</span>
-		</Button>
+		</SidebarMenuButton>
 	)
 }
 
