@@ -1,3 +1,14 @@
+/**
+ * shadcn diff tool
+ * Compares the current version of your shadcn components with shadcn@latest
+ * 
+ * `npm run diff` to run!
+ * args:
+ * -- localDir [dir]: local directory for where your components live (e.g. "src/components/ui")
+ * -- outputFile [file]: file to output diff results and AI summaries (e.g. "temp/diff.md")
+ * -- filter [text]: filter to search specific components (e.g. "Button")
+ */
+
 #!/usr/bin/env node
 
 import chalk from "chalk"
