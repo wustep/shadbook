@@ -1,26 +1,20 @@
 import { Check, Paintbrush } from "lucide-react"
 import { useEffect, useState } from "react"
 
-import { Button } from "@/components/ui/button"
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { SidebarMenuButton, useSidebar } from "@/components/ui/sidebar"
+import { SidebarMenuButton } from "@/components/ui/sidebar"
 
-// Available theme colors
 type ThemeColor = "neutral" | "gray" | "slate" | "stone" | "zinc"
 
 export function ColorThemeSelector() {
 	const [color, setColor] = useState<ThemeColor>("neutral")
-	const { state } = useSidebar()
-	const isCollapsed = state === "collapsed"
 
-	// Update the document's HTML class when color changes
 	useEffect(() => {
-		// Remove existing theme colors
 		document.documentElement.classList.remove(
 			"theme-neutral",
 			"theme-gray",
@@ -29,14 +23,11 @@ export function ColorThemeSelector() {
 			"theme-zinc",
 		)
 
-		// Add the new theme color
 		document.documentElement.classList.add(`theme-${color}`)
 
-		// Store the preference
 		localStorage.setItem("theme-color", color)
 	}, [color])
 
-	// Load the stored preference on component mount
 	useEffect(() => {
 		const storedColor = localStorage.getItem("theme-color") as ThemeColor
 		if (storedColor) {
