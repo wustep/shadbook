@@ -3431,7 +3431,7 @@ export function PhysicsPlayground() {
 		ComponentSubcategory | undefined
 	>(undefined)
 	const [gravity, setGravity] = useState(1)
-	const [bounce, setBounce] = useState(0.3) // Reduced default bounce from 0.8 to 0.3
+	const [bounce, setBounce] = useState(0.4) // Balanced bounce for good physics feel
 	const [isPaused, setIsPaused] = useState(false)
 	const [componentCount, setComponentCount] = useState(0)
 	const [controlsVisible, setControlsVisible] = useState(true)
@@ -3633,8 +3633,8 @@ export function PhysicsPlayground() {
 					{
 						isStatic: true,
 						label: "floor",
-						friction: 0.3,
-						restitution: 0.2, // Reduced from 0.3
+						friction: 0.1,
+						restitution: 0.3,
 					},
 				),
 				Matter.Bodies.rectangle(
@@ -3645,8 +3645,8 @@ export function PhysicsPlayground() {
 					{
 						isStatic: true,
 						label: "wall-left",
-						friction: 0.3,
-						restitution: 0.2, // Reduced from 0.3
+						friction: 0.1,
+						restitution: 0.3,
 					},
 				),
 				Matter.Bodies.rectangle(
@@ -3657,15 +3657,15 @@ export function PhysicsPlayground() {
 					{
 						isStatic: true,
 						label: "wall-right",
-						friction: 0.3,
-						restitution: 0.2, // Reduced from 0.3
+						friction: 0.1,
+						restitution: 0.3,
 					},
 				),
 				Matter.Bodies.rectangle(newBounds.width / 2, 25, newBounds.width, 50, {
 					isStatic: true,
 					label: "ceiling",
-					friction: 0.2,
-					restitution: 0.3, // Reduced from 0.5
+					friction: 0.1,
+					restitution: 0.4,
 				}),
 			]
 
@@ -3867,29 +3867,25 @@ export function PhysicsPlayground() {
 			const rect = element.getBoundingClientRect()
 			const sceneRect = sceneRef.current!.getBoundingClientRect()
 
-			// Random spawn position at top with some margin
+			// Random spawn position at top with proper margin calculation
+			const margin = 60 // Margin from walls
+			const availableWidth = sceneRect.width - margin * 2 - rect.width
 			const x =
-				Math.random() * (sceneRect.width - rect.width - 100) +
-				rect.width / 2 +
-				50
-			const y = rect.height / 2 + 50 // Start a bit lower to avoid ceiling
+				Math.random() * Math.max(availableWidth, 0) + margin + rect.width / 2
+			const y = margin + rect.height / 2 // Start below ceiling with proper margin
 
-			// Smooth bias towards upright orientation with stronger bias
-			// Using a higher power function to bias the distribution more strongly
-			const randomValue = Math.random()
-			const biasedValue = Math.pow(randomValue, 5) // Increased from 3 to 5 for stronger bias
-			const deviation = biasedValue * (Math.PI / 2) // Reduced from π to π/2 for smaller max deviation
-			const initialAngle = Math.random() < 0.5 ? deviation : -deviation
+			// More natural random rotation - less biased for better physics feel
+			const initialAngle = (Math.random() - 0.5) * Math.PI * 0.5 // Random angle within ±45 degrees
 
 			// Create physics body with improved settings
 			const body = Matter.Bodies.rectangle(x, y, rect.width, rect.height, {
 				restitution: bounce,
-				friction: 0.3, // Increased friction from 0.1 for more realistic behavior
-				frictionAir: 0.001, // Increased air friction from 0.0001 for more damping
+				friction: 0.1, // Reduced friction for better movement
+				frictionAir: 0.0001, // Reduced air friction for less damping
 				density: 0.001,
 				angle: initialAngle,
-				angularVelocity: (Math.random() - 0.5) * 0.05, // Reduced initial spin
-				inertia: Infinity, // This prevents rotation from gravity
+				angularVelocity: (Math.random() - 0.5) * 0.1, // Restored initial spin
+				// Removed inertia: Infinity to allow natural rotation
 			})
 
 			// Add to world
@@ -3914,16 +3910,31 @@ export function PhysicsPlayground() {
 				const startY = e.clientY
 				const startBodyX = body.position.x
 				const startBodyY = body.position.y
+				let lastX = startX
+				let lastY = startY
+				let lastTime = Date.now()
 
 				const handleMouseMove = (e: MouseEvent) => {
+					const currentTime = Date.now()
+					const dt = Math.max(currentTime - lastTime, 1) // Prevent division by zero
+
 					const dx = e.clientX - startX
 					const dy = e.clientY - startY
+
+					// Calculate velocity based on mouse movement
+					const velocityX = ((e.clientX - lastX) / dt) * 50 // Scale factor for responsiveness
+					const velocityY = ((e.clientY - lastY) / dt) * 50
+
+					// Set position and apply velocity for smooth throwing
 					Matter.Body.setPosition(body, {
 						x: startBodyX + dx,
 						y: startBodyY + dy,
 					})
-					Matter.Body.setVelocity(body, { x: 0, y: 0 })
-					Matter.Body.setAngularVelocity(body, 0)
+					Matter.Body.setVelocity(body, { x: velocityX, y: velocityY })
+
+					lastX = e.clientX
+					lastY = e.clientY
+					lastTime = currentTime
 				}
 
 				const handleMouseUp = () => {
@@ -4106,8 +4117,8 @@ export function PhysicsPlayground() {
 									value={[bounce]}
 									onValueChange={([v]) => setBounce(v)}
 									min={0}
-									max={0.8} // Reduced max from 1 to 0.8
-									step={0.05} // Smaller steps from 0.1 to 0.05 for finer control
+									max={1}
+									step={0.05}
 									className="w-[100px]"
 								/>
 							</div>
