@@ -1,17 +1,4 @@
-import {
-	AlertCircle,
-	ChevronRight,
-	Circle,
-	CreditCard,
-	Edit,
-	Layers,
-	Palette,
-	Pause,
-	Play,
-	Sparkles,
-	Square,
-	ToggleLeft,
-} from "lucide-react"
+import { ChevronRight, Pause, Play } from "lucide-react"
 import Matter from "matter-js"
 import { useEffect, useRef, useState } from "react"
 import { createRoot } from "react-dom/client"
