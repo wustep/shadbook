@@ -48,8 +48,8 @@ export function PhysicsPlayground() {
 	const [selectedSubcategory, setSelectedSubcategory] = useState<
 		ComponentSubcategory | undefined
 	>(undefined)
-	const [gravity, setGravity] = useState(1)
-	const [bounce, setBounce] = useState(0.4) // Balanced bounce for good physics feel
+	const [gravity, setGravity] = useState(1000) // Better default gravity
+	const [bounce, setBounce] = useState(0.3) // Lower default bounce for more realistic feel
 	const [isPaused, setIsPaused] = useState(false)
 	const [componentCount, setComponentCount] = useState(0)
 	const [controlsVisible, setControlsVisible] = useState(true)
@@ -58,19 +58,32 @@ export function PhysicsPlayground() {
 	useEffect(() => {
 		if (!sceneRef.current) return
 
-		// Create engine with improved settings
+		// Create engine with optimized settings for stability
 		const engine = Matter.Engine.create({
-			enableSleeping: false, // Disable sleeping to prevent components from getting stuck
+			enableSleeping: true, // Enable sleeping for better performance, but with constraints
 			gravity: {
 				x: 0,
-				y: gravity * 0.001, // Scale the initial gravity
-				scale: 1, // Keep scale at 1 and handle scaling in the value instead
+				y: gravity * 0.000005, // Scaled gravity for reasonable physics
+				scale: 1, // Keep scale at 1, handle scaling in the value
 			},
+			// Add constraint solver iterations for better stability
+			constraintIterations: 2,
+			positionIterations: 6,
+			velocityIterations: 4,
 		})
+
+		// Configure world bounds to prevent objects from escaping
+		engine.world.bounds = {
+			min: { x: 0, y: 0 },
+			max: {
+				x: sceneRef.current.clientWidth,
+				y: sceneRef.current.clientHeight,
+			},
+		}
+
 		engineRef.current = engine
 
-		// We don't need a renderer since we're using DOM elements
-		// Just create the runner with fixed timestep
+		// Create runner with more stable timestep
 		const runner = Matter.Runner.create({
 			isFixed: true,
 			delta: 1000 / 60, // 60 FPS
@@ -79,6 +92,93 @@ export function PhysicsPlayground() {
 
 		// Run the engine
 		Matter.Runner.run(runner, engine)
+
+		// Add collision detection and anti-sticking system
+		let updateCounter = 0
+		Matter.Events.on(engine, "beforeUpdate", () => {
+			const bodies = Matter.Composite.allBodies(engine.world)
+			const bounds = engine.world.bounds
+			updateCounter++
+
+			bodies.forEach(body => {
+				if (body.isStatic) return
+
+				// Check if body is out of bounds and correct position
+				const margin = 15 // Smaller margin for tighter bounds
+				if (body.position.x < bounds.min.x + margin) {
+					Matter.Body.setPosition(body, {
+						x: bounds.min.x + margin,
+						y: body.position.y,
+					})
+					Matter.Body.setVelocity(body, {
+						x: Math.abs(body.velocity.x) * 0.8,
+						y: body.velocity.y,
+					})
+				}
+				if (body.position.x > bounds.max.x - margin) {
+					Matter.Body.setPosition(body, {
+						x: bounds.max.x - margin,
+						y: body.position.y,
+					})
+					Matter.Body.setVelocity(body, {
+						x: -Math.abs(body.velocity.x) * 0.8,
+						y: body.velocity.y,
+					})
+				}
+				if (body.position.y < bounds.min.y + margin) {
+					Matter.Body.setPosition(body, {
+						x: body.position.x,
+						y: bounds.min.y + margin,
+					})
+					Matter.Body.setVelocity(body, {
+						x: body.velocity.x,
+						y: Math.abs(body.velocity.y) * 0.8,
+					})
+				}
+				if (body.position.y > bounds.max.y - margin) {
+					Matter.Body.setPosition(body, {
+						x: body.position.x,
+						y: bounds.max.y - margin,
+					})
+					Matter.Body.setVelocity(body, {
+						x: body.velocity.x,
+						y: -Math.abs(body.velocity.y) * 0.8,
+					})
+				}
+
+				// Anti-sticking system: wake up and nudge sleeping bodies near edges
+				if (body.isSleeping) {
+					const isNearEdge =
+						body.position.y < 100 ||
+						body.position.x < 100 ||
+						body.position.x > bounds.max.x - 100
+
+					if (isNearEdge) {
+						Matter.Sleeping.set(body, false)
+						// Give a stronger nudge to unstick
+						Matter.Body.applyForce(body, body.position, {
+							x: (Math.random() - 0.5) * 0.002,
+							y: 0.002,
+						})
+					}
+				}
+
+				// Periodic gentle shake every 5 seconds to prevent permanent sticking
+				if (updateCounter % (60 * 5) === 0) {
+					// Every 5 seconds at 60fps
+					const velocity = Math.sqrt(
+						body.velocity.x ** 2 + body.velocity.y ** 2,
+					)
+					if (velocity < 0.1) {
+						// If nearly stationary
+						Matter.Body.applyForce(body, body.position, {
+							x: (Math.random() - 0.5) * 0.001,
+							y: (Math.random() - 0.5) * 0.001,
+						})
+					}
+				}
+			})
+		})
 
 		// Update DOM elements positions
 		const updateLoop = () => {
@@ -89,7 +189,6 @@ export function PhysicsPlayground() {
 
 				const element = bodiesRef.current.get(body.id)
 				if (element) {
-					// Use the body's position directly
 					const x = body.position.x
 					const y = body.position.y
 					const angle = body.angle
@@ -110,10 +209,15 @@ export function PhysicsPlayground() {
 		const updateBounds = () => {
 			if (!sceneRef.current || !engineRef.current) return
 
-			// Update wall positions on resize
 			const newBounds = {
 				width: sceneRef.current.clientWidth,
 				height: sceneRef.current.clientHeight,
+			}
+
+			// Update engine world bounds
+			engineRef.current.world.bounds = {
+				min: { x: 0, y: 0 },
+				max: { x: newBounds.width, y: newBounds.height },
 			}
 
 			// Remove old walls
@@ -122,50 +226,65 @@ export function PhysicsPlayground() {
 			).filter(body => body.isStatic)
 			Matter.Composite.remove(engineRef.current.world, oldWalls)
 
-			// Add new walls with updated positions
+			// Create thicker, more reliable walls with better positioning
+			const wallThickness = 30
 			const newWalls = [
+				// Floor - positioned at the very bottom
 				Matter.Bodies.rectangle(
 					newBounds.width / 2,
-					newBounds.height - 25,
-					newBounds.width,
-					50,
+					newBounds.height - wallThickness / 2,
+					newBounds.width + wallThickness * 2, // Extend beyond sides
+					wallThickness,
 					{
 						isStatic: true,
 						label: "floor",
-						friction: 0.1,
-						restitution: 0.3,
+						friction: 0.3,
+						restitution: 0.2,
+						render: { fillStyle: "transparent" },
 					},
 				),
+				// Left wall - positioned at the very left
 				Matter.Bodies.rectangle(
-					25,
+					wallThickness / 2,
 					newBounds.height / 2,
-					50,
-					newBounds.height,
+					wallThickness,
+					newBounds.height + wallThickness * 2, // Extend beyond top/bottom
 					{
 						isStatic: true,
 						label: "wall-left",
-						friction: 0.1,
-						restitution: 0.3,
+						friction: 0.3,
+						restitution: 0.2,
+						render: { fillStyle: "transparent" },
 					},
 				),
+				// Right wall - positioned at the very right
 				Matter.Bodies.rectangle(
-					newBounds.width - 25,
+					newBounds.width - wallThickness / 2,
 					newBounds.height / 2,
-					50,
-					newBounds.height,
+					wallThickness,
+					newBounds.height + wallThickness * 2, // Extend beyond top/bottom
 					{
 						isStatic: true,
 						label: "wall-right",
-						friction: 0.1,
-						restitution: 0.3,
+						friction: 0.3,
+						restitution: 0.2,
+						render: { fillStyle: "transparent" },
 					},
 				),
-				Matter.Bodies.rectangle(newBounds.width / 2, 25, newBounds.width, 50, {
-					isStatic: true,
-					label: "ceiling",
-					friction: 0.1,
-					restitution: 0.3, // Match other walls for consistent physics
-				}),
+				// Ceiling - positioned at the very top
+				Matter.Bodies.rectangle(
+					newBounds.width / 2,
+					wallThickness / 2,
+					newBounds.width + wallThickness * 2, // Extend beyond sides
+					wallThickness,
+					{
+						isStatic: true,
+						label: "ceiling",
+						friction: 0.3,
+						restitution: 0.2,
+						render: { fillStyle: "transparent" },
+					},
+				),
 			]
 
 			Matter.World.add(engineRef.current.world, newWalls)
@@ -180,12 +299,13 @@ export function PhysicsPlayground() {
 		// Cleanup
 		return () => {
 			window.removeEventListener("resize", updateBounds)
+			Matter.Events.off(engine, "beforeUpdate")
 			Matter.Runner.stop(runner)
 			Matter.Composite.clear(engine.world, false)
 			Matter.Engine.clear(engine)
 			bodiesRef.current.clear()
 		}
-	}, [gravity]) // Add gravity back to dependencies
+	}, [gravity])
 
 	// Update bounds when sidebar state changes
 	useEffect(() => {
@@ -203,7 +323,8 @@ export function PhysicsPlayground() {
 	// Update gravity when slider changes
 	useEffect(() => {
 		if (engineRef.current) {
-			engineRef.current.world.gravity.y = gravity * 0.001 // Scale the gravity value directly
+			// Apply the same scaling as in engine creation
+			engineRef.current.world.gravity.y = gravity * 0.000005
 		}
 	}, [gravity])
 
@@ -359,59 +480,52 @@ export function PhysicsPlayground() {
 				const rect = element.getBoundingClientRect()
 				const sceneRect = sceneRef.current!.getBoundingClientRect()
 
-				// Random spawn position at top with proper margin calculation
-				const margin = 60 // Margin from walls
-				const availableWidth = sceneRect.width - margin * 2 - rect.width
-				const x =
-					Math.random() * Math.max(availableWidth, 0) + margin + rect.width / 2
+				// Improved spawn positioning with better distribution
+				const wallMargin = 50 // Safe distance from walls
+				const topMargin = 80 // Increased safe distance from ceiling
 
-				// Reduce initial angle to prevent getting stuck - smaller angles are safer
-				const initialAngle = (Math.random() - 0.5) * Math.PI * 0.25 // Random angle within ±22.5 degrees (reduced from ±45)
+				// Calculate safe spawn area with more horizontal spread
+				const minX = wallMargin + rect.width / 2
+				const maxX = sceneRect.width - wallMargin - rect.width / 2
+				const x = Math.random() * (maxX - minX) + minX
 
-				// Calculate safe Y position accounting for rotation
-				// When rotated, the component takes up more vertical space
-				const rotatedHeight =
-					Math.abs(rect.width * Math.sin(initialAngle)) +
-					Math.abs(rect.height * Math.cos(initialAngle))
-				const safeMargin = Math.max(margin, rotatedHeight / 2 + 20) // Increased buffer from 10px to 20px
-				const y = safeMargin + rect.height / 2
+				// Add some vertical variation to prevent stacking
+				const baseY = topMargin + rect.height / 2
+				const yVariation = Math.random() * 40 // Add up to 40px vertical variation
+				const y = baseY + yVariation
 
-				// Ensure minimum distance from ceiling (extra safety check)
-				const minYFromCeiling = 80 // Minimum 80px from top
-				const finalY = Math.max(y, minYFromCeiling)
+				// Minimal initial rotation to prevent getting stuck
+				const initialAngle = (Math.random() - 0.5) * Math.PI * 0.1 // ±9 degrees only
 
-				// Create physics body with improved settings
-				const body = Matter.Bodies.rectangle(
-					x,
-					finalY,
-					rect.width,
-					rect.height,
-					{
-						restitution: bounce,
-						friction: 0.1, // Reduced friction for better movement
-						frictionAir: 0.001, // Increased air friction to prevent floating/sticking (was 0.0001)
-						density: 0.01, // Increased density for more stable physics (was 0.001)
-						angle: initialAngle,
-						angularVelocity: (Math.random() - 0.5) * 0.1, // Restored initial spin
-						// Removed inertia: Infinity to allow natural rotation
-					},
-				)
+				// Create physics body with optimized settings
+				const body = Matter.Bodies.rectangle(x, y, rect.width, rect.height, {
+					restitution: bounce,
+					friction: 0.4, // Higher friction for more realistic movement
+					frictionAir: 0.01, // Higher air resistance to prevent floating
+					density: 0.001, // Lower density for lighter feel
+					angle: initialAngle,
+					angularVelocity: (Math.random() - 0.5) * 0.05, // Minimal initial spin
+					sleepThreshold: 60, // Allow sleeping after 1 second of low activity
+					// Enable sleeping but with reasonable threshold
+				})
 
 				// Add to world
 				Matter.World.add(engineRef.current!.world, body)
 				bodiesRef.current.set(body.id, element)
 
-				// Give a small downward velocity to help prevent getting stuck
-				Matter.Body.setVelocity(body, {
-					x: (Math.random() - 0.5) * 0.5, // Small random horizontal velocity
-					y: Math.random() * 0.5 + 0.2, // Small downward velocity (0.2 to 0.7)
-				})
+				// Give initial velocity based on gravity setting
+				const initialVelocity = {
+					x: (Math.random() - 0.5) * 1.5, // Random horizontal velocity
+					y:
+						gravity > 0 ? Math.random() * 1.5 + 0.5 : (Math.random() - 0.5) * 1, // Downward if gravity, random if no gravity
+				}
+				Matter.Body.setVelocity(body, initialVelocity)
 
 				// Set initial position
 				element.style.left = "0px"
 				element.style.top = "0px"
 				element.style.transform = `translate(${x - rect.width / 2}px, ${
-					finalY - rect.height / 2
+					y - rect.height / 2
 				}px) rotate(${initialAngle}rad)`
 
 				// Make element draggable with mobile-friendly styling
@@ -516,7 +630,13 @@ export function PhysicsPlayground() {
 
 			setComponentCount(prev => prev + 1)
 		},
-		[selectedCategory, selectedSubcategory, bounce, createComponentElement],
+		[
+			selectedCategory,
+			selectedSubcategory,
+			bounce,
+			gravity,
+			createComponentElement,
+		],
 	)
 
 	// Clear all components
@@ -594,7 +714,7 @@ export function PhysicsPlayground() {
 									spawnInterval = null
 								}
 							}
-						}, 100) // Spawn every 100ms (10 per second) when shift is held
+						}, 100) // Spawn every 100ms (10 per second) when shift is held - slower to prevent sticking
 					} else if (!e.shiftKey && !spawnInterval) {
 						// For normal space holding (without shift), spawn at a slower rate
 						spawnInterval = setInterval(() => {
@@ -690,7 +810,7 @@ export function PhysicsPlayground() {
 				{/* Controls panel */}
 				{controlsVisible && (
 					<div className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 p-4">
-						<div className="flex flex-wrap gap-1 items-center">
+						<div className="flex flex-wrap gap-x-1 gap-y-3 items-center">
 							{/* Action buttons first */}
 							<div className="flex gap-2">
 								<TooltipProvider>
@@ -815,10 +935,13 @@ export function PhysicsPlayground() {
 									value={[gravity]}
 									onValueChange={([v]) => setGravity(v)}
 									min={0}
-									max={2}
-									step={0.1}
+									max={3000}
+									step={50}
 									className="w-[100px]"
 								/>
+								<span className="text-xs text-muted-foreground min-w-[40px]">
+									{gravity === 0 ? "None" : (gravity / 1000).toFixed(1)}
+								</span>
 							</div>
 
 							<div className="flex items-center gap-2">
@@ -828,10 +951,13 @@ export function PhysicsPlayground() {
 									value={[bounce]}
 									onValueChange={([v]) => setBounce(v)}
 									min={0}
-									max={1}
+									max={0.9}
 									step={0.05}
 									className="w-[100px]"
 								/>
+								<span className="text-xs text-muted-foreground min-w-[40px]">
+									{bounce.toFixed(2)}
+								</span>
 							</div>
 
 							<div className="ml-auto max-[1024px]:hidden">
@@ -861,19 +987,19 @@ export function PhysicsPlayground() {
 				{/* Visual walls */}
 				<div className="absolute inset-0 pointer-events-none">
 					{/* Top wall */}
-					<div className="absolute top-0 left-0 right-0 h-[50px] border-b-2 border-border/50 bg-gradient-to-b from-background/80 to-transparent" />
+					<div className="absolute top-0 left-0 right-0 h-[30px] border-b-2 border-border/50 bg-gradient-to-b from-background/80 to-transparent" />
 					{/* Bottom wall */}
-					<div className="absolute bottom-0 left-0 right-0 h-[50px] border-t-2 border-border/50 bg-gradient-to-t from-background/80 to-transparent" />
+					<div className="absolute bottom-0 left-0 right-0 h-[30px] border-t-2 border-border/50 bg-gradient-to-t from-background/80 to-transparent" />
 					{/* Left wall */}
-					<div className="absolute top-0 left-0 bottom-0 w-[50px] border-r-2 border-border/50 bg-gradient-to-r from-background/80 to-transparent" />
+					<div className="absolute top-0 left-0 bottom-0 w-[30px] border-r-2 border-border/50 bg-gradient-to-r from-background/80 to-transparent" />
 					{/* Right wall */}
-					<div className="absolute top-0 right-0 bottom-0 w-[50px] border-l-2 border-border/50 bg-gradient-to-l from-background/80 to-transparent" />
+					<div className="absolute top-0 right-0 bottom-0 w-[30px] border-l-2 border-border/50 bg-gradient-to-l from-background/80 to-transparent" />
 
 					{/* Corner indicators */}
-					<div className="absolute top-[48px] left-[48px] w-4 h-4 border-l-2 border-t-2 border-border/50" />
-					<div className="absolute top-[48px] right-[48px] w-4 h-4 border-r-2 border-t-2 border-border/50" />
-					<div className="absolute bottom-[48px] left-[48px] w-4 h-4 border-l-2 border-b-2 border-border/50" />
-					<div className="absolute bottom-[48px] right-[48px] w-4 h-4 border-r-2 border-b-2 border-border/50" />
+					<div className="absolute top-[28px] left-[28px] w-4 h-4 border-l-2 border-t-2 border-border/50" />
+					<div className="absolute top-[28px] right-[28px] w-4 h-4 border-r-2 border-t-2 border-border/50" />
+					<div className="absolute bottom-[28px] left-[28px] w-4 h-4 border-l-2 border-b-2 border-border/50" />
+					<div className="absolute bottom-[28px] right-[28px] w-4 h-4 border-r-2 border-b-2 border-border/50" />
 				</div>
 
 				{/* Components will be rendered here */}
