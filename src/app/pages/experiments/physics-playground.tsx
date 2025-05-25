@@ -1,10 +1,14 @@
 import {
 	AlertCircle,
+	AlertTriangle,
+	ArrowRight,
 	Bell,
+	Bold,
 	Bookmark,
 	Calendar,
 	Camera,
 	Check,
+	CheckCircle,
 	ChevronRight,
 	Circle,
 	Clock,
@@ -16,6 +20,8 @@ import {
 	Edit,
 	Feather,
 	FileText,
+	Filter,
+	Flame,
 	Gamepad2,
 	Gift,
 	Grid3x3,
@@ -23,23 +29,32 @@ import {
 	HelpCircle,
 	Home,
 	Info,
+	Italic,
 	Layers,
 	Lightbulb,
+	List,
 	Mail,
 	Moon,
+	MoreHorizontal,
 	Music,
 	Palette,
+	Plus,
 	Rocket,
+	Save,
 	Search,
 	Settings,
 	Share,
+	Shield,
+	ShoppingCart,
 	Sparkles,
 	Square,
 	Star,
 	Sun,
 	ToggleLeft,
 	Trash,
+	TrendingUp,
 	Trophy,
+	Underline,
 	Upload,
 	User,
 	Users,
@@ -313,6 +328,14 @@ const createButtonComponent = (subcategory?: string) => {
 		"Delete",
 		"Edit",
 		"Share",
+		"Learn more",
+		"Get started",
+		"Try it free",
+		"Download",
+		"Upload",
+		"Sign up",
+		"Log in",
+		"Explore",
 	]
 
 	// Handle specific subcategories
@@ -326,6 +349,14 @@ const createButtonComponent = (subcategory?: string) => {
 			Trash,
 			Mail,
 			Settings,
+			Heart,
+			Star,
+			Share,
+			Copy,
+			Plus,
+			Search,
+			Bell,
+			User,
 		])
 		return (
 			<Button variant={variant} size="icon">
@@ -333,6 +364,19 @@ const createButtonComponent = (subcategory?: string) => {
 			</Button>
 		)
 	} else if (subcategory === "text") {
+		// Sometimes add gradient or custom styling
+		if (Math.random() > 0.8) {
+			const gradients = [
+				"bg-gradient-to-r from-pink-500 to-violet-500 hover:from-pink-600 hover:to-violet-600",
+				"bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600",
+				"bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600",
+			]
+			return (
+				<Button className={getRandom(gradients)} size={size}>
+					{getRandom(texts)}
+				</Button>
+			)
+		}
 		return (
 			<Button variant={variant} size={size}>
 				{getRandom(texts)}
@@ -348,6 +392,13 @@ const createButtonComponent = (subcategory?: string) => {
 			Trash,
 			Mail,
 			Settings,
+			ArrowRight,
+			ChevronRight,
+			Plus,
+			Save,
+			Share,
+			Zap,
+			Rocket,
 		])
 		const iconPosition = getRandom(["left", "right"])
 		if (iconPosition === "left") {
@@ -373,52 +424,124 @@ const createButtonComponent = (subcategory?: string) => {
 					"View details",
 					"Read more",
 					"Documentation",
+					"Privacy Policy",
+					"Terms of Service",
+					"Contact us",
 				])}
 			</Button>
 		)
 	}
 
-	// Default random behavior
-	if (Math.random() > 0.5) {
-		const ButtonIcon = getRandom([
-			Check,
-			X,
-			Download,
-			Upload,
-			Edit,
-			Trash,
-			Mail,
-			Settings,
-		])
-		const iconPosition = getRandom(["left", "right", "icon-only"])
+	// Default random behavior with more variety
+	const buttonType = getRandom([
+		"simple",
+		"with-icon",
+		"icon-only",
+		"gradient",
+		"rounded",
+		"shadow",
+	])
 
-		if (iconPosition === "icon-only") {
+	switch (buttonType) {
+		case "simple":
+			return (
+				<Button variant={variant} size={size}>
+					{getRandom(texts)}
+				</Button>
+			)
+		case "with-icon": {
+			const ButtonIcon = getRandom([
+				Check,
+				X,
+				Download,
+				Upload,
+				Edit,
+				Trash,
+				Mail,
+				Settings,
+				ArrowRight,
+				ChevronRight,
+				Plus,
+				Save,
+				Share,
+			])
+			const iconPosition = getRandom(["left", "right"])
+			if (iconPosition === "left") {
+				return (
+					<Button variant={variant} size={size}>
+						<ButtonIcon className="mr-2 h-4 w-4" />
+						{getRandom(texts)}
+					</Button>
+				)
+			} else {
+				return (
+					<Button variant={variant} size={size}>
+						{getRandom(texts)}
+						<ButtonIcon className="ml-2 h-4 w-4" />
+					</Button>
+				)
+			}
+		}
+		case "icon-only": {
+			const ButtonIcon = getRandom([
+				Check,
+				X,
+				Download,
+				Upload,
+				Edit,
+				Trash,
+				Mail,
+				Settings,
+				Heart,
+				Star,
+				Share,
+				Copy,
+				Plus,
+				Search,
+				Bell,
+				User,
+			])
 			return (
 				<Button variant={variant} size="icon">
 					<ButtonIcon className="h-4 w-4" />
 				</Button>
 			)
-		} else if (iconPosition === "left") {
+		}
+		case "gradient": {
+			const gradients = [
+				"bg-gradient-to-r from-pink-500 to-violet-500 hover:from-pink-600 hover:to-violet-600",
+				"bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600",
+				"bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600",
+				"bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600",
+			]
 			return (
-				<Button variant={variant} size={size}>
-					<ButtonIcon className="mr-2 h-4 w-4" />
+				<Button className={getRandom(gradients)} size={size}>
 					{getRandom(texts)}
-				</Button>
-			)
-		} else {
-			return (
-				<Button variant={variant} size={size}>
-					{getRandom(texts)}
-					<ButtonIcon className="ml-2 h-4 w-4" />
 				</Button>
 			)
 		}
-	} else {
-		return (
-			<Button variant={variant} size={size}>
-				{variant === "link" ? "Link" : getRandom(texts)}
-			</Button>
-		)
+		case "rounded":
+			return (
+				<Button variant={variant} size={size} className="rounded-full">
+					{getRandom(texts)}
+				</Button>
+			)
+		case "shadow":
+			return (
+				<Button
+					variant={variant}
+					size={size}
+					className="shadow-lg shadow-primary/25"
+				>
+					{getRandom(texts)}
+				</Button>
+			)
+		default:
+			return (
+				<Button variant={variant} size={size}>
+					{getRandom(texts)}
+				</Button>
+			)
 	}
 }
 
@@ -435,14 +558,44 @@ const createBadgeComponent = (subcategory?: string) => {
 		"Free",
 		"Live",
 		"Coming Soon",
+		"Popular",
+		"Trending",
+		"Featured",
+		"Limited",
+		"Exclusive",
+		"Updated",
+		"AI",
+		"Early Access",
 	]
 	const text = getRandom(texts)
 
 	// Handle specific subcategories
 	if (subcategory === "simple") {
+		// Sometimes use different sizes
+		if (Math.random() > 0.7) {
+			const sizes = ["px-1.5 py-0.5 text-[0.65rem]", "px-3 py-1 text-sm"]
+			return (
+				<Badge variant={variant} className={getRandom(sizes)}>
+					{text}
+				</Badge>
+			)
+		}
 		return <Badge variant={variant}>{text}</Badge>
 	} else if (subcategory === "icon") {
-		const BadgeIcon = getRandom([Star, Zap, Trophy, Gift, Rocket])
+		const BadgeIcon = getRandom([
+			Star,
+			Zap,
+			Trophy,
+			Gift,
+			Rocket,
+			Sparkles,
+			Heart,
+			Flame,
+			TrendingUp,
+			CheckCircle,
+			Info,
+			AlertCircle,
+		])
 		return (
 			<Badge variant={variant}>
 				<BadgeIcon className="mr-1 h-3 w-3" />
@@ -450,21 +603,97 @@ const createBadgeComponent = (subcategory?: string) => {
 			</Badge>
 		)
 	} else if (subcategory === "colored") {
-		const coloredVariants = ["default", "secondary", "destructive"] as const
-		return <Badge variant={getRandom(coloredVariants)}>{text}</Badge>
+		const colorClasses = [
+			"bg-blue-500 hover:bg-blue-600",
+			"bg-green-500 hover:bg-green-600",
+			"bg-purple-500 hover:bg-purple-600",
+			"bg-amber-500 hover:bg-amber-600",
+			"bg-rose-500 hover:bg-rose-600",
+			"bg-gradient-to-r from-pink-500 to-violet-500",
+			"bg-gradient-to-r from-cyan-500 to-blue-500",
+			"bg-gradient-to-r from-amber-500 to-orange-500",
+		]
+		return <Badge className={getRandom(colorClasses)}>{text}</Badge>
 	}
 
-	// Default random behavior
-	if (Math.random() > 0.6) {
-		const BadgeIcon = getRandom([Star, Zap, Trophy, Gift, Rocket])
-		return (
-			<Badge variant={variant}>
-				<BadgeIcon className="mr-1 h-3 w-3" />
-				{text}
-			</Badge>
-		)
-	} else {
-		return <Badge variant={variant}>{text}</Badge>
+	// Default random behavior with more variety
+	const badgeType = getRandom([
+		"simple",
+		"with-icon",
+		"colored",
+		"gradient",
+		"outlined-colored",
+		"pill",
+		"count",
+	])
+
+	switch (badgeType) {
+		case "simple":
+			return <Badge variant={variant}>{text}</Badge>
+		case "with-icon": {
+			const BadgeIcon = getRandom([
+				Star,
+				Zap,
+				Trophy,
+				Gift,
+				Rocket,
+				Sparkles,
+				Heart,
+				Flame,
+				TrendingUp,
+				CheckCircle,
+			])
+			return (
+				<Badge variant={variant}>
+					<BadgeIcon className="mr-1 h-3 w-3" />
+					{text}
+				</Badge>
+			)
+		}
+		case "colored": {
+			const colorClasses = [
+				"bg-blue-500 hover:bg-blue-600",
+				"bg-green-500 hover:bg-green-600",
+				"bg-purple-500 hover:bg-purple-600",
+				"bg-amber-500 hover:bg-amber-600",
+				"bg-rose-500 hover:bg-rose-600",
+			]
+			return <Badge className={getRandom(colorClasses)}>{text}</Badge>
+		}
+		case "gradient": {
+			const gradients = [
+				"bg-gradient-to-r from-pink-500 to-violet-500",
+				"bg-gradient-to-r from-cyan-500 to-blue-500",
+				"bg-gradient-to-r from-amber-500 to-orange-500",
+				"bg-gradient-to-r from-green-500 to-emerald-500",
+			]
+			return <Badge className={getRandom(gradients)}>{text}</Badge>
+		}
+		case "outlined-colored": {
+			const coloredOutlines = [
+				"text-orange-500 border-orange-200 bg-orange-100 dark:border-orange-800 dark:bg-orange-950/50",
+				"text-purple-500 border-purple-200 bg-purple-100 dark:border-purple-800 dark:bg-purple-950/50",
+				"text-blue-500 border-blue-200 bg-blue-100 dark:border-blue-800 dark:bg-blue-950/50",
+				"text-green-500 border-green-200 bg-green-100 dark:border-green-800 dark:bg-green-950/50",
+			]
+			return (
+				<Badge variant="outline" className={getRandom(coloredOutlines)}>
+					{text}
+				</Badge>
+			)
+		}
+		case "pill":
+			return (
+				<Badge variant={variant} className="rounded-full px-3">
+					{text}
+				</Badge>
+			)
+		case "count": {
+			const count = Math.floor(Math.random() * 99) + 1
+			return <Badge variant={variant}>{count}</Badge>
+		}
+		default:
+			return <Badge variant={variant}>{text}</Badge>
 	}
 }
 
@@ -517,12 +746,22 @@ const createIconComponent = (subcategory?: string) => {
 const createCardComponent = (subcategory?: string) => {
 	// Handle specific subcategories
 	if (subcategory === "simple") {
-		const cardTitles = ["Feature", "Update", "News", "Alert", "Info"]
+		const cardTitles = [
+			"Feature",
+			"Update",
+			"News",
+			"Alert",
+			"Info",
+			"Tip",
+			"Guide",
+		]
 		const cardDescs = [
 			"Click to learn more",
 			"Physics enabled!",
 			"Drag me around",
 			"Interactive card",
+			"New features available",
+			"Check this out",
 		]
 		return (
 			<Card className="w-48">
@@ -535,83 +774,164 @@ const createCardComponent = (subcategory?: string) => {
 			</Card>
 		)
 	} else if (subcategory === "stats") {
-		return (
-			<Card className="w-56">
-				<CardHeader className="p-3">
-					<CardTitle className="text-sm">Statistics</CardTitle>
-				</CardHeader>
-				<CardContent className="p-3 pt-0">
-					<div className="flex items-center justify-between text-xs">
-						<span className="text-muted-foreground">Progress</span>
-						<span className="font-semibold">
-							{Math.floor(Math.random() * 100)}%
-						</span>
-					</div>
-					<Progress value={Math.random() * 100} className="mt-2 h-1" />
-				</CardContent>
-			</Card>
-		)
-	} else if (subcategory === "user") {
-		const names = ["John Doe", "Jane Smith", "Mark Johnson", "Sarah Wilson"]
-		const emails = [
-			"john@example.com",
-			"jane@example.com",
-			"mark@example.com",
-			"sarah@example.com",
+		const stats = [
+			{ label: "Users", value: "2.4k", change: "+12%", positive: true },
+			{ label: "Revenue", value: "$45k", change: "+8%", positive: true },
+			{ label: "Orders", value: "89", change: "-3%", positive: false },
+			{ label: "Views", value: "12.5k", change: "+24%", positive: true },
+			{ label: "Clicks", value: "3.2k", change: "+5%", positive: true },
 		]
-		const roles = ["Admin", "Member", "Guest", "Owner"]
-		const idx = Math.floor(Math.random() * names.length)
+		const stat = getRandom(stats)
 		return (
 			<Card className="w-56">
 				<CardContent className="p-4">
 					<div className="flex items-center justify-between">
 						<div>
+							<p className="text-xs text-muted-foreground">{stat.label}</p>
+							<p className="text-xl font-bold">{stat.value}</p>
+						</div>
+						<Badge
+							variant={stat.positive ? "default" : "destructive"}
+							className="text-xs"
+						>
+							{stat.change}
+						</Badge>
+					</div>
+					<Progress value={Math.random() * 100} className="mt-3 h-1" />
+				</CardContent>
+			</Card>
+		)
+	} else if (subcategory === "user") {
+		const names = [
+			"John Doe",
+			"Jane Smith",
+			"Mark Johnson",
+			"Sarah Wilson",
+			"Alex Chen",
+			"Emma Davis",
+		]
+		const emails = [
+			"john@example.com",
+			"jane@example.com",
+			"mark@example.com",
+			"sarah@example.com",
+			"alex@example.com",
+			"emma@example.com",
+		]
+		const roles = ["Admin", "Member", "Guest", "Owner", "Editor", "Viewer"]
+		const statuses = ["online", "away", "offline"]
+		const idx = Math.floor(Math.random() * names.length)
+		const status = getRandom(statuses)
+		return (
+			<Card className="w-64">
+				<CardContent className="p-4">
+					<div className="flex items-center space-x-3">
+						<Avatar className="h-10 w-10">
+							<AvatarFallback
+								className={getRandom([
+									"bg-blue-500",
+									"bg-green-500",
+									"bg-purple-500",
+								])}
+							>
+								{names[idx]
+									.split(" ")
+									.map(n => n[0])
+									.join("")}
+							</AvatarFallback>
+						</Avatar>
+						<div className="flex-1">
 							<p className="text-sm font-medium">{names[idx]}</p>
 							<p className="text-xs text-muted-foreground">{emails[idx]}</p>
 						</div>
-						<Badge
-							variant={idx === 0 ? "default" : "outline"}
-							className="text-xs"
-						>
-							{roles[idx]}
-						</Badge>
+						<div className="flex flex-col items-end gap-1">
+							<Badge
+								variant={idx === 0 ? "default" : "outline"}
+								className="text-xs"
+							>
+								{roles[idx]}
+							</Badge>
+							<div
+								className={`h-2 w-2 rounded-full ${
+									status === "online"
+										? "bg-green-500"
+										: status === "away"
+										? "bg-yellow-500"
+										: "bg-gray-300"
+								}`}
+							/>
+						</div>
 					</div>
 				</CardContent>
 			</Card>
 		)
 	} else if (subcategory === "action") {
+		const actions = [
+			{
+				icon: Download,
+				label: "Download",
+				desc: "Get the file",
+				color: "blue",
+			},
+			{ icon: Upload, label: "Upload", desc: "Add new file", color: "green" },
+			{ icon: Share, label: "Share", desc: "Send to team", color: "purple" },
+			{ icon: Rocket, label: "Deploy", desc: "Go live now", color: "orange" },
+		]
+		const action = getRandom(actions)
+		const ActionIcon = action.icon
 		return (
-			<Card className="w-48">
-				<CardHeader className="p-3">
-					<CardTitle className="text-sm">Quick Action</CardTitle>
-				</CardHeader>
-				<CardContent className="p-3 pt-0">
-					<Button size="sm" className="w-full">
-						Execute
-					</Button>
+			<Card className="w-48 hover:shadow-lg transition-all cursor-pointer">
+				<CardContent className="p-4 text-center">
+					<ActionIcon
+						className={`h-10 w-10 mx-auto mb-3 text-${action.color}-500`}
+					/>
+					<p className="text-sm font-semibold">{action.label}</p>
+					<p className="text-xs text-muted-foreground mt-1">{action.desc}</p>
 				</CardContent>
 			</Card>
 		)
 	} else if (subcategory === "notification") {
 		const notifications = [
-			{ title: "New message", badge: "New", variant: "default" as const },
+			{
+				title: "New message",
+				desc: "From John Doe",
+				badge: "New",
+				variant: "default" as const,
+				icon: Mail,
+			},
 			{
 				title: "Payment successful",
+				desc: "$49.99 processed",
 				badge: "Done",
 				variant: "secondary" as const,
+				icon: CreditCard,
 			},
 			{
 				title: "Update available",
+				desc: "Version 2.0 ready",
 				badge: "Info",
 				variant: "outline" as const,
+				icon: Download,
+			},
+			{
+				title: "Task completed",
+				desc: "Project finished",
+				badge: "Success",
+				variant: "default" as const,
+				icon: Check,
 			},
 		]
 		const notif = getRandom(notifications)
+		const NotifIcon = notif.icon
 		return (
-			<Card className="w-56">
+			<Card className="w-64">
 				<CardContent className="p-3">
-					<div className="flex items-center justify-between">
-						<p className="text-sm">{notif.title}</p>
+					<div className="flex items-start gap-3">
+						<NotifIcon className="h-5 w-5 text-muted-foreground mt-0.5" />
+						<div className="flex-1">
+							<p className="text-sm font-medium">{notif.title}</p>
+							<p className="text-xs text-muted-foreground">{notif.desc}</p>
+						</div>
 						<Badge variant={notif.variant} className="text-xs">
 							{notif.badge}
 						</Badge>
@@ -620,7 +940,16 @@ const createCardComponent = (subcategory?: string) => {
 			</Card>
 		)
 	} else if (subcategory === "settings") {
-		const settingIcons = [User, CreditCard, Calendar, Settings, Mail, Bell]
+		const settingIcons = [
+			User,
+			CreditCard,
+			Calendar,
+			Settings,
+			Mail,
+			Bell,
+			Shield,
+			Palette,
+		]
 		const settingTitles = [
 			"Profile",
 			"Billing",
@@ -628,18 +957,34 @@ const createCardComponent = (subcategory?: string) => {
 			"Preferences",
 			"Messages",
 			"Alerts",
+			"Security",
+			"Appearance",
+		]
+		const settingDescs = [
+			"Manage your info",
+			"Payment methods",
+			"Set your hours",
+			"Customize app",
+			"View messages",
+			"Notification settings",
+			"Privacy & security",
+			"Theme & colors",
 		]
 		const idx = Math.floor(Math.random() * settingIcons.length)
 		const SettingIcon = settingIcons[idx]
 		return (
-			<Card className="w-56">
+			<Card className="w-64 hover:bg-accent/50 transition-colors cursor-pointer">
 				<CardContent className="p-3">
 					<div className="flex items-center justify-between">
 						<div className="flex items-center space-x-3">
-							<SettingIcon className="h-4 w-4 text-muted-foreground" />
+							<div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
+								<SettingIcon className="h-5 w-5 text-primary" />
+							</div>
 							<div>
 								<p className="text-sm font-medium">{settingTitles[idx]}</p>
-								<p className="text-xs text-muted-foreground">Manage</p>
+								<p className="text-xs text-muted-foreground">
+									{settingDescs[idx]}
+								</p>
 							</div>
 						</div>
 						<ChevronRight className="h-4 w-4 text-muted-foreground" />
@@ -648,27 +993,37 @@ const createCardComponent = (subcategory?: string) => {
 			</Card>
 		)
 	} else if (subcategory === "hover") {
+		const hoverTexts = [
+			{ trigger: "Hover me!", content: "Hidden content revealed!" },
+			{ trigger: "What's this?", content: "A secret message!" },
+			{ trigger: "Curious?", content: "Physics-powered tooltip!" },
+			{ trigger: "Try me", content: "Interactive hover card" },
+		]
+		const hover = getRandom(hoverTexts)
 		return (
 			<HoverCard>
 				<HoverCardTrigger asChild>
-					<Button variant="link">Hover me!</Button>
+					<Button variant="link">{hover.trigger}</Button>
 				</HoverCardTrigger>
-				<HoverCardContent className="w-40 p-2">
-					<p className="text-xs">Hidden content!</p>
+				<HoverCardContent className="w-48 p-3">
+					<p className="text-sm">{hover.content}</p>
 				</HoverCardContent>
 			</HoverCard>
 		)
 	}
 
-	// Default random behavior - existing logic
+	// Default random behavior - more varied card types
 	const cardTypes = [
 		"simple",
-		"with-content",
-		"hover-card",
-		"team-member",
+		"stats",
+		"user",
+		"action",
 		"notification",
-		"premium",
 		"settings",
+		"hover-card",
+		"feature",
+		"pricing",
+		"image-preview",
 	] as const
 	const type = getRandom(cardTypes)
 
@@ -692,67 +1047,34 @@ const createCardComponent = (subcategory?: string) => {
 				</Card>
 			)
 		}
-		case "with-content": {
-			const contentTypes = ["stats", "action", "info"] as const
-			const contentType = getRandom(contentTypes)
-
-			if (contentType === "stats") {
-				return (
-					<Card className="w-56">
-						<CardHeader className="p-3">
-							<CardTitle className="text-sm">Statistics</CardTitle>
-						</CardHeader>
-						<CardContent className="p-3 pt-0">
-							<div className="flex items-center justify-between text-xs">
-								<span className="text-muted-foreground">Progress</span>
-								<span className="font-semibold">
-									{Math.floor(Math.random() * 100)}%
-								</span>
-							</div>
-							<Progress value={Math.random() * 100} className="mt-2 h-1" />
-						</CardContent>
-					</Card>
-				)
-			} else if (contentType === "action") {
-				return (
-					<Card className="w-48">
-						<CardHeader className="p-3">
-							<CardTitle className="text-sm">Quick Action</CardTitle>
-						</CardHeader>
-						<CardContent className="p-3 pt-0">
-							<Button size="sm" className="w-full">
-								Execute
-							</Button>
-						</CardContent>
-					</Card>
-				)
-			} else {
-				return (
-					<Card className="w-56">
-						<CardHeader className="p-3">
-							<CardTitle className="text-sm">Information</CardTitle>
-						</CardHeader>
-						<CardContent className="p-3 pt-0">
-							<p className="text-xs text-muted-foreground">
-								This card contains important details.
-							</p>
-						</CardContent>
-					</Card>
-				)
-			}
-		}
-		case "hover-card":
+		case "stats": {
+			const stats = [
+				{ label: "Users", value: "2.4k", change: "+12%", positive: true },
+				{ label: "Revenue", value: "$45k", change: "+8%", positive: true },
+				{ label: "Orders", value: "89", change: "-3%", positive: false },
+			]
+			const stat = getRandom(stats)
 			return (
-				<HoverCard>
-					<HoverCardTrigger asChild>
-						<Button variant="link">Hover me!</Button>
-					</HoverCardTrigger>
-					<HoverCardContent className="w-40 p-2">
-						<p className="text-xs">Hidden content!</p>
-					</HoverCardContent>
-				</HoverCard>
+				<Card className="w-56">
+					<CardContent className="p-4">
+						<div className="flex items-center justify-between">
+							<div>
+								<p className="text-xs text-muted-foreground">{stat.label}</p>
+								<p className="text-xl font-bold">{stat.value}</p>
+							</div>
+							<Badge
+								variant={stat.positive ? "default" : "destructive"}
+								className="text-xs"
+							>
+								{stat.change}
+							</Badge>
+						</div>
+						<Progress value={Math.random() * 100} className="mt-3 h-1" />
+					</CardContent>
+				</Card>
 			)
-		case "team-member": {
+		}
+		case "user": {
 			const names = ["John Doe", "Jane Smith", "Mark Johnson", "Sarah Wilson"]
 			const emails = [
 				"john@example.com",
@@ -781,6 +1103,24 @@ const createCardComponent = (subcategory?: string) => {
 				</Card>
 			)
 		}
+		case "action": {
+			const actions = [
+				{ icon: Download, label: "Download", desc: "Get the file" },
+				{ icon: Upload, label: "Upload", desc: "Add new file" },
+				{ icon: Share, label: "Share", desc: "Send to team" },
+			]
+			const action = getRandom(actions)
+			const ActionIcon = action.icon
+			return (
+				<Card className="w-48 hover:shadow-md transition-shadow cursor-pointer">
+					<CardContent className="p-4 text-center">
+						<ActionIcon className="h-8 w-8 mx-auto mb-2 text-primary" />
+						<p className="text-sm font-medium">{action.label}</p>
+						<p className="text-xs text-muted-foreground">{action.desc}</p>
+					</CardContent>
+				</Card>
+			)
+		}
 		case "notification": {
 			const notifications = [
 				{ title: "New message", badge: "New", variant: "default" as const },
@@ -805,28 +1145,6 @@ const createCardComponent = (subcategory?: string) => {
 								{notif.badge}
 							</Badge>
 						</div>
-					</CardContent>
-				</Card>
-			)
-		}
-		case "premium": {
-			return (
-				<Card className="w-48 border-blue-200 bg-blue-50 dark:bg-blue-950 dark:border-blue-800">
-					<CardHeader className="p-3">
-						<CardTitle className="text-sm text-blue-700 dark:text-blue-300">
-							Premium
-						</CardTitle>
-						<CardDescription className="text-xs text-blue-600 dark:text-blue-400">
-							Upgrade now
-						</CardDescription>
-					</CardHeader>
-					<CardContent className="p-3 pt-0">
-						<Button
-							size="sm"
-							className="w-full bg-blue-600 hover:bg-blue-700 text-xs"
-						>
-							Get Pro
-						</Button>
 					</CardContent>
 				</Card>
 			)
@@ -860,71 +1178,338 @@ const createCardComponent = (subcategory?: string) => {
 				</Card>
 			)
 		}
+		case "hover-card":
+			return (
+				<HoverCard>
+					<HoverCardTrigger asChild>
+						<Button variant="link">Hover me!</Button>
+					</HoverCardTrigger>
+					<HoverCardContent className="w-40 p-2">
+						<p className="text-xs">Hidden content!</p>
+					</HoverCardContent>
+				</HoverCard>
+			)
+		case "feature": {
+			const features = [
+				{
+					icon: Zap,
+					title: "Fast",
+					desc: "Lightning quick",
+					progress: 66,
+				},
+				{
+					icon: Shield,
+					title: "Secure",
+					desc: "Bank-level security",
+					progress: 100,
+				},
+				{
+					icon: Cloud,
+					title: "Cloud",
+					desc: "Always synced",
+					progress: 75,
+				},
+				{
+					icon: Sparkles,
+					title: "Smart",
+					desc: "AI-powered",
+					progress: 90,
+				},
+			]
+			const feature = getRandom(features)
+			const FeatureIcon = feature.icon
+			return (
+				<Card className="w-48">
+					<CardHeader className="p-3 pb-2">
+						<div className="flex items-center justify-between">
+							<CardTitle className="text-sm">{feature.title}</CardTitle>
+							<FeatureIcon className="h-4 w-4 text-primary" />
+						</div>
+					</CardHeader>
+					<CardContent className="p-3 pt-0">
+						<p className="text-xs text-muted-foreground">{feature.desc}</p>
+						<Progress value={feature.progress} className="mt-2 h-1" />
+					</CardContent>
+				</Card>
+			)
+		}
+		case "pricing": {
+			const plans = [
+				{ name: "Free", price: "$0", features: "5 projects" },
+				{ name: "Pro", price: "$19", features: "Unlimited" },
+				{ name: "Team", price: "$49", features: "Everything" },
+			]
+			const plan = getRandom(plans)
+			return (
+				<Card className="w-48">
+					<CardHeader className="p-3 text-center">
+						<CardTitle className="text-sm">{plan.name}</CardTitle>
+						<p className="text-2xl font-bold">{plan.price}</p>
+					</CardHeader>
+					<CardContent className="p-3 pt-0">
+						<p className="text-xs text-center text-muted-foreground">
+							{plan.features}
+						</p>
+						<Button size="sm" className="w-full mt-2">
+							Choose
+						</Button>
+					</CardContent>
+				</Card>
+			)
+		}
+		case "image-preview": {
+			const previews = [
+				{ title: "Screenshot", size: "2.4 MB", type: "PNG" },
+				{ title: "Document", size: "156 KB", type: "PDF" },
+				{ title: "Presentation", size: "4.2 MB", type: "PPT" },
+			]
+			const preview = getRandom(previews)
+			return (
+				<Card className="w-56">
+					<CardContent className="p-3">
+						<div className="h-20 bg-gradient-to-br from-primary/20 to-primary/10 rounded-md mb-3 flex items-center justify-center">
+							<FileText className="h-8 w-8 text-primary/50" />
+						</div>
+						<p className="text-sm font-medium">{preview.title}</p>
+						<div className="flex items-center justify-between mt-1">
+							<p className="text-xs text-muted-foreground">{preview.size}</p>
+							<Badge variant="outline" className="text-xs">
+								{preview.type}
+							</Badge>
+						</div>
+					</CardContent>
+				</Card>
+			)
+		}
 	}
 }
 
 const createToggleComponent = (subcategory?: string) => {
 	// Handle specific subcategories
 	if (subcategory === "switch") {
+		// Sometimes add custom colors
+		if (Math.random() > 0.7) {
+			const colors = [
+				"data-[state=checked]:bg-blue-500 dark:data-[state=checked]:bg-blue-600",
+				"data-[state=checked]:bg-green-500 dark:data-[state=checked]:bg-green-600",
+				"data-[state=checked]:bg-purple-500 dark:data-[state=checked]:bg-purple-600",
+			]
+			return (
+				<Switch
+					defaultChecked={Math.random() > 0.5}
+					className={getRandom(colors)}
+				/>
+			)
+		}
 		return <Switch defaultChecked={Math.random() > 0.5} />
 	} else if (subcategory === "checkbox") {
+		// Sometimes style the checkbox
+		if (Math.random() > 0.7) {
+			const styles = [
+				"data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600",
+				"data-[state=checked]:border-green-600 data-[state=checked]:bg-green-600",
+				"data-[state=checked]:border-purple-600 data-[state=checked]:bg-purple-600",
+			]
+			return (
+				<Checkbox
+					defaultChecked={Math.random() > 0.5}
+					className={getRandom(styles)}
+				/>
+			)
+		}
 		return <Checkbox defaultChecked={Math.random() > 0.5} />
 	} else if (subcategory === "toggle") {
 		const toggleVariants = ["default", "outline"] as const
-		const toggleIcons = [Star, Heart, Bell, Bookmark, Sun, Moon]
+		const toggleIcons = [Star, Heart, Bell, Bookmark, Sun, Moon, Zap, Coffee]
 		const ToggleIcon = getRandom(toggleIcons)
+		// Sometimes add size variations
+		const sizes = ["", "h-8 w-8", "h-10 w-10"]
 		return (
 			<Toggle
 				variant={getRandom(toggleVariants)}
 				defaultPressed={Math.random() > 0.5}
+				className={getRandom(sizes)}
 			>
 				<ToggleIcon className="h-4 w-4" />
 			</Toggle>
 		)
 	} else if (subcategory === "toggle-group") {
-		return (
-			<ToggleGroup type="single" defaultValue="a" className="gap-0">
-				<ToggleGroupItem value="a" className="h-8 px-2">
-					A
-				</ToggleGroupItem>
-				<ToggleGroupItem value="b" className="h-8 px-2">
-					B
-				</ToggleGroupItem>
-				<ToggleGroupItem value="c" className="h-8 px-2">
-					C
-				</ToggleGroupItem>
-			</ToggleGroup>
-		)
+		const groupTypes = ["text", "icon", "mixed", "formatting", "view"] as const
+		const type = getRandom(groupTypes)
+
+		switch (type) {
+			case "text":
+				return (
+					<ToggleGroup type="single" defaultValue="b" className="gap-0">
+						<ToggleGroupItem value="a" className="h-8 px-3">
+							Left
+						</ToggleGroupItem>
+						<ToggleGroupItem value="b" className="h-8 px-3">
+							Center
+						</ToggleGroupItem>
+						<ToggleGroupItem value="c" className="h-8 px-3">
+							Right
+						</ToggleGroupItem>
+					</ToggleGroup>
+				)
+			case "icon":
+				return (
+					<ToggleGroup type="single" defaultValue="grid">
+						<ToggleGroupItem value="grid" aria-label="Grid view">
+							<Grid3x3 className="h-4 w-4" />
+						</ToggleGroupItem>
+						<ToggleGroupItem value="list" aria-label="List view">
+							<List className="h-4 w-4" />
+						</ToggleGroupItem>
+					</ToggleGroup>
+				)
+			case "mixed":
+				return (
+					<ToggleGroup type="single" defaultValue="all">
+						<ToggleGroupItem value="all" className="px-3">
+							All
+						</ToggleGroupItem>
+						<ToggleGroupItem value="active" className="px-3">
+							Active
+						</ToggleGroupItem>
+						<ToggleGroupItem value="done" className="px-3">
+							Done
+						</ToggleGroupItem>
+					</ToggleGroup>
+				)
+			case "formatting":
+				return (
+					<ToggleGroup type="multiple">
+						<ToggleGroupItem value="bold" aria-label="Bold">
+							<Bold className="h-3 w-3" />
+						</ToggleGroupItem>
+						<ToggleGroupItem value="italic" aria-label="Italic">
+							<Italic className="h-3 w-3" />
+						</ToggleGroupItem>
+						<ToggleGroupItem value="underline" aria-label="Underline">
+							<Underline className="h-3 w-3" />
+						</ToggleGroupItem>
+					</ToggleGroup>
+				)
+			case "view":
+				return (
+					<ToggleGroup type="single" defaultValue="day" size="sm">
+						<ToggleGroupItem value="day" className="px-3">
+							Day
+						</ToggleGroupItem>
+						<ToggleGroupItem value="week" className="px-3">
+							Week
+						</ToggleGroupItem>
+						<ToggleGroupItem value="month" className="px-3">
+							Month
+						</ToggleGroupItem>
+					</ToggleGroup>
+				)
+		}
 	} else if (subcategory === "radio") {
-		return (
-			<RadioGroup defaultValue="option-1" className="flex gap-2">
-				<div className="flex items-center space-x-1">
-					<RadioGroupItem value="option-1" id="option-1" />
-					<Label htmlFor="option-1" className="text-xs">
-						A
-					</Label>
-				</div>
-				<div className="flex items-center space-x-1">
-					<RadioGroupItem value="option-2" id="option-2" />
-					<Label htmlFor="option-2" className="text-xs">
-						B
-					</Label>
-				</div>
-			</RadioGroup>
-		)
+		const radioTypes = ["simple", "cards", "inline"] as const
+		const type = getRandom(radioTypes)
+
+		switch (type) {
+			case "simple":
+				return (
+					<RadioGroup defaultValue="option-1" className="flex gap-3">
+						<div className="flex items-center space-x-2">
+							<RadioGroupItem value="option-1" id="r1" />
+							<Label htmlFor="r1" className="text-sm">
+								Option A
+							</Label>
+						</div>
+						<div className="flex items-center space-x-2">
+							<RadioGroupItem value="option-2" id="r2" />
+							<Label htmlFor="r2" className="text-sm">
+								Option B
+							</Label>
+						</div>
+					</RadioGroup>
+				)
+			case "cards":
+				return (
+					<RadioGroup defaultValue="free" className="grid gap-2">
+						<Label className="flex items-center gap-2 rounded-md border p-2 hover:bg-accent cursor-pointer has-[[data-state=checked]]:border-primary">
+							<RadioGroupItem value="free" />
+							<div>
+								<p className="text-sm font-medium">Free</p>
+								<p className="text-xs text-muted-foreground">Basic features</p>
+							</div>
+						</Label>
+						<Label className="flex items-center gap-2 rounded-md border p-2 hover:bg-accent cursor-pointer has-[[data-state=checked]]:border-primary">
+							<RadioGroupItem value="pro" />
+							<div>
+								<p className="text-sm font-medium">Pro</p>
+								<p className="text-xs text-muted-foreground">All features</p>
+							</div>
+						</Label>
+					</RadioGroup>
+				)
+			case "inline":
+				return (
+					<RadioGroup defaultValue="1" className="flex gap-2">
+						{[1, 2, 3, 4, 5].map(num => (
+							<div key={num} className="flex items-center">
+								<RadioGroupItem
+									value={String(num)}
+									id={`rating-${num}`}
+									className="h-3 w-3"
+								/>
+								<Label htmlFor={`rating-${num}`} className="text-xs ml-1">
+									{num}
+								</Label>
+							</div>
+						))}
+					</RadioGroup>
+				)
+		}
 	} else if (subcategory === "labeled-switch") {
-		const labels = ["Dark Mode", "Notifications", "Auto-save", "Public"]
+		const labels = [
+			"Dark Mode",
+			"Notifications",
+			"Auto-save",
+			"Public",
+			"Analytics",
+			"Newsletter",
+		]
+		const descriptions = [
+			"Toggle dark theme",
+			"Receive alerts",
+			"Save automatically",
+			"Make profile public",
+			"Track usage data",
+			"Weekly updates",
+		]
+		const idx = Math.floor(Math.random() * labels.length)
+
+		// Sometimes show with description
+		if (Math.random() > 0.5) {
+			return (
+				<Label className="flex items-center gap-3 rounded-lg border p-3 cursor-pointer hover:bg-accent/50">
+					<div className="flex-1">
+						<div className="font-medium text-sm">{labels[idx]}</div>
+						<div className="text-xs text-muted-foreground">
+							{descriptions[idx]}
+						</div>
+					</div>
+					<Switch defaultChecked={Math.random() > 0.5} />
+				</Label>
+			)
+		}
+
 		return (
 			<div className="flex items-center space-x-2">
 				<Switch id="labeled" defaultChecked={Math.random() > 0.5} />
-				<Label htmlFor="labeled" className="text-xs">
-					{getRandom(labels)}
+				<Label htmlFor="labeled" className="text-sm cursor-pointer">
+					{labels[idx]}
 				</Label>
 			</div>
 		)
 	}
 
-	// Default random behavior
+	// Default random behavior with more variety
 	const toggleTypes = [
 		"switch",
 		"checkbox",
@@ -933,6 +1518,8 @@ const createToggleComponent = (subcategory?: string) => {
 		"radio",
 		"icon-toggles",
 		"labeled-switch",
+		"checkbox-card",
+		"switch-card",
 	] as const
 	const type = getRandom(toggleTypes)
 
@@ -1017,6 +1604,40 @@ const createToggleComponent = (subcategory?: string) => {
 				</div>
 			)
 		}
+		case "checkbox-card": {
+			const options = [
+				{ label: "Email", desc: "Get email notifications" },
+				{ label: "SMS", desc: "Text message alerts" },
+				{ label: "Push", desc: "Mobile notifications" },
+			]
+			const option = getRandom(options)
+			return (
+				<Label className="flex items-start gap-3 rounded-lg border p-3 cursor-pointer hover:bg-accent/50 has-[[aria-checked=true]]:border-primary">
+					<Checkbox defaultChecked={Math.random() > 0.5} className="mt-0.5" />
+					<div>
+						<p className="text-sm font-medium">{option.label}</p>
+						<p className="text-xs text-muted-foreground">{option.desc}</p>
+					</div>
+				</Label>
+			)
+		}
+		case "switch-card": {
+			const settings = [
+				{ label: "Auto-update", desc: "Keep app updated" },
+				{ label: "Analytics", desc: "Help us improve" },
+				{ label: "Beta features", desc: "Try new features" },
+			]
+			const setting = getRandom(settings)
+			return (
+				<div className="flex items-center justify-between gap-3 rounded-lg border p-3">
+					<div>
+						<p className="text-sm font-medium">{setting.label}</p>
+						<p className="text-xs text-muted-foreground">{setting.desc}</p>
+					</div>
+					<Switch defaultChecked={Math.random() > 0.5} />
+				</div>
+			)
+		}
 	}
 }
 
@@ -1030,8 +1651,36 @@ const createInputComponent = (subcategory?: string) => {
 			"Name",
 			"Email",
 			"Password",
+			"Username",
+			"Your message",
+			"Add a comment",
 		]
-		const types = ["text", "email", "search"] as const
+		const types = ["text", "email", "search", "password", "url"] as const
+
+		// Sometimes add icons or special styling
+		if (Math.random() > 0.7) {
+			const inputWithIcon = getRandom(["left", "right", "both"])
+			if (inputWithIcon === "left") {
+				return (
+					<div className="relative w-40">
+						<User className="absolute left-2 top-1/2 h-3 w-3 -translate-y-1/2 text-muted-foreground" />
+						<Input
+							className="h-8 pl-7 pr-2"
+							placeholder="Username"
+							defaultValue=""
+						/>
+					</div>
+				)
+			} else if (inputWithIcon === "right") {
+				return (
+					<div className="relative w-40">
+						<Input className="h-8 pr-7" placeholder="Search" defaultValue="" />
+						<Search className="absolute right-2 top-1/2 h-3 w-3 -translate-y-1/2 text-muted-foreground" />
+					</div>
+				)
+			}
+		}
+
 		return (
 			<Input
 				className="w-32 h-8"
@@ -1041,26 +1690,114 @@ const createInputComponent = (subcategory?: string) => {
 			/>
 		)
 	} else if (subcategory === "search") {
-		return (
-			<div className="relative w-40">
-				<Search className="absolute left-2 top-1/2 h-3 w-3 -translate-y-1/2 text-muted-foreground" />
-				<Input
-					className="h-8 pl-7 pr-2"
-					placeholder="Search..."
-					defaultValue=""
-				/>
-			</div>
-		)
+		const searchVariants = [
+			"basic",
+			"with-button",
+			"rounded",
+			"with-filter",
+		] as const
+		const variant = getRandom(searchVariants)
+
+		switch (variant) {
+			case "basic":
+				return (
+					<div className="relative w-40">
+						<Search className="absolute left-2 top-1/2 h-3 w-3 -translate-y-1/2 text-muted-foreground" />
+						<Input
+							className="h-8 pl-7 pr-2"
+							placeholder="Search..."
+							defaultValue=""
+						/>
+					</div>
+				)
+			case "with-button":
+				return (
+					<div className="flex w-48">
+						<Input
+							className="h-8 rounded-r-none"
+							placeholder="Search..."
+							defaultValue=""
+						/>
+						<Button size="sm" className="h-8 rounded-l-none px-3">
+							<Search className="h-3 w-3" />
+						</Button>
+					</div>
+				)
+			case "rounded":
+				return (
+					<div className="relative w-40">
+						<Search className="absolute left-3 top-1/2 h-3 w-3 -translate-y-1/2 text-muted-foreground" />
+						<Input
+							className="h-8 pl-8 pr-3 rounded-full"
+							placeholder="Search..."
+							defaultValue=""
+						/>
+					</div>
+				)
+			case "with-filter":
+				return (
+					<div className="flex gap-1 w-48">
+						<div className="relative flex-1">
+							<Search className="absolute left-2 top-1/2 h-3 w-3 -translate-y-1/2 text-muted-foreground" />
+							<Input
+								className="h-8 pl-7"
+								placeholder="Search..."
+								defaultValue=""
+							/>
+						</div>
+						<Button size="sm" variant="outline" className="h-8 px-2">
+							<Filter className="h-3 w-3" />
+						</Button>
+					</div>
+				)
+		}
 	} else if (subcategory === "avatar") {
-		const initials = ["AB", "CD", "EF", "GH", "JK", "LM", "NP", "QR"]
-		const sizes = ["", "w-8 h-8", "w-12 h-12"] as const
+		const initials = [
+			"AB",
+			"CD",
+			"EF",
+			"GH",
+			"JK",
+			"LM",
+			"NP",
+			"QR",
+			"ST",
+			"UV",
+		]
+		const sizes = ["h-8 w-8", "h-10 w-10", "h-12 w-12"] as const
 		const colors = [
-			"",
 			"bg-blue-500",
 			"bg-green-500",
 			"bg-purple-500",
 			"bg-orange-500",
+			"bg-pink-500",
+			"bg-indigo-500",
 		]
+
+		// Sometimes add status indicator
+		if (Math.random() > 0.6) {
+			const statuses = ["online", "away", "busy", "offline"]
+			const status = getRandom(statuses)
+			const statusColors: Record<string, string> = {
+				online: "bg-green-500",
+				away: "bg-yellow-500",
+				busy: "bg-red-500",
+				offline: "bg-gray-400",
+			}
+			return (
+				<div className="relative">
+					<Avatar className={getRandom(sizes)}>
+						<AvatarFallback className={getRandom(colors)}>
+							{getRandom(initials)}
+						</AvatarFallback>
+					</Avatar>
+					<div
+						className={`absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-background ${statusColors[status]}`}
+					/>
+				</div>
+			)
+		}
+
 		return (
 			<Avatar className={getRandom(sizes)}>
 				<AvatarFallback className={getRandom(colors)}>
@@ -1070,6 +1807,7 @@ const createInputComponent = (subcategory?: string) => {
 		)
 	} else if (subcategory === "avatar-group") {
 		const count = Math.floor(Math.random() * 3) + 2
+		const showMore = Math.random() > 0.7
 		return (
 			<div className="flex -space-x-2">
 				{Array.from({ length: count }).map((_, i) => (
@@ -1079,37 +1817,113 @@ const createInputComponent = (subcategory?: string) => {
 								"bg-blue-500",
 								"bg-green-500",
 								"bg-purple-500",
+								"bg-orange-500",
 							])}
 						>
-							{getRandom(["AB", "CD", "EF", "GH"])}
+							{getRandom(["AB", "CD", "EF", "GH", "JK"])}
 						</AvatarFallback>
 					</Avatar>
 				))}
+				{showMore && (
+					<div className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-background bg-muted text-xs font-medium">
+						+{Math.floor(Math.random() * 10) + 1}
+					</div>
+				)}
 			</div>
 		)
 	} else if (subcategory === "slider") {
-		return (
-			<Slider
-				defaultValue={[Math.floor(Math.random() * 100)]}
-				max={100}
-				step={1}
-				className="w-32"
-			/>
-		)
+		const sliderTypes = ["simple", "with-label", "colored", "range"] as const
+		const type = getRandom(sliderTypes)
+
+		switch (type) {
+			case "simple":
+				return (
+					<Slider
+						defaultValue={[Math.floor(Math.random() * 100)]}
+						max={100}
+						step={1}
+						className="w-32"
+					/>
+				)
+			case "with-label": {
+				const value = Math.floor(Math.random() * 100)
+				const labels = ["Volume", "Brightness", "Speed", "Progress"]
+				return (
+					<div className="w-40 space-y-1">
+						<div className="flex justify-between text-xs">
+							<span className="text-muted-foreground">{getRandom(labels)}</span>
+							<span>{value}%</span>
+						</div>
+						<Slider defaultValue={[value]} max={100} className="h-1" />
+					</div>
+				)
+			}
+			case "colored": {
+				const colors = [
+					"[&_[role=slider]]:bg-blue-500",
+					"[&_[role=slider]]:bg-green-500",
+					"[&_[role=slider]]:bg-purple-500",
+				]
+				return (
+					<Slider
+						defaultValue={[Math.floor(Math.random() * 100)]}
+						max={100}
+						className={`w-32 ${getRandom(colors)}`}
+					/>
+				)
+			}
+			case "range":
+				return (
+					<Slider defaultValue={[25, 75]} max={100} step={1} className="w-32" />
+				)
+		}
 	} else if (subcategory === "progress") {
 		const value = Math.random() * 100
-		return (
-			<div className="w-32 space-y-1">
-				<div className="flex justify-between text-xs">
-					<span className="text-muted-foreground">Loading</span>
-					<span>{Math.floor(value)}%</span>
-				</div>
-				<Progress value={value} className="h-2" />
-			</div>
-		)
+		const progressTypes = [
+			"simple",
+			"with-label",
+			"colored",
+			"striped",
+		] as const
+		const type = getRandom(progressTypes)
+
+		switch (type) {
+			case "simple":
+				return <Progress value={value} className="w-32 h-2" />
+			case "with-label": {
+				const labels = ["Loading", "Uploading", "Processing", "Downloading"]
+				return (
+					<div className="w-32 space-y-1">
+						<div className="flex justify-between text-xs">
+							<span className="text-muted-foreground">{getRandom(labels)}</span>
+							<span>{Math.floor(value)}%</span>
+						</div>
+						<Progress value={value} className="h-2" />
+					</div>
+				)
+			}
+			case "colored": {
+				const colors = [
+					"[&>div]:bg-blue-500",
+					"[&>div]:bg-green-500",
+					"[&>div]:bg-purple-500",
+					"[&>div]:bg-gradient-to-r [&>div]:from-pink-500 [&>div]:to-violet-500",
+				]
+				return (
+					<Progress value={value} className={`w-32 h-2 ${getRandom(colors)}`} />
+				)
+			}
+			case "striped":
+				return (
+					<Progress
+						value={value}
+						className="w-32 h-3 [&>div]:bg-gradient-to-r [&>div]:from-primary [&>div]:to-primary/80"
+					/>
+				)
+		}
 	}
 
-	// Default random behavior
+	// Default random behavior with more variety
 	const inputTypes = [
 		"input",
 		"avatar",
@@ -1118,6 +1932,8 @@ const createInputComponent = (subcategory?: string) => {
 		"search-input",
 		"avatar-group",
 		"multi-slider",
+		"input-group",
+		"color-input",
 	] as const
 	const type = getRandom(inputTypes)
 
@@ -1221,224 +2037,724 @@ const createInputComponent = (subcategory?: string) => {
 				</div>
 			)
 		}
+		case "input-group": {
+			return (
+				<div className="flex w-48">
+					<Button
+						size="sm"
+						variant="outline"
+						className="h-8 rounded-r-none px-3"
+					>
+						@
+					</Button>
+					<Input
+						className="h-8 rounded-l-none"
+						placeholder="username"
+						defaultValue=""
+					/>
+				</div>
+			)
+		}
+		case "color-input": {
+			const colors = ["#3B82F6", "#10B981", "#8B5CF6", "#F59E0B", "#EF4444"]
+			return (
+				<div className="flex items-center gap-2">
+					<div
+						className="h-8 w-8 rounded-md border"
+						style={{ backgroundColor: getRandom(colors) }}
+					/>
+					<Input className="w-24 h-8" value={getRandom(colors)} readOnly />
+				</div>
+			)
+		}
 	}
 }
 
 const createComplexComponent = (subcategory?: string) => {
 	// Handle specific subcategories
 	if (subcategory === "tabs") {
-		return (
-			<Tabs defaultValue="tab1" className="w-48">
-				<TabsList className="grid w-full grid-cols-2 h-8">
-					<TabsTrigger value="tab1" className="text-xs">
-						Tab 1
-					</TabsTrigger>
-					<TabsTrigger value="tab2" className="text-xs">
-						Tab 2
-					</TabsTrigger>
-				</TabsList>
-				<TabsContent value="tab1" className="p-2">
-					<p className="text-xs">Content 1</p>
-				</TabsContent>
-				<TabsContent value="tab2" className="p-2">
-					<p className="text-xs">Content 2</p>
-				</TabsContent>
-			</Tabs>
-		)
+		const tabVariants = ["simple", "with-icons", "pills", "underline"] as const
+		const variant = getRandom(tabVariants)
+
+		switch (variant) {
+			case "simple":
+				return (
+					<Tabs defaultValue="tab1" className="w-48">
+						<TabsList className="grid w-full grid-cols-2 h-8">
+							<TabsTrigger value="tab1" className="text-xs">
+								Tab 1
+							</TabsTrigger>
+							<TabsTrigger value="tab2" className="text-xs">
+								Tab 2
+							</TabsTrigger>
+						</TabsList>
+						<TabsContent value="tab1" className="p-2">
+							<p className="text-xs">Content 1</p>
+						</TabsContent>
+						<TabsContent value="tab2" className="p-2">
+							<p className="text-xs">Content 2</p>
+						</TabsContent>
+					</Tabs>
+				)
+			case "with-icons":
+				return (
+					<Tabs defaultValue="profile" className="w-56">
+						<TabsList className="grid w-full grid-cols-3 h-9">
+							<TabsTrigger value="profile" className="text-xs gap-1">
+								<User className="h-3 w-3" />
+								Profile
+							</TabsTrigger>
+							<TabsTrigger value="settings" className="text-xs gap-1">
+								<Settings className="h-3 w-3" />
+								Settings
+							</TabsTrigger>
+							<TabsTrigger value="billing" className="text-xs gap-1">
+								<CreditCard className="h-3 w-3" />
+								Billing
+							</TabsTrigger>
+						</TabsList>
+					</Tabs>
+				)
+			case "pills":
+				return (
+					<Tabs defaultValue="all" className="w-48">
+						<TabsList className="h-8 bg-muted/50">
+							<TabsTrigger
+								value="all"
+								className="text-xs rounded-full data-[state=active]:bg-background"
+							>
+								All
+							</TabsTrigger>
+							<TabsTrigger
+								value="active"
+								className="text-xs rounded-full data-[state=active]:bg-background"
+							>
+								Active
+							</TabsTrigger>
+							<TabsTrigger
+								value="done"
+								className="text-xs rounded-full data-[state=active]:bg-background"
+							>
+								Done
+							</TabsTrigger>
+						</TabsList>
+					</Tabs>
+				)
+			case "underline":
+				return (
+					<div className="w-48 border-b">
+						<Tabs defaultValue="overview" className="w-full">
+							<TabsList className="h-auto bg-transparent p-0">
+								<TabsTrigger
+									value="overview"
+									className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent"
+								>
+									Overview
+								</TabsTrigger>
+								<TabsTrigger
+									value="analytics"
+									className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent"
+								>
+									Analytics
+								</TabsTrigger>
+							</TabsList>
+						</Tabs>
+					</div>
+				)
+		}
 	} else if (subcategory === "alert") {
-		const alertVariants = ["default", "destructive"] as const
-		const variant = getRandom(alertVariants)
-		const IconComponent = variant === "destructive" ? AlertCircle : Info
+		const alertTypes = [
+			{
+				variant: "default" as const,
+				icon: Info,
+				title: "Info",
+				desc: "This is an informational alert",
+			},
+			{
+				variant: "default" as const,
+				icon: CheckCircle,
+				title: "Success!",
+				desc: "Operation completed successfully",
+			},
+			{
+				variant: "destructive" as const,
+				icon: AlertCircle,
+				title: "Error",
+				desc: "Something went wrong",
+			},
+			{
+				variant: "default" as const,
+				icon: AlertTriangle,
+				title: "Warning",
+				desc: "Please be careful",
+			},
+		]
+		const alert = getRandom(alertTypes)
+		const AlertIcon = alert.icon
+
+		// Compact alert without excessive padding
 		return (
-			<Alert variant={variant} className="w-56 p-3">
-				<IconComponent className="h-4 w-4" />
-				<AlertTitle className="text-sm">Alert!</AlertTitle>
-				<AlertDescription className="text-xs">
-					This is a physics-enabled alert.
-				</AlertDescription>
+			<Alert variant={alert.variant} className="w-56 py-2 px-3">
+				<AlertIcon className="h-4 w-4" />
+				<AlertTitle className="text-sm">{alert.title}</AlertTitle>
+				<AlertDescription className="text-xs">{alert.desc}</AlertDescription>
 			</Alert>
 		)
 	} else if (subcategory === "skeleton") {
-		const skeletonTypes = ["line", "circle", "card"] as const
+		const skeletonTypes = ["line", "circle", "card", "list", "avatar"] as const
 		const skelType = getRandom(skeletonTypes)
-		if (skelType === "line") {
-			return <Skeleton className="h-4 w-32" />
-		} else if (skelType === "circle") {
-			return <Skeleton className="h-12 w-12 rounded-full" />
-		} else {
-			return (
-				<div className="space-y-2">
-					<Skeleton className="h-4 w-32" />
-					<Skeleton className="h-4 w-24" />
-				</div>
-			)
+
+		switch (skelType) {
+			case "line":
+				return <Skeleton className="h-4 w-32" />
+			case "circle":
+				return <Skeleton className="h-12 w-12 rounded-full" />
+			case "card":
+				return (
+					<div className="space-y-2 w-48">
+						<Skeleton className="h-4 w-3/4" />
+						<Skeleton className="h-4 w-full" />
+						<Skeleton className="h-4 w-1/2" />
+					</div>
+				)
+			case "list":
+				return (
+					<div className="space-y-2 w-40">
+						{[1, 2, 3].map(i => (
+							<div key={i} className="flex items-center gap-2">
+								<Skeleton className="h-3 w-3 rounded-full" />
+								<Skeleton className="h-3 flex-1" />
+							</div>
+						))}
+					</div>
+				)
+			case "avatar":
+				return (
+					<div className="flex items-center gap-3">
+						<Skeleton className="h-10 w-10 rounded-full" />
+						<div className="space-y-1">
+							<Skeleton className="h-4 w-24" />
+							<Skeleton className="h-3 w-16" />
+						</div>
+					</div>
+				)
 		}
 	} else if (subcategory === "separator") {
-		const orientations = ["horizontal", "vertical"] as const
-		const orientation = getRandom(orientations)
-		return (
-			<Separator
-				orientation={orientation}
-				className={orientation === "horizontal" ? "w-20" : "h-20"}
-			/>
-		)
+		const separatorTypes = [
+			"simple",
+			"with-text",
+			"with-icon",
+			"decorative",
+		] as const
+		const type = getRandom(separatorTypes)
+
+		switch (type) {
+			case "simple": {
+				const orientations = ["horizontal", "vertical"] as const
+				const orientation = getRandom(orientations)
+				return (
+					<Separator
+						orientation={orientation}
+						className={orientation === "horizontal" ? "w-20" : "h-20"}
+					/>
+				)
+			}
+			case "with-text":
+				return (
+					<div className="flex items-center gap-2 w-32">
+						<Separator className="flex-1" />
+						<span className="text-xs text-muted-foreground">OR</span>
+						<Separator className="flex-1" />
+					</div>
+				)
+			case "with-icon":
+				return (
+					<div className="flex items-center gap-2 w-32">
+						<Separator className="flex-1" />
+						<Sparkles className="h-3 w-3 text-muted-foreground" />
+						<Separator className="flex-1" />
+					</div>
+				)
+			case "decorative":
+				return (
+					<Separator className="w-20 bg-gradient-to-r from-transparent via-foreground/20 to-transparent h-[1px]" />
+				)
+		}
 	} else if (subcategory === "accordion") {
-		return (
-			<Accordion type="single" collapsible className="w-48">
-				<AccordionItem value="item-1" className="border-b-0">
-					<AccordionTrigger className="text-xs py-2">
-						Question?
-					</AccordionTrigger>
-					<AccordionContent className="text-xs pb-2">
-						Answer here!
-					</AccordionContent>
-				</AccordionItem>
-			</Accordion>
-		)
+		const accordionTypes = ["simple", "with-icon", "nested"] as const
+		const type = getRandom(accordionTypes)
+
+		switch (type) {
+			case "simple":
+				return (
+					<Accordion type="single" collapsible className="w-48">
+						<AccordionItem value="item-1" className="border-b-0">
+							<AccordionTrigger className="text-xs py-2">
+								Question?
+							</AccordionTrigger>
+							<AccordionContent className="text-xs pb-2">
+								Answer here!
+							</AccordionContent>
+						</AccordionItem>
+					</Accordion>
+				)
+			case "with-icon":
+				return (
+					<Accordion type="single" collapsible className="w-56">
+						<AccordionItem value="item-1" className="border-b-0">
+							<AccordionTrigger className="text-xs py-2 gap-2">
+								<div className="flex items-center gap-2">
+									<HelpCircle className="h-3 w-3" />
+									How does it work?
+								</div>
+							</AccordionTrigger>
+							<AccordionContent className="text-xs pb-2">
+								It's powered by physics!
+							</AccordionContent>
+						</AccordionItem>
+					</Accordion>
+				)
+			case "nested":
+				return (
+					<Accordion type="single" collapsible className="w-56">
+						<AccordionItem value="item-1">
+							<AccordionTrigger className="text-sm py-2">
+								Features
+							</AccordionTrigger>
+							<AccordionContent className="text-xs space-y-1 pb-2">
+								<div>✓ Physics simulation</div>
+								<div>✓ Drag and drop</div>
+								<div>✓ Real-time updates</div>
+							</AccordionContent>
+						</AccordionItem>
+					</Accordion>
+				)
+		}
 	} else if (subcategory === "breadcrumb") {
-		return (
-			<Breadcrumb>
-				<BreadcrumbList className="text-xs">
-					<BreadcrumbItem>
-						<BreadcrumbLink>Home</BreadcrumbLink>
-					</BreadcrumbItem>
-					<BreadcrumbSeparator />
-					<BreadcrumbItem>
-						<BreadcrumbPage>Page</BreadcrumbPage>
-					</BreadcrumbItem>
-				</BreadcrumbList>
-			</Breadcrumb>
-		)
+		const breadcrumbTypes = ["simple", "with-icons", "with-dropdown"] as const
+		const type = getRandom(breadcrumbTypes)
+
+		switch (type) {
+			case "simple":
+				return (
+					<Breadcrumb>
+						<BreadcrumbList className="text-xs">
+							<BreadcrumbItem>
+								<BreadcrumbLink>Home</BreadcrumbLink>
+							</BreadcrumbItem>
+							<BreadcrumbSeparator />
+							<BreadcrumbItem>
+								<BreadcrumbLink>Products</BreadcrumbLink>
+							</BreadcrumbItem>
+							<BreadcrumbSeparator />
+							<BreadcrumbItem>
+								<BreadcrumbPage>Details</BreadcrumbPage>
+							</BreadcrumbItem>
+						</BreadcrumbList>
+					</Breadcrumb>
+				)
+			case "with-icons":
+				return (
+					<Breadcrumb>
+						<BreadcrumbList className="text-xs">
+							<BreadcrumbItem>
+								<BreadcrumbLink className="flex items-center gap-1">
+									<Home className="h-3 w-3" />
+									Home
+								</BreadcrumbLink>
+							</BreadcrumbItem>
+							<BreadcrumbSeparator />
+							<BreadcrumbItem>
+								<BreadcrumbPage className="flex items-center gap-1">
+									<FileText className="h-3 w-3" />
+									Page
+								</BreadcrumbPage>
+							</BreadcrumbItem>
+						</BreadcrumbList>
+					</Breadcrumb>
+				)
+			case "with-dropdown":
+				return (
+					<Breadcrumb>
+						<BreadcrumbList className="text-xs">
+							<BreadcrumbItem>
+								<BreadcrumbLink>Home</BreadcrumbLink>
+							</BreadcrumbItem>
+							<BreadcrumbSeparator />
+							<BreadcrumbItem>
+								<MoreHorizontal className="h-3 w-3" />
+							</BreadcrumbItem>
+							<BreadcrumbSeparator />
+							<BreadcrumbItem>
+								<BreadcrumbPage>Current</BreadcrumbPage>
+							</BreadcrumbItem>
+						</BreadcrumbList>
+					</Breadcrumb>
+				)
+		}
 	} else if (subcategory === "tooltip") {
-		const tooltipTexts = [
-			"Helpful tip!",
-			"Click me!",
-			"More info",
-			"Hover for details",
-		]
-		return (
-			<TooltipProvider>
-				<Tooltip>
-					<TooltipTrigger asChild>
-						<Button variant="outline" size="sm">
-							<Info className="h-3 w-3 mr-1" />
-							Hover
-						</Button>
-					</TooltipTrigger>
-					<TooltipContent>
-						<p className="text-xs">{getRandom(tooltipTexts)}</p>
-					</TooltipContent>
-				</Tooltip>
-			</TooltipProvider>
-		)
+		const tooltipTypes = [
+			"simple",
+			"with-icon",
+			"colored",
+			"multi-line",
+		] as const
+		const type = getRandom(tooltipTypes)
+
+		switch (type) {
+			case "simple": {
+				const tooltipTexts = [
+					"Helpful tip!",
+					"Click me!",
+					"More info",
+					"Hover for details",
+				]
+				return (
+					<TooltipProvider>
+						<Tooltip>
+							<TooltipTrigger asChild>
+								<Button variant="outline" size="sm">
+									Hover
+								</Button>
+							</TooltipTrigger>
+							<TooltipContent>
+								<p className="text-xs">{getRandom(tooltipTexts)}</p>
+							</TooltipContent>
+						</Tooltip>
+					</TooltipProvider>
+				)
+			}
+			case "with-icon":
+				return (
+					<TooltipProvider>
+						<Tooltip>
+							<TooltipTrigger asChild>
+								<Button variant="ghost" size="icon" className="h-8 w-8">
+									<Info className="h-4 w-4" />
+								</Button>
+							</TooltipTrigger>
+							<TooltipContent>
+								<p className="text-xs">Information tooltip</p>
+							</TooltipContent>
+						</Tooltip>
+					</TooltipProvider>
+				)
+			case "colored":
+				return (
+					<TooltipProvider>
+						<Tooltip>
+							<TooltipTrigger asChild>
+								<Badge variant="outline" className="cursor-help">
+									Pro
+								</Badge>
+							</TooltipTrigger>
+							<TooltipContent className="bg-primary text-primary-foreground">
+								<p className="text-xs">Premium feature</p>
+							</TooltipContent>
+						</Tooltip>
+					</TooltipProvider>
+				)
+			case "multi-line":
+				return (
+					<TooltipProvider>
+						<Tooltip>
+							<TooltipTrigger asChild>
+								<Button variant="outline" size="sm">
+									<HelpCircle className="h-3 w-3" />
+								</Button>
+							</TooltipTrigger>
+							<TooltipContent className="max-w-xs">
+								<p className="text-xs">This is a longer tooltip</p>
+								<p className="text-xs text-muted-foreground">
+									With multiple lines of text
+								</p>
+							</TooltipContent>
+						</Tooltip>
+					</TooltipProvider>
+				)
+		}
 	} else if (subcategory === "compound-card") {
-		const cardTypes = ["stats", "user", "action", "feature"] as const
+		const cardTypes = [
+			"stats",
+			"user",
+			"action",
+			"feature",
+			"metric",
+			"task",
+		] as const
 		const cardType = getRandom(cardTypes)
 
-		if (cardType === "stats") {
-			const stats = [
-				{ label: "Users", value: "2.4k", change: "+12%" },
-				{ label: "Revenue", value: "$45k", change: "+8%" },
-				{ label: "Orders", value: "89", change: "-3%" },
-			]
-			const stat = getRandom(stats)
-			return (
-				<Card className="w-48">
-					<CardContent className="p-3">
-						<div className="flex items-center justify-between">
-							<div>
-								<p className="text-xs text-muted-foreground">{stat.label}</p>
-								<p className="text-lg font-semibold">{stat.value}</p>
+		switch (cardType) {
+			case "stats": {
+				const stats = [
+					{ label: "Users", value: "2.4k", change: "+12%", icon: Users },
+					{ label: "Revenue", value: "$45k", change: "+8%", icon: TrendingUp },
+					{ label: "Orders", value: "89", change: "-3%", icon: ShoppingCart },
+				]
+				const stat = getRandom(stats)
+				const StatIcon = stat.icon
+				return (
+					<Card className="w-56">
+						<CardContent className="p-4">
+							<div className="flex items-center justify-between mb-2">
+								<StatIcon className="h-8 w-8 text-muted-foreground" />
+								<Badge
+									variant={
+										stat.change.startsWith("+") ? "default" : "destructive"
+									}
+									className="text-xs"
+								>
+									{stat.change}
+								</Badge>
 							</div>
-							<Badge
-								variant={
-									stat.change.startsWith("+") ? "default" : "destructive"
-								}
-								className="text-xs"
-							>
-								{stat.change}
-							</Badge>
-						</div>
-					</CardContent>
-				</Card>
-			)
-		} else if (cardType === "user") {
-			const users = [
-				{ name: "Alex Chen", role: "Designer", status: "online" },
-				{ name: "Sam Taylor", role: "Developer", status: "away" },
-				{ name: "Jordan Lee", role: "Manager", status: "offline" },
-			]
-			const user = getRandom(users)
-			return (
-				<Card className="w-56">
-					<CardContent className="p-3">
-						<div className="flex items-center space-x-3">
-							<Avatar className="h-10 w-10">
-								<AvatarFallback>
-									{user.name
-										.split(" ")
-										.map(n => n[0])
-										.join("")}
-								</AvatarFallback>
-							</Avatar>
-							<div className="flex-1">
-								<p className="text-sm font-medium">{user.name}</p>
-								<p className="text-xs text-muted-foreground">{user.role}</p>
+							<p className="text-2xl font-bold">{stat.value}</p>
+							<p className="text-xs text-muted-foreground">{stat.label}</p>
+						</CardContent>
+					</Card>
+				)
+			}
+			case "user": {
+				const users = [
+					{
+						name: "Alex Chen",
+						role: "Designer",
+						status: "online",
+						avatar: "AC",
+					},
+					{
+						name: "Sam Taylor",
+						role: "Developer",
+						status: "away",
+						avatar: "ST",
+					},
+					{
+						name: "Jordan Lee",
+						role: "Manager",
+						status: "offline",
+						avatar: "JL",
+					},
+				]
+				const user = getRandom(users)
+				return (
+					<Card className="w-64">
+						<CardContent className="p-4">
+							<div className="flex items-center space-x-4">
+								<Avatar className="h-12 w-12">
+									<AvatarFallback className="bg-primary text-primary-foreground">
+										{user.avatar}
+									</AvatarFallback>
+								</Avatar>
+								<div className="flex-1">
+									<p className="text-sm font-semibold">{user.name}</p>
+									<p className="text-xs text-muted-foreground">{user.role}</p>
+									<div className="flex items-center gap-1 mt-1">
+										<div
+											className={`h-2 w-2 rounded-full ${
+												user.status === "online"
+													? "bg-green-500"
+													: user.status === "away"
+													? "bg-yellow-500"
+													: "bg-gray-300"
+											}`}
+										/>
+										<span className="text-xs text-muted-foreground">
+											{user.status}
+										</span>
+									</div>
+								</div>
+								<Button size="sm" variant="outline">
+									View
+								</Button>
 							</div>
-							<div
-								className={`h-2 w-2 rounded-full ${
-									user.status === "online"
-										? "bg-green-500"
-										: user.status === "away"
-										? "bg-yellow-500"
-										: "bg-gray-300"
-								}`}
-							/>
-						</div>
-					</CardContent>
-				</Card>
-			)
-		} else if (cardType === "action") {
-			const actions = [
-				{ icon: Download, label: "Download", desc: "Get the file" },
-				{ icon: Upload, label: "Upload", desc: "Add new file" },
-				{ icon: Share, label: "Share", desc: "Send to team" },
-			]
-			const action = getRandom(actions)
-			const ActionIcon = action.icon
-			return (
-				<Card className="w-48 hover:shadow-md transition-shadow cursor-pointer">
-					<CardContent className="p-4 text-center">
-						<ActionIcon className="h-8 w-8 mx-auto mb-2 text-primary" />
-						<p className="text-sm font-medium">{action.label}</p>
-						<p className="text-xs text-muted-foreground">{action.desc}</p>
-					</CardContent>
-				</Card>
-			)
-		} else {
-			const IconCard = getRandom([User, Settings, Mail, Calendar])
-			return (
-				<Card className="w-48">
-					<CardHeader className="p-3 pb-2">
-						<div className="flex items-center justify-between">
-							<CardTitle className="text-sm">Feature</CardTitle>
-							<IconCard className="h-4 w-4 text-muted-foreground" />
-						</div>
-					</CardHeader>
-					<CardContent className="p-3 pt-0">
-						<div className="flex items-center gap-2">
-							<Badge variant="secondary" className="text-xs">
-								New
-							</Badge>
-							<Progress value={66} className="flex-1 h-1" />
-						</div>
-					</CardContent>
-				</Card>
-			)
+						</CardContent>
+					</Card>
+				)
+			}
+			case "action": {
+				const actions = [
+					{
+						icon: Download,
+						label: "Download Report",
+						desc: "PDF, 2.4MB",
+						color: "blue",
+					},
+					{
+						icon: Upload,
+						label: "Upload Files",
+						desc: "Drag or click",
+						color: "green",
+					},
+					{
+						icon: Share,
+						label: "Share Project",
+						desc: "Invite team",
+						color: "purple",
+					},
+				]
+				const action = getRandom(actions)
+				const ActionIcon = action.icon
+				return (
+					<Card className="w-56 hover:shadow-lg transition-all cursor-pointer group">
+						<CardContent className="p-4">
+							<div className="flex items-start gap-3">
+								<div
+									className={`h-10 w-10 rounded-lg bg-${action.color}-100 dark:bg-${action.color}-950 flex items-center justify-center group-hover:scale-110 transition-transform`}
+								>
+									<ActionIcon
+										className={`h-5 w-5 text-${action.color}-600 dark:text-${action.color}-400`}
+									/>
+								</div>
+								<div className="flex-1">
+									<p className="text-sm font-medium">{action.label}</p>
+									<p className="text-xs text-muted-foreground">{action.desc}</p>
+								</div>
+								<ChevronRight className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+							</div>
+						</CardContent>
+					</Card>
+				)
+			}
+			case "feature": {
+				const features = [
+					{
+						icon: Zap,
+						title: "Fast",
+						desc: "Lightning quick",
+						progress: 66,
+					},
+					{
+						icon: Shield,
+						title: "Secure",
+						desc: "Bank-level security",
+						progress: 100,
+					},
+					{
+						icon: Cloud,
+						title: "Cloud",
+						desc: "Always synced",
+						progress: 75,
+					},
+					{
+						icon: Sparkles,
+						title: "Smart",
+						desc: "AI-powered",
+						progress: 90,
+					},
+				]
+				const feature = getRandom(features)
+				const FeatureIcon = feature.icon
+				return (
+					<Card className="w-48">
+						<CardHeader className="p-3 pb-2">
+							<div className="flex items-center justify-between">
+								<CardTitle className="text-sm">{feature.title}</CardTitle>
+								<FeatureIcon className="h-4 w-4 text-primary" />
+							</div>
+						</CardHeader>
+						<CardContent className="p-3 pt-0">
+							<p className="text-xs text-muted-foreground">{feature.desc}</p>
+							<Progress value={feature.progress} className="mt-2 h-1" />
+						</CardContent>
+					</Card>
+				)
+			}
+			case "metric": {
+				const metrics = [
+					{ label: "CPU Usage", value: 45, unit: "%", status: "normal" },
+					{ label: "Memory", value: 8.2, unit: "GB", status: "warning" },
+					{ label: "Storage", value: 124, unit: "GB", status: "critical" },
+				]
+				const metric = getRandom(metrics)
+				const statusColors: Record<string, string> = {
+					normal: "text-green-600",
+					warning: "text-yellow-600",
+					critical: "text-red-600",
+				}
+				return (
+					<Card className="w-48">
+						<CardContent className="p-3">
+							<p className="text-xs text-muted-foreground">{metric.label}</p>
+							<div className="flex items-baseline gap-1 mt-1">
+								<span
+									className={`text-2xl font-bold ${
+										statusColors[metric.status]
+									}`}
+								>
+									{metric.value}
+								</span>
+								<span className="text-sm text-muted-foreground">
+									{metric.unit}
+								</span>
+							</div>
+							<Progress value={metric.value} className="h-1 mt-2" />
+						</CardContent>
+					</Card>
+				)
+			}
+			case "task": {
+				const tasks = [
+					{
+						title: "Review PR",
+						priority: "high",
+						due: "2 hours",
+						assigned: "JD",
+					},
+					{
+						title: "Update docs",
+						priority: "medium",
+						due: "Tomorrow",
+						assigned: "ST",
+					},
+					{
+						title: "Fix bug",
+						priority: "low",
+						due: "Next week",
+						assigned: "AC",
+					},
+				]
+				const task = getRandom(tasks)
+				const priorityColors = {
+					high: "destructive" as const,
+					medium: "default" as const,
+					low: "secondary" as const,
+				}
+				return (
+					<Card className="w-64">
+						<CardContent className="p-3">
+							<div className="flex items-start justify-between mb-2">
+								<div className="flex-1">
+									<p className="text-sm font-medium">{task.title}</p>
+									<p className="text-xs text-muted-foreground">
+										Due: {task.due}
+									</p>
+								</div>
+								<Badge
+									variant={
+										priorityColors[task.priority as keyof typeof priorityColors]
+									}
+									className="text-xs"
+								>
+									{task.priority}
+								</Badge>
+							</div>
+							<div className="flex items-center justify-between">
+								<Avatar className="h-6 w-6">
+									<AvatarFallback className="text-xs">
+										{task.assigned}
+									</AvatarFallback>
+								</Avatar>
+								<Button size="sm" variant="ghost" className="h-7 text-xs">
+									View
+								</Button>
+							</div>
+						</CardContent>
+					</Card>
+				)
+			}
 		}
 	}
 
-	// Default random behavior
+	// Default random behavior with more variety
 	const complexTypes = [
 		"tabs",
 		"alert",
@@ -1448,6 +2764,8 @@ const createComplexComponent = (subcategory?: string) => {
 		"breadcrumb",
 		"tooltip",
 		"compound-card",
+		"mini-dashboard",
+		"notification",
 	] as const
 	const type = getRandom(complexTypes)
 
@@ -1475,8 +2793,9 @@ const createComplexComponent = (subcategory?: string) => {
 			const alertVariants = ["default", "destructive"] as const
 			const variant = getRandom(alertVariants)
 			const IconComponent = variant === "destructive" ? AlertCircle : Info
+			// Compact alert
 			return (
-				<Alert variant={variant} className="w-56 p-3">
+				<Alert variant={variant} className="w-56 py-2 px-3">
 					<IconComponent className="h-4 w-4" />
 					<AlertTitle className="text-sm">Alert!</AlertTitle>
 					<AlertDescription className="text-xs">
@@ -1669,359 +2988,96 @@ const createComplexComponent = (subcategory?: string) => {
 				)
 			}
 		}
-	}
-}
-
-const createUpsellComponent = (subcategory?: string) => {
-	// Handle specific subcategories
-	if (subcategory === "premium-popup") {
-		return (
-			<Card className="w-64 border-2 border-yellow-500 shadow-2xl">
-				<CardHeader className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white p-3">
-					<CardTitle className="text-lg flex items-center gap-2">
-						<Zap className="h-5 w-5" />
-						GO PREMIUM NOW!
-					</CardTitle>
-				</CardHeader>
-				<CardContent className="p-4">
-					<p className="text-sm font-bold mb-2">LIMITED TIME OFFER!</p>
-					<p className="text-xs text-muted-foreground mb-3">
-						Unlock 1000+ features you'll never use!
-					</p>
-					<div className="space-y-2">
-						<Button className="w-full bg-gradient-to-r from-yellow-400 to-orange-500">
-							UPGRADE NOW - 90% OFF
-						</Button>
-						<Button variant="ghost" size="sm" className="w-full text-xs">
-							Maybe later (we'll ask again in 5 seconds)
-						</Button>
-					</div>
-				</CardContent>
-			</Card>
-		)
-	} else if (subcategory === "countdown-timer") {
-		const minutes = Math.floor(Math.random() * 5) + 1
-		const seconds = Math.floor(Math.random() * 60)
-		return (
-			<Alert className="w-56 border-red-500 bg-red-50 dark:bg-red-950">
-				<AlertCircle className="h-4 w-4 text-red-600" />
-				<AlertTitle className="text-red-700 dark:text-red-400">
-					OFFER EXPIRES IN:
-				</AlertTitle>
-				<AlertDescription className="text-2xl font-bold text-red-600 dark:text-red-500">
-					{String(minutes).padStart(2, "0")}:{String(seconds).padStart(2, "0")}
-				</AlertDescription>
-			</Alert>
-		)
-	} else if (subcategory === "exit-intent") {
-		return (
-			<Card className="w-64 border-2 border-purple-500">
-				<CardHeader className="p-3">
-					<CardTitle className="text-lg">WAIT! DON'T GO!</CardTitle>
-				</CardHeader>
-				<CardContent className="p-3 pt-0">
-					<p className="text-sm mb-3">
-						Here's a special offer just for you! 🎁
-					</p>
-					<Badge className="mb-3">EXCLUSIVE 50% OFF</Badge>
-					<Button className="w-full" variant="destructive">
-						I CHANGED MY MIND
-					</Button>
-				</CardContent>
-			</Card>
-		)
-	} else if (subcategory === "fake-discount") {
-		const originalPrice = Math.floor(Math.random() * 200) + 100
-		const fakePrice = Math.floor(originalPrice * 0.3)
-		return (
-			<Card className="w-48">
-				<CardContent className="p-3">
-					<div className="text-center">
-						<p className="text-xs text-muted-foreground line-through">
-							Was ${originalPrice}
-						</p>
-						<p className="text-2xl font-bold text-green-600">
-							NOW ${fakePrice}
-						</p>
-						<Badge variant="destructive" className="mt-2">
-							SAVE {Math.floor((1 - fakePrice / originalPrice) * 100)}%
-						</Badge>
-					</div>
-				</CardContent>
-			</Card>
-		)
-	} else if (subcategory === "social-proof") {
-		const names = ["John", "Sarah", "Mike", "Emma", "David", "Lisa"]
-		const actions = ["just purchased", "is viewing", "added to cart", "saved"]
-		const products = [
-			"Premium Plan",
-			"Pro License",
-			"Ultimate Bundle",
-			"VIP Access",
-		]
-		const locations = ["New York", "London", "Tokyo", "Paris", "Sydney"]
-
-		return (
-			<Alert className="w-64">
-				<Users className="h-4 w-4" />
-				<AlertTitle className="text-sm">
-					{getRandom(names)} from {getRandom(locations)}
-				</AlertTitle>
-				<AlertDescription className="text-xs">
-					{getRandom(actions)} {getRandom(products)} •{" "}
-					{Math.floor(Math.random() * 10) + 1} mins ago
-				</AlertDescription>
-			</Alert>
-		)
-	} else if (subcategory === "limited-spots") {
-		const spots = Math.floor(Math.random() * 5) + 1
-		return (
-			<Card className="w-56 border-orange-500 bg-orange-50 dark:bg-orange-950">
-				<CardContent className="p-3">
-					<div className="flex items-center gap-2 mb-2">
-						<AlertCircle className="h-5 w-5 text-orange-600" />
-						<p className="font-bold text-orange-700 dark:text-orange-400">
-							ALMOST GONE!
-						</p>
-					</div>
-					<p className="text-sm mb-2">Only {spots} spots remaining!</p>
-					<Progress value={95} className="h-2 mb-2" />
-					<p className="text-xs text-muted-foreground">
-						{287 - spots} people have claimed this offer
-					</p>
-				</CardContent>
-			</Card>
-		)
-	} else if (subcategory === "cookie-monster") {
-		return (
-			<Card className="w-72">
-				<CardHeader className="p-3">
-					<CardTitle className="text-sm">🍪 We use cookies!</CardTitle>
-				</CardHeader>
-				<CardContent className="p-3 pt-0">
-					<p className="text-xs text-muted-foreground mb-3">
-						We use cookies to track everything you do, sell your data, and make
-						your experience "better".
-					</p>
-					<div className="flex gap-2">
-						<Button size="sm" className="flex-1">
-							Accept All
-						</Button>
-						<Button size="sm" variant="ghost" className="text-xs px-2">
-							Manage (good luck)
-						</Button>
-					</div>
-				</CardContent>
-			</Card>
-		)
-	} else if (subcategory === "newsletter-trap") {
-		return (
-			<Card className="w-64 border-2 border-blue-500">
-				<CardHeader className="bg-blue-500 text-white p-3">
-					<CardTitle className="text-lg flex items-center gap-2">
-						<Mail className="h-5 w-5" />
-						DON'T MISS OUT!
-					</CardTitle>
-				</CardHeader>
-				<CardContent className="p-4">
-					<p className="text-sm mb-3">Get spam... I mean, exclusive updates!</p>
-					<Input
-						placeholder="your@email.com"
-						className="mb-2"
-						defaultValue=""
-					/>
-					<Button className="w-full mb-2">SUBSCRIBE & GET 10% OFF*</Button>
-					<p className="text-xs text-muted-foreground text-center">
-						*On orders over $1000. Unsubscribe link hidden in footer.
-					</p>
-				</CardContent>
-			</Card>
-		)
-	} else if (subcategory === "survey-blocker") {
-		return (
-			<Card className="w-72 border-2 border-indigo-500">
-				<CardHeader className="p-3">
-					<CardTitle className="text-lg">Quick Survey! 🎯</CardTitle>
-				</CardHeader>
-				<CardContent className="p-3 pt-0">
-					<p className="text-sm mb-3">
-						Help us improve! (And unlock the content you actually want)
-					</p>
-					<div className="space-y-2">
-						<Button className="w-full" variant="outline" size="sm">
-							Take 30 second survey
-						</Button>
-						<p className="text-xs text-center text-muted-foreground">
-							"30 seconds" = 15 minutes minimum
-						</p>
-					</div>
-				</CardContent>
-			</Card>
-		)
-	} else if (subcategory === "fake-loading") {
-		return (
-			<Card className="w-56">
-				<CardContent className="p-4">
-					<div className="space-y-3">
-						<div className="flex items-center justify-center">
-							<div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+		case "mini-dashboard": {
+			return (
+				<Card className="w-64">
+					<CardHeader className="p-3">
+						<CardTitle className="text-sm flex items-center justify-between">
+							Dashboard
+							<Badge variant="outline" className="text-xs">
+								Live
+							</Badge>
+						</CardTitle>
+					</CardHeader>
+					<CardContent className="p-3 pt-0 space-y-3">
+						<div className="grid grid-cols-2 gap-3">
+							<div>
+								<p className="text-xs text-muted-foreground">Active</p>
+								<p className="text-lg font-bold">24</p>
+							</div>
+							<div>
+								<p className="text-xs text-muted-foreground">Pending</p>
+								<p className="text-lg font-bold">12</p>
+							</div>
 						</div>
-						<p className="text-sm text-center">Optimizing your experience...</p>
-						<Progress value={33} className="h-2" />
-						<p className="text-xs text-center text-muted-foreground">
-							(Actually just wasting your time)
-						</p>
-					</div>
-				</CardContent>
-			</Card>
-		)
-	} else if (subcategory === "notification-spam") {
-		const notifications = [
-			"🔔 Turn on notifications!",
-			"🔔 Never miss an update!",
-			"🔔 Get instant alerts!",
-			"🔔 Enable push notifications!",
-		]
-		return (
-			<Alert className="w-64 border-yellow-500">
-				<Bell className="h-4 w-4 animate-pulse" />
-				<AlertTitle className="text-sm">{getRandom(notifications)}</AlertTitle>
-				<AlertDescription className="text-xs">
-					<div className="flex gap-2 mt-2">
-						<Button size="sm" className="h-6 text-xs">
-							Allow
-						</Button>
-						<Button size="sm" variant="ghost" className="h-6 text-xs">
-							Ask me 47 more times
-						</Button>
-					</div>
-				</AlertDescription>
-			</Alert>
-		)
-	} else if (subcategory === "paywall-tease") {
-		return (
-			<Card className="w-64 relative overflow-hidden">
-				<div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent z-10 pointer-events-none" />
-				<CardContent className="p-4">
-					<p className="text-sm mb-2">Premium Content Preview:</p>
-					<p className="text-xs text-muted-foreground blur-[2px]">
-						This amazing content could be yours! Just imagine all the incredible
-						insights you're missing...
-					</p>
-					<Button className="w-full mt-4 relative z-20" size="sm">
-						Unlock Full Article - $9.99/mo
-					</Button>
-				</CardContent>
-			</Card>
-		)
-	} else if (subcategory === "guilt-trip") {
-		return (
-			<Card className="w-64 border-2 border-pink-500">
-				<CardHeader className="p-3">
-					<CardTitle className="text-lg">💔 Leaving so soon?</CardTitle>
-				</CardHeader>
-				<CardContent className="p-3 pt-0">
-					<p className="text-sm mb-3">
-						Our developers worked really hard on this...
-					</p>
-					<div className="space-y-2">
-						<Button className="w-full" variant="default">
-							Fine, I'll stay
-						</Button>
-						<Button className="w-full" variant="ghost" size="sm">
-							I'm a heartless monster
-						</Button>
-					</div>
-				</CardContent>
-			</Card>
-		)
-	} else if (subcategory === "fake-chat") {
-		const agents = ["Sarah", "Mike", "Jessica", "Tom"]
-		const agent = getRandom(agents)
-		return (
-			<Card className="w-72 border-2 border-green-500">
-				<CardHeader className="p-3 bg-green-50 dark:bg-green-950">
-					<div className="flex items-center gap-2">
-						<div className="h-2 w-2 bg-green-500 rounded-full animate-pulse" />
-						<CardTitle className="text-sm">{agent} is typing...</CardTitle>
-					</div>
-				</CardHeader>
-				<CardContent className="p-3">
-					<p className="text-sm mb-2">
-						Hi! I noticed you're browsing. Can I offer you an exclusive deal?
-					</p>
-					<p className="text-xs text-muted-foreground mb-3">
-						(This is a bot, {agent} doesn't exist)
-					</p>
-					<Button size="sm" className="w-full">
-						Chat with "{agent}"
-					</Button>
-				</CardContent>
-			</Card>
-		)
-	} else if (subcategory === "bait-switch") {
-		return (
-			<Card className="w-56">
-				<CardContent className="p-4">
-					<div className="text-center space-y-3">
-						<Gift className="h-12 w-12 mx-auto text-primary" />
-						<p className="text-lg font-bold">FREE GIFT!</p>
-						<p className="text-xs text-muted-foreground">
-							*With purchase of $99 or more
-						</p>
-						<Button className="w-full">Claim Free* Gift</Button>
-						<p className="text-xs text-muted-foreground">*Not actually free</p>
-					</div>
-				</CardContent>
-			</Card>
-		)
-	} else if (subcategory === "dark-confirm") {
-		return (
-			<Card className="w-64">
-				<CardHeader className="p-3">
-					<CardTitle className="text-sm">Cancel Subscription?</CardTitle>
-				</CardHeader>
-				<CardContent className="p-3 pt-0">
-					<p className="text-xs text-muted-foreground mb-3">
-						Are you sure you want to lose all your benefits?
-					</p>
-					<div className="flex gap-2">
-						<Button size="sm" variant="ghost" className="flex-1 text-xs">
-							Yes, cancel
-						</Button>
-						<Button
-							size="sm"
-							className="flex-1 bg-green-600 hover:bg-green-700"
-						>
-							NO, KEEP IT!
-						</Button>
-					</div>
-				</CardContent>
-			</Card>
-		)
+						<Progress value={66} className="h-1" />
+					</CardContent>
+				</Card>
+			)
+		}
+		case "notification": {
+			const notifications = [
+				{ icon: Mail, title: "New message", time: "2m ago", unread: true },
+				{ icon: Bell, title: "System update", time: "1h ago", unread: false },
+				{ icon: User, title: "New follower", time: "3h ago", unread: true },
+			]
+			const notif = getRandom(notifications)
+			const NotifIcon = notif.icon
+			// Compact notification
+			return (
+				<Card className={`w-64 ${notif.unread ? "border-primary/50" : ""}`}>
+					<CardContent className="p-3">
+						<div className="flex items-start gap-3">
+							<div
+								className={`h-8 w-8 rounded-full ${
+									notif.unread ? "bg-primary/20" : "bg-muted"
+								} flex items-center justify-center`}
+							>
+								<NotifIcon
+									className={`h-4 w-4 ${
+										notif.unread ? "text-primary" : "text-muted-foreground"
+									}`}
+								/>
+							</div>
+							<div className="flex-1">
+								<p className="text-sm font-medium">{notif.title}</p>
+								<p className="text-xs text-muted-foreground">{notif.time}</p>
+							</div>
+							{notif.unread && (
+								<div className="h-2 w-2 rounded-full bg-primary mt-1" />
+							)}
+						</div>
+					</CardContent>
+				</Card>
+			)
+		}
+		case "notification-spam": {
+			const notifications = [
+				"🔔 Turn on notifications!",
+				"🔔 Never miss an update!",
+				"🔔 Get instant alerts!",
+				"🔔 Enable push notifications!",
+			]
+			return (
+				<Alert className="w-64 border-yellow-500 py-2 px-3">
+					<Bell className="h-4 w-4 animate-pulse" />
+					<AlertTitle className="text-sm">
+						{getRandom(notifications)}
+					</AlertTitle>
+					<AlertDescription className="text-xs">
+						<div className="flex gap-2 mt-2">
+							<Button size="sm" className="h-6 text-xs">
+								Allow
+							</Button>
+							<Button size="sm" variant="ghost" className="h-6 text-xs">
+								Ask me 47 more times
+							</Button>
+						</div>
+					</AlertDescription>
+				</Alert>
+			)
+		}
 	}
-
-	// Default random upsell
-	const upsellTypes = [
-		"premium-popup",
-		"countdown-timer",
-		"exit-intent",
-		"fake-discount",
-		"social-proof",
-		"limited-spots",
-		"cookie-monster",
-		"newsletter-trap",
-		"survey-blocker",
-		"fake-loading",
-		"notification-spam",
-		"paywall-tease",
-		"guilt-trip",
-		"fake-chat",
-		"bait-switch",
-		"dark-confirm",
-	] as const
-
-	return createUpsellComponent(getRandom(upsellTypes))
 }
 
 export function PhysicsPlayground() {
