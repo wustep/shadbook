@@ -612,9 +612,18 @@ const createBadgeComponent = (subcategory?: string) => {
 			"bg-purple-500 hover:bg-purple-600",
 			"bg-amber-500 hover:bg-amber-600",
 			"bg-rose-500 hover:bg-rose-600",
+			"bg-red-500 hover:bg-red-600",
+			"bg-orange-500 hover:bg-orange-600",
+			"bg-yellow-500 hover:bg-yellow-600",
+			"bg-lime-500 hover:bg-lime-600",
+			"bg-teal-500 hover:bg-teal-600",
+			"bg-indigo-500 hover:bg-indigo-600",
+			"bg-violet-500 hover:bg-violet-600",
 			"bg-gradient-to-r from-pink-500 to-violet-500",
 			"bg-gradient-to-r from-cyan-500 to-blue-500",
 			"bg-gradient-to-r from-amber-500 to-orange-500",
+			"bg-gradient-to-r from-green-500 to-emerald-500",
+			"bg-gradient-to-r from-red-500 to-orange-500",
 		]
 		return <Badge className={getRandom(colorClasses)}>{text}</Badge>
 	}
@@ -3054,33 +3063,359 @@ const createComplexComponent = (subcategory?: string) => {
 				</Card>
 			)
 		}
-		case "notification-spam": {
-			const notifications = [
-				"🔔 Turn on notifications!",
-				"🔔 Never miss an update!",
-				"🔔 Get instant alerts!",
-				"🔔 Enable push notifications!",
-			]
-			return (
-				<Alert className="w-64 border-yellow-500 py-2 px-3">
-					<Bell className="h-4 w-4 animate-pulse" />
-					<AlertTitle className="text-sm">
-						{getRandom(notifications)}
-					</AlertTitle>
-					<AlertDescription className="text-xs">
-						<div className="flex gap-2 mt-2">
-							<Button size="sm" className="h-6 text-xs">
-								Allow
-							</Button>
-							<Button size="sm" variant="ghost" className="h-6 text-xs">
-								Ask me 47 more times
-							</Button>
-						</div>
-					</AlertDescription>
-				</Alert>
-			)
-		}
 	}
+}
+
+const createUpsellComponent = (subcategory?: string) => {
+	// Handle specific subcategories
+	if (subcategory === "premium-popup") {
+		return (
+			<Card className="w-64 border-2 border-yellow-500 shadow-2xl">
+				<CardHeader className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white p-3">
+					<CardTitle className="text-lg flex items-center gap-2">
+						<Zap className="h-5 w-5" />
+						GO PREMIUM NOW!
+					</CardTitle>
+				</CardHeader>
+				<CardContent className="p-4">
+					<p className="text-sm font-bold mb-2">LIMITED TIME OFFER!</p>
+					<p className="text-xs text-muted-foreground mb-3">
+						Unlock 1000+ features you'll never use!
+					</p>
+					<div className="space-y-2">
+						<Button className="w-full bg-gradient-to-r from-yellow-400 to-orange-500">
+							UPGRADE NOW - 90% OFF
+						</Button>
+						<Button variant="ghost" size="sm" className="w-full text-xs">
+							Maybe later (we'll ask again in 5 seconds)
+						</Button>
+					</div>
+				</CardContent>
+			</Card>
+		)
+	} else if (subcategory === "countdown-timer") {
+		const minutes = Math.floor(Math.random() * 5) + 1
+		const seconds = Math.floor(Math.random() * 60)
+		return (
+			<Alert className="w-56 border-red-500 bg-red-50 dark:bg-red-950">
+				<AlertCircle className="h-4 w-4 text-red-600" />
+				<AlertTitle className="text-red-700 dark:text-red-400">
+					OFFER EXPIRES IN:
+				</AlertTitle>
+				<AlertDescription className="text-2xl font-bold text-red-600 dark:text-red-500">
+					{String(minutes).padStart(2, "0")}:{String(seconds).padStart(2, "0")}
+				</AlertDescription>
+			</Alert>
+		)
+	} else if (subcategory === "exit-intent") {
+		return (
+			<Card className="w-64 border-2 border-purple-500">
+				<CardHeader className="p-3">
+					<CardTitle className="text-lg">WAIT! DON'T GO!</CardTitle>
+				</CardHeader>
+				<CardContent className="p-3 pt-0">
+					<p className="text-sm mb-3">
+						Here's a special offer just for you! 🎁
+					</p>
+					<Badge className="mb-3">EXCLUSIVE 50% OFF</Badge>
+					<Button className="w-full" variant="destructive">
+						I CHANGED MY MIND
+					</Button>
+				</CardContent>
+			</Card>
+		)
+	} else if (subcategory === "fake-discount") {
+		const originalPrice = Math.floor(Math.random() * 200) + 100
+		const fakePrice = Math.floor(originalPrice * 0.3)
+		return (
+			<Card className="w-48">
+				<CardContent className="p-3">
+					<div className="text-center">
+						<p className="text-xs text-muted-foreground line-through">
+							Was ${originalPrice}
+						</p>
+						<p className="text-2xl font-bold text-green-600">
+							NOW ${fakePrice}
+						</p>
+						<Badge variant="destructive" className="mt-2">
+							SAVE {Math.floor((1 - fakePrice / originalPrice) * 100)}%
+						</Badge>
+					</div>
+				</CardContent>
+			</Card>
+		)
+	} else if (subcategory === "social-proof") {
+		const names = ["John", "Sarah", "Mike", "Emma", "David", "Lisa"]
+		const actions = ["just purchased", "is viewing", "added to cart", "saved"]
+		const products = [
+			"Premium Plan",
+			"Pro License",
+			"Ultimate Bundle",
+			"VIP Access",
+		]
+		const locations = ["New York", "London", "Tokyo", "Paris", "Sydney"]
+
+		return (
+			<Alert className="w-64">
+				<Users className="h-4 w-4" />
+				<AlertTitle className="text-sm">
+					{getRandom(names)} from {getRandom(locations)}
+				</AlertTitle>
+				<AlertDescription className="text-xs">
+					{getRandom(actions)} {getRandom(products)} •{" "}
+					{Math.floor(Math.random() * 10) + 1} mins ago
+				</AlertDescription>
+			</Alert>
+		)
+	} else if (subcategory === "limited-spots") {
+		const spots = Math.floor(Math.random() * 5) + 1
+		return (
+			<Card className="w-56 border-orange-500 bg-orange-50 dark:bg-orange-950">
+				<CardContent className="p-3">
+					<div className="flex items-center gap-2 mb-2">
+						<AlertCircle className="h-5 w-5 text-orange-600" />
+						<p className="font-bold text-orange-700 dark:text-orange-400">
+							ALMOST GONE!
+						</p>
+					</div>
+					<p className="text-sm mb-2">Only {spots} spots remaining!</p>
+					<Progress value={95} className="h-2 mb-2" />
+					<p className="text-xs text-muted-foreground">
+						{287 - spots} people have claimed this offer
+					</p>
+				</CardContent>
+			</Card>
+		)
+	} else if (subcategory === "cookie-monster") {
+		return (
+			<Card className="w-72">
+				<CardHeader className="p-3">
+					<CardTitle className="text-sm">🍪 We use cookies!</CardTitle>
+				</CardHeader>
+				<CardContent className="p-3 pt-0">
+					<p className="text-xs text-muted-foreground mb-3">
+						We use cookies to track everything you do, sell your data, and make
+						your experience "better".
+					</p>
+					<div className="flex gap-2">
+						<Button size="sm" className="flex-1">
+							Accept All
+						</Button>
+						<Button size="sm" variant="ghost" className="text-xs px-2">
+							Manage (good luck)
+						</Button>
+					</div>
+				</CardContent>
+			</Card>
+		)
+	} else if (subcategory === "newsletter-trap") {
+		return (
+			<Card className="w-64 border-2 border-blue-500">
+				<CardHeader className="bg-blue-500 text-white p-3">
+					<CardTitle className="text-lg flex items-center gap-2">
+						<Mail className="h-5 w-5" />
+						DON'T MISS OUT!
+					</CardTitle>
+				</CardHeader>
+				<CardContent className="p-4">
+					<p className="text-sm mb-3">Get spam... I mean, exclusive updates!</p>
+					<Input
+						placeholder="your@email.com"
+						className="mb-2"
+						defaultValue=""
+					/>
+					<Button className="w-full mb-2">SUBSCRIBE & GET 10% OFF*</Button>
+					<p className="text-xs text-muted-foreground text-center">
+						*On orders over $1000. Unsubscribe link hidden in footer.
+					</p>
+				</CardContent>
+			</Card>
+		)
+	} else if (subcategory === "survey-blocker") {
+		return (
+			<Card className="w-72 border-2 border-indigo-500">
+				<CardHeader className="p-3">
+					<CardTitle className="text-lg">Quick Survey! 🎯</CardTitle>
+				</CardHeader>
+				<CardContent className="p-3 pt-0">
+					<p className="text-sm mb-3">
+						Help us improve! (And unlock the content you actually want)
+					</p>
+					<div className="space-y-2">
+						<Button className="w-full" variant="outline" size="sm">
+							Take 30 second survey
+						</Button>
+						<p className="text-xs text-center text-muted-foreground">
+							"30 seconds" = 15 minutes minimum
+						</p>
+					</div>
+				</CardContent>
+			</Card>
+		)
+	} else if (subcategory === "fake-loading") {
+		return (
+			<Card className="w-56">
+				<CardContent className="p-4">
+					<div className="space-y-3">
+						<div className="flex items-center justify-center">
+							<div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+						</div>
+						<p className="text-sm text-center">Optimizing your experience...</p>
+						<Progress value={33} className="h-2" />
+						<p className="text-xs text-center text-muted-foreground">
+							(Actually just wasting your time)
+						</p>
+					</div>
+				</CardContent>
+			</Card>
+		)
+	} else if (subcategory === "notification-spam") {
+		const notifications = [
+			"🔔 Turn on notifications!",
+			"🔔 Never miss an update!",
+			"🔔 Get instant alerts!",
+			"🔔 Enable push notifications!",
+		]
+		return (
+			<Alert className="w-64 border-yellow-500">
+				<Bell className="h-4 w-4 animate-pulse" />
+				<AlertTitle className="text-sm">{getRandom(notifications)}</AlertTitle>
+				<AlertDescription className="text-xs">
+					<div className="flex gap-2 mt-2">
+						<Button size="sm" className="h-6 text-xs">
+							Allow
+						</Button>
+						<Button size="sm" variant="ghost" className="h-6 text-xs">
+							Ask me 47 more times
+						</Button>
+					</div>
+				</AlertDescription>
+			</Alert>
+		)
+	} else if (subcategory === "paywall-tease") {
+		return (
+			<Card className="w-64 relative overflow-hidden">
+				<div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent z-10 pointer-events-none" />
+				<CardContent className="p-4">
+					<p className="text-sm mb-2">Premium Content Preview:</p>
+					<p className="text-xs text-muted-foreground blur-[2px]">
+						This amazing content could be yours! Just imagine all the incredible
+						insights you're missing...
+					</p>
+					<Button className="w-full mt-4 relative z-20" size="sm">
+						Unlock Full Article - $9.99/mo
+					</Button>
+				</CardContent>
+			</Card>
+		)
+	} else if (subcategory === "guilt-trip") {
+		return (
+			<Card className="w-64 border-2 border-pink-500">
+				<CardHeader className="p-3">
+					<CardTitle className="text-lg">💔 Leaving so soon?</CardTitle>
+				</CardHeader>
+				<CardContent className="p-3 pt-0">
+					<p className="text-sm mb-3">
+						Our developers worked really hard on this...
+					</p>
+					<div className="space-y-2">
+						<Button className="w-full" variant="default">
+							Fine, I'll stay
+						</Button>
+						<Button className="w-full" variant="ghost" size="sm">
+							I'm a heartless monster
+						</Button>
+					</div>
+				</CardContent>
+			</Card>
+		)
+	} else if (subcategory === "fake-chat") {
+		const agents = ["Sarah", "Mike", "Jessica", "Tom"]
+		const agent = getRandom(agents)
+		return (
+			<Card className="w-72 border-2 border-green-500">
+				<CardHeader className="p-3 bg-green-50 dark:bg-green-950">
+					<div className="flex items-center gap-2">
+						<div className="h-2 w-2 bg-green-500 rounded-full animate-pulse" />
+						<CardTitle className="text-sm">{agent} is typing...</CardTitle>
+					</div>
+				</CardHeader>
+				<CardContent className="p-3">
+					<p className="text-sm mb-2">
+						Hi! I noticed you're browsing. Can I offer you an exclusive deal?
+					</p>
+					<p className="text-xs text-muted-foreground mb-3">
+						(This is a bot, {agent} doesn't exist)
+					</p>
+					<Button size="sm" className="w-full">
+						Chat with "{agent}"
+					</Button>
+				</CardContent>
+			</Card>
+		)
+	} else if (subcategory === "bait-switch") {
+		return (
+			<Card className="w-56">
+				<CardContent className="p-4">
+					<div className="text-center space-y-3">
+						<Gift className="h-12 w-12 mx-auto text-primary" />
+						<p className="text-lg font-bold">FREE GIFT!</p>
+						<p className="text-xs text-muted-foreground">
+							*With purchase of $99 or more
+						</p>
+						<Button className="w-full">Claim Free* Gift</Button>
+						<p className="text-xs text-muted-foreground">*Not actually free</p>
+					</div>
+				</CardContent>
+			</Card>
+		)
+	} else if (subcategory === "dark-confirm") {
+		return (
+			<Card className="w-64">
+				<CardHeader className="p-3">
+					<CardTitle className="text-sm">Cancel Subscription?</CardTitle>
+				</CardHeader>
+				<CardContent className="p-3 pt-0">
+					<p className="text-xs text-muted-foreground mb-3">
+						Are you sure you want to lose all your benefits?
+					</p>
+					<div className="flex gap-2">
+						<Button size="sm" variant="ghost" className="flex-1 text-xs">
+							Yes, cancel
+						</Button>
+						<Button
+							size="sm"
+							className="flex-1 bg-green-600 hover:bg-green-700"
+						>
+							NO, KEEP IT!
+						</Button>
+					</div>
+				</CardContent>
+			</Card>
+		)
+	}
+
+	// Default random upsell
+	const upsellTypes = [
+		"premium-popup",
+		"countdown-timer",
+		"exit-intent",
+		"fake-discount",
+		"social-proof",
+		"limited-spots",
+		"cookie-monster",
+		"newsletter-trap",
+		"survey-blocker",
+		"fake-loading",
+		"notification-spam",
+		"paywall-tease",
+		"guilt-trip",
+		"fake-chat",
+		"bait-switch",
+		"dark-confirm",
+	] as const
+
+	return createUpsellComponent(getRandom(upsellTypes))
 }
 
 export function PhysicsPlayground() {
@@ -3096,13 +3431,35 @@ export function PhysicsPlayground() {
 		ComponentSubcategory | undefined
 	>(undefined)
 	const [gravity, setGravity] = useState(1)
-	const [bounce, setBounce] = useState(0.8)
+	const [bounce, setBounce] = useState(0.3) // Reduced default bounce from 0.8 to 0.3
 	const [isPaused, setIsPaused] = useState(false)
 	const [componentCount, setComponentCount] = useState(0)
+	const [controlsVisible, setControlsVisible] = useState(true)
 
 	// Keyboard shortcuts
 	useEffect(() => {
-		const handleKeyPress = (e: KeyboardEvent) => {
+		let spawnInterval: NodeJS.Timeout | null = null
+		let isSpacePressed = false
+
+		const handleKeyDown = (e: KeyboardEvent) => {
+			// Prevent space from scrolling the page
+			if (e.key === " ") {
+				// Check if the target is within a Select component
+				const target = e.target as HTMLElement
+				const isInSelect =
+					target.closest('[role="combobox"]') ||
+					target.closest("[data-radix-collection-item]") ||
+					target.closest('[role="listbox"]')
+
+				if (isInSelect) {
+					e.stopPropagation()
+					return
+				}
+
+				// Prevent default scrolling behavior
+				e.preventDefault()
+			}
+
 			// Check if user is typing in any form control
 			if (
 				e.target instanceof HTMLInputElement ||
@@ -3116,13 +3473,45 @@ export function PhysicsPlayground() {
 
 			// Space key to spawn
 			if (e.key === " ") {
-				e.preventDefault()
-				spawnComponent()
+				// Only set up interval on first press, not on repeats
+				if (!isSpacePressed) {
+					isSpacePressed = true
+					// Spawn immediately on first press
+					setTimeout(() => spawnComponent(), 0)
+
+					// If shift is held, start rapid spawning
+					if (e.shiftKey && !spawnInterval) {
+						spawnInterval = setInterval(() => {
+							// Only continue spawning if space is still pressed
+							if (isSpacePressed) {
+								spawnComponent()
+							} else {
+								// Clean up interval if space was released
+								if (spawnInterval) {
+									clearInterval(spawnInterval)
+									spawnInterval = null
+								}
+							}
+						}, 100) // Spawn every 100ms (10 per second) when shift is held
+					} else if (!e.shiftKey && !spawnInterval) {
+						// For normal space holding (without shift), spawn at a slower rate
+						spawnInterval = setInterval(() => {
+							if (isSpacePressed) {
+								spawnComponent()
+							} else {
+								if (spawnInterval) {
+									clearInterval(spawnInterval)
+									spawnInterval = null
+								}
+							}
+						}, 200) // Spawn every 200ms (5 per second) when just holding space
+					}
+				}
 			}
 			// 'c' key to clear
 			else if (e.key === "c" || e.key === "C") {
 				e.preventDefault()
-				clearAll()
+				setTimeout(() => clearAll(), 0)
 			}
 			// 'p' key to pause/unpause
 			else if (e.key === "p" || e.key === "P") {
@@ -3131,8 +3520,39 @@ export function PhysicsPlayground() {
 			}
 		}
 
-		window.addEventListener("keydown", handleKeyPress)
-		return () => window.removeEventListener("keydown", handleKeyPress)
+		const handleKeyUp = (e: KeyboardEvent) => {
+			// Stop rapid spawning when space is released
+			if (e.key === " ") {
+				isSpacePressed = false
+				if (spawnInterval) {
+					clearInterval(spawnInterval)
+					spawnInterval = null
+				}
+			}
+		}
+
+		// Use keydown for all handling
+		window.addEventListener("keydown", handleKeyDown)
+		window.addEventListener("keyup", handleKeyUp)
+
+		// Also handle blur event in case the window loses focus
+		const handleBlur = () => {
+			isSpacePressed = false
+			if (spawnInterval) {
+				clearInterval(spawnInterval)
+				spawnInterval = null
+			}
+		}
+		window.addEventListener("blur", handleBlur)
+
+		return () => {
+			window.removeEventListener("keydown", handleKeyDown)
+			window.removeEventListener("keyup", handleKeyUp)
+			window.removeEventListener("blur", handleBlur)
+			if (spawnInterval) {
+				clearInterval(spawnInterval)
+			}
+		}
 	}, [selectedCategory, selectedSubcategory])
 
 	// Initialize Matter.js
@@ -3214,7 +3634,7 @@ export function PhysicsPlayground() {
 						isStatic: true,
 						label: "floor",
 						friction: 0.3,
-						restitution: 0.3,
+						restitution: 0.2, // Reduced from 0.3
 					},
 				),
 				Matter.Bodies.rectangle(
@@ -3226,7 +3646,7 @@ export function PhysicsPlayground() {
 						isStatic: true,
 						label: "wall-left",
 						friction: 0.3,
-						restitution: 0.3,
+						restitution: 0.2, // Reduced from 0.3
 					},
 				),
 				Matter.Bodies.rectangle(
@@ -3238,14 +3658,14 @@ export function PhysicsPlayground() {
 						isStatic: true,
 						label: "wall-right",
 						friction: 0.3,
-						restitution: 0.3,
+						restitution: 0.2, // Reduced from 0.3
 					},
 				),
 				Matter.Bodies.rectangle(newBounds.width / 2, 25, newBounds.width, 50, {
 					isStatic: true,
 					label: "ceiling",
 					friction: 0.2,
-					restitution: 0.5,
+					restitution: 0.3, // Reduced from 0.5
 				}),
 			]
 
@@ -3287,6 +3707,19 @@ export function PhysicsPlayground() {
 			engineRef.current.world.gravity.y = gravity * 0.001 // Scale the gravity value directly
 		}
 	}, [gravity])
+
+	// Update bounce (restitution) for all existing bodies when slider changes
+	useEffect(() => {
+		if (!engineRef.current) return
+
+		const bodies = Matter.Composite.allBodies(engineRef.current.world)
+		bodies.forEach(body => {
+			if (!body.isStatic) {
+				// Update the restitution of non-static bodies
+				Matter.Body.set(body, { restitution: bounce })
+			}
+		})
+	}, [bounce])
 
 	// Pause/resume physics
 	useEffect(() => {
@@ -3441,18 +3874,18 @@ export function PhysicsPlayground() {
 				50
 			const y = rect.height / 2 + 50 // Start a bit lower to avoid ceiling
 
-			// Smooth bias towards upright orientation
-			// Using a power function to bias the distribution
+			// Smooth bias towards upright orientation with stronger bias
+			// Using a higher power function to bias the distribution more strongly
 			const randomValue = Math.random()
-			const biasedValue = Math.pow(randomValue, 3)
-			const deviation = biasedValue * Math.PI
+			const biasedValue = Math.pow(randomValue, 5) // Increased from 3 to 5 for stronger bias
+			const deviation = biasedValue * (Math.PI / 2) // Reduced from π to π/2 for smaller max deviation
 			const initialAngle = Math.random() < 0.5 ? deviation : -deviation
 
 			// Create physics body with improved settings
 			const body = Matter.Bodies.rectangle(x, y, rect.width, rect.height, {
 				restitution: bounce,
-				friction: 0.1, // Reduced friction
-				frictionAir: 0.0001, // Reduced air friction
+				friction: 0.3, // Increased friction from 0.1 for more realistic behavior
+				frictionAir: 0.001, // Increased air friction from 0.0001 for more damping
 				density: 0.001,
 				angle: initialAngle,
 				angularVelocity: (Math.random() - 0.5) * 0.05, // Reduced initial spin
@@ -3532,148 +3965,183 @@ export function PhysicsPlayground() {
 			className="h-[calc(100vh-var(--header-height))] flex flex-col transition-[width,margin] duration-200 ease-linear data-[sidebar-state=collapsed]:ml-0"
 		>
 			{/* Controls */}
-			<div className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 p-4">
-				<div className="flex flex-wrap gap-1 items-center">
-					{/* Action buttons first */}
-					<div className="flex gap-2">
-						<TooltipProvider>
-							<Tooltip>
-								<TooltipTrigger asChild>
-									<Button onClick={() => spawnComponent()} size="sm">
-										Spawn
-									</Button>
-								</TooltipTrigger>
-								<TooltipContent>
-									<p className="text-xs">Press Space to spawn</p>
-								</TooltipContent>
-							</Tooltip>
-						</TooltipProvider>
-
-						<TooltipProvider>
-							<Tooltip>
-								<TooltipTrigger asChild>
-									<Button onClick={clearAll} variant="destructive" size="sm">
-										Clear
-									</Button>
-								</TooltipTrigger>
-								<TooltipContent>
-									<p className="text-xs">Press 'C' to clear</p>
-								</TooltipContent>
-							</Tooltip>
-						</TooltipProvider>
-					</div>
-
-					<Separator orientation="vertical" className="h-8" />
-
-					{/* Component selection */}
-					<Select
-						value={selectedCategory}
-						onValueChange={value => {
-							setSelectedCategory(value as ComponentCategory)
-							setSelectedSubcategory(undefined) // Reset subcategory when category changes
-						}}
+			<div className="relative">
+				{/* Small hover target for toggle button */}
+				<div className="absolute top-2 right-2 w-8 h-8 group z-10">
+					{/* Toggle button - only visible on hover of the small area */}
+					<Button
+						size="sm"
+						variant="ghost"
+						onClick={() => setControlsVisible(!controlsVisible)}
+						className="absolute right-0 top-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200 h-8 w-auto px-2"
 					>
-						<SelectTrigger className="w-[140px]">
-							<SelectValue />
-						</SelectTrigger>
-						<SelectContent>
-							{COMPONENT_CATEGORIES.map(category => (
-								<SelectItem key={category.id} value={category.id}>
-									<div className="flex items-center gap-2">
-										<category.icon className="h-4 w-4" />
-										{category.name}
-									</div>
-								</SelectItem>
-							))}
-						</SelectContent>
-					</Select>
-
-					{/* Subcategory dropdown */}
-					{selectedCategory !== "random" && (
-						<Select
-							value={selectedSubcategory || "random"}
-							onValueChange={value => {
-								setSelectedSubcategory(
-									value === "random"
-										? undefined
-										: (value as ComponentSubcategory),
-								)
-							}}
-						>
-							<SelectTrigger className="w-[160px]">
-								<SelectValue />
-							</SelectTrigger>
-							<SelectContent>
-								<SelectItem value="random">Random</SelectItem>
-								<Separator className="my-1" />
-								{COMPONENT_CATEGORIES.find(
-									cat => cat.id === selectedCategory,
-								)?.subcategories.map(sub => (
-									<SelectItem key={sub.id} value={sub.id}>
-										{sub.name}
-									</SelectItem>
-								))}
-							</SelectContent>
-						</Select>
-					)}
-
-					<Separator orientation="vertical" className="h-8" />
-
-					{/* Physics controls */}
-					<div className="flex items-center gap-2">
-						<Label htmlFor="gravity">Gravity</Label>
-						<Slider
-							id="gravity"
-							value={[gravity]}
-							onValueChange={([v]) => setGravity(v)}
-							min={0}
-							max={2}
-							step={0.1}
-							className="w-[100px]"
-						/>
-					</div>
-
-					<div className="flex items-center gap-2">
-						<Label htmlFor="bounce">Bounce</Label>
-						<Slider
-							id="bounce"
-							value={[bounce]}
-							onValueChange={([v]) => setBounce(v)}
-							min={0}
-							max={1}
-							step={0.1}
-							className="w-[100px]"
-						/>
-					</div>
-
-					<div className="flex items-center gap-2">
-						<TooltipProvider>
-							<Tooltip>
-								<TooltipTrigger asChild>
-									<Button
-										size="icon"
-										variant="outline"
-										onClick={() => setIsPaused(prev => !prev)}
-										className="h-8 w-8"
-									>
-										{isPaused ? (
-											<Play className="h-4 w-4" />
-										) : (
-											<Pause className="h-4 w-4" />
-										)}
-									</Button>
-								</TooltipTrigger>
-								<TooltipContent>
-									<p className="text-xs">Press 'P' to toggle</p>
-								</TooltipContent>
-							</Tooltip>
-						</TooltipProvider>
-					</div>
-
-					<div className="ml-auto">
-						<Badge variant="secondary">Components: {componentCount}</Badge>
-					</div>
+						{controlsVisible ? (
+							<>
+								<ChevronRight className="h-4 w-4 mr-1" />
+								Hide
+							</>
+						) : (
+							<>
+								<ChevronRight className="h-4 w-4 mr-1 rotate-180" />
+								Show
+							</>
+						)}
+					</Button>
 				</div>
+
+				{/* Controls panel */}
+				{controlsVisible && (
+					<div className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 p-4">
+						<div className="flex flex-wrap gap-1 items-center">
+							{/* Action buttons first */}
+							<div className="flex gap-2">
+								<TooltipProvider>
+									<Tooltip>
+										<TooltipTrigger asChild>
+											<Button onClick={() => spawnComponent()} size="sm">
+												Spawn
+											</Button>
+										</TooltipTrigger>
+										<TooltipContent>
+											<p className="text-xs">Press Space to spawn</p>
+											<p className="text-xs text-muted-foreground">
+												Hold Shift+Space for rapid spawn
+											</p>
+										</TooltipContent>
+									</Tooltip>
+								</TooltipProvider>
+
+								<TooltipProvider>
+									<Tooltip>
+										<TooltipTrigger asChild>
+											<Button
+												onClick={clearAll}
+												variant="destructive"
+												size="sm"
+											>
+												Clear
+											</Button>
+										</TooltipTrigger>
+										<TooltipContent>
+											<p className="text-xs">Press 'C' to clear</p>
+										</TooltipContent>
+									</Tooltip>
+								</TooltipProvider>
+							</div>
+
+							<Separator orientation="vertical" className="h-8" />
+
+							{/* Component selection */}
+							<Select
+								value={selectedCategory}
+								onValueChange={value => {
+									setSelectedCategory(value as ComponentCategory)
+									setSelectedSubcategory(undefined) // Reset subcategory when category changes
+								}}
+							>
+								<SelectTrigger className="w-[140px]">
+									<SelectValue />
+								</SelectTrigger>
+								<SelectContent>
+									{COMPONENT_CATEGORIES.map(category => (
+										<SelectItem key={category.id} value={category.id}>
+											<div className="flex items-center gap-2">
+												<category.icon className="h-4 w-4" />
+												{category.name}
+											</div>
+										</SelectItem>
+									))}
+								</SelectContent>
+							</Select>
+
+							{/* Subcategory dropdown */}
+							{selectedCategory !== "random" && (
+								<Select
+									value={selectedSubcategory || "random"}
+									onValueChange={value => {
+										setSelectedSubcategory(
+											value === "random"
+												? undefined
+												: (value as ComponentSubcategory),
+										)
+									}}
+								>
+									<SelectTrigger className="w-[160px]">
+										<SelectValue />
+									</SelectTrigger>
+									<SelectContent>
+										<SelectItem value="random">Random</SelectItem>
+										<Separator className="my-1" />
+										{COMPONENT_CATEGORIES.find(
+											cat => cat.id === selectedCategory,
+										)?.subcategories.map(sub => (
+											<SelectItem key={sub.id} value={sub.id}>
+												{sub.name}
+											</SelectItem>
+										))}
+									</SelectContent>
+								</Select>
+							)}
+
+							<Separator orientation="vertical" className="h-8" />
+
+							{/* Physics controls */}
+							<div className="flex items-center gap-2">
+								<Label htmlFor="gravity">Gravity</Label>
+								<Slider
+									id="gravity"
+									value={[gravity]}
+									onValueChange={([v]) => setGravity(v)}
+									min={0}
+									max={2}
+									step={0.1}
+									className="w-[100px]"
+								/>
+							</div>
+
+							<div className="flex items-center gap-2">
+								<Label htmlFor="bounce">Bounce</Label>
+								<Slider
+									id="bounce"
+									value={[bounce]}
+									onValueChange={([v]) => setBounce(v)}
+									min={0}
+									max={0.8} // Reduced max from 1 to 0.8
+									step={0.05} // Smaller steps from 0.1 to 0.05 for finer control
+									className="w-[100px]"
+								/>
+							</div>
+
+							<div className="flex items-center gap-2">
+								<TooltipProvider>
+									<Tooltip>
+										<TooltipTrigger asChild>
+											<Button
+												size="icon"
+												variant="outline"
+												onClick={() => setIsPaused(prev => !prev)}
+												className="h-8 w-8"
+											>
+												{isPaused ? (
+													<Play className="h-4 w-4" />
+												) : (
+													<Pause className="h-4 w-4" />
+												)}
+											</Button>
+										</TooltipTrigger>
+										<TooltipContent>
+											<p className="text-xs">Press 'P' to toggle</p>
+										</TooltipContent>
+									</Tooltip>
+								</TooltipProvider>
+							</div>
+
+							<div className="ml-auto">
+								<Badge variant="secondary">Components: {componentCount}</Badge>
+							</div>
+						</div>
+					</div>
+				)}
 			</div>
 
 			{/* Physics Scene */}
