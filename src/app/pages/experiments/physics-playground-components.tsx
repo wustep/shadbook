@@ -1195,8 +1195,8 @@ export const createCardComponent = (subcategory?: string) => {
 		const idx = Math.floor(Math.random() * settingIcons.length)
 		const SettingIcon = settingIcons[idx]
 		return (
-			<Card className="w-64 hover:bg-accent/50 transition-colors cursor-pointer">
-				<CardContent className="p-3">
+			<Card className="w-72 py-3 hover:bg-accent/50 transition-colors cursor-pointer">
+				<CardContent className="px-3">
 					<div className="flex items-center justify-between">
 						<div className="flex items-center space-x-3">
 							<div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
@@ -1384,8 +1384,8 @@ export const createCardComponent = (subcategory?: string) => {
 			const idx = Math.floor(Math.random() * settingIcons.length)
 			const SettingIcon = settingIcons[idx]
 			return (
-				<Card className="w-56">
-					<CardContent className="p-3">
+				<Card className="py-">
+					<CardContent className="px-3">
 						<div className="flex items-center justify-between">
 							<div className="flex items-center space-x-3">
 								<SettingIcon className="h-4 w-4 text-muted-foreground" />
