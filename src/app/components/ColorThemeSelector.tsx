@@ -8,7 +8,7 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { useSidebar } from "@/components/ui/sidebar"
+import { SidebarMenuButton, useSidebar } from "@/components/ui/sidebar"
 
 // Available theme colors
 type ThemeColor = "neutral" | "gray" | "slate" | "stone" | "zinc"
@@ -47,14 +47,14 @@ export function ColorThemeSelector() {
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
-				<Button
+				<SidebarMenuButton
 					variant="outline"
-					size={isCollapsed ? "icon" : "sm"}
-					className={isCollapsed ? "size-8" : "w-full justify-start gap-2"}
+					size="sm"
+					className={"w-full justify-start gap-2"}
 				>
 					<Paintbrush className="size-4" />
-					{!isCollapsed && <span className="capitalize">{color} Theme</span>}
-				</Button>
+					<span className="capitalize text-sm">{color} Theme</span>
+				</SidebarMenuButton>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent align="end" className="w-56">
 				<div>
