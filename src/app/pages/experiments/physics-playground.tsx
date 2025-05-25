@@ -780,7 +780,8 @@ export function PhysicsPlayground() {
 	return (
 		<div
 			data-sidebar-state={state}
-			className="h-[calc(100vh-var(--header-height))] flex flex-col transition-[width,margin] duration-200 ease-linear data-[sidebar-state=collapsed]:ml-0"
+			className="flex flex-col overflow-hidden transition-[width,margin] duration-200 ease-linear data-[sidebar-state=collapsed]:ml-0"
+			style={{ height: "calc(100vh - var(--header-height) - 1rem)" }}
 		>
 			{/* Controls */}
 			<div className="relative">
@@ -978,7 +979,8 @@ export function PhysicsPlayground() {
 						linear-gradient(to bottom, hsl(var(--border)) 1px, transparent 1px)
 					`,
 					backgroundSize: "20px 20px",
-					minHeight: "400px",
+					height: "100%",
+					maxHeight: "100%",
 					position: "relative",
 					touchAction: "none", // Prevent scrolling/zooming on touch
 					userSelect: "none", // Prevent text selection
