@@ -303,7 +303,9 @@ export const getRandom = <T,>(arr: readonly T[]): T =>
 	arr[Math.floor(Math.random() * arr.length)]
 
 // Component creation functions
-export const createButtonComponent = (subcategory?: string) => {
+export const createButtonComponent = (
+	subcategory?: string,
+): React.ReactElement => {
 	const variant = getRandom(BUTTON_VARIANTS)
 	const sizes = ["sm", "default", "lg"] as const
 	const size = getRandom(sizes)
@@ -506,146 +508,14 @@ export const createButtonComponent = (subcategory?: string) => {
 		)
 	}
 
-	// Default random behavior with more variety
-	const buttonType = getRandom([
-		"simple",
-		"with-icon",
-		"icon-only",
-		"gradient",
-		"rounded",
-		"shadow",
-		"group-hover",
-		"loading",
-	])
-
-	switch (buttonType) {
-		case "simple":
-			return (
-				<Button variant={variant} size={size}>
-					{getRandom(texts)}
-				</Button>
-			)
-		case "with-icon": {
-			const ButtonIcon = getRandom([
-				Check,
-				X,
-				Download,
-				Upload,
-				Edit,
-				Trash,
-				Mail,
-				Settings,
-				ArrowRight,
-				ChevronRight,
-				Plus,
-				Save,
-				Share,
-				Sparkles,
-				Zap,
-				Play,
-			])
-			const iconPosition = getRandom(["left", "right"])
-			if (iconPosition === "left") {
-				return (
-					<Button variant={variant} size={size}>
-						<ButtonIcon className="mr-2 h-4 w-4" />
-						{getRandom(texts)}
-					</Button>
-				)
-			} else {
-				return (
-					<Button variant={variant} size={size}>
-						{getRandom(texts)}
-						<ButtonIcon className="ml-2 h-4 w-4" />
-					</Button>
-				)
-			}
-		}
-		case "icon-only": {
-			const ButtonIcon = getRandom([
-				Check,
-				X,
-				Download,
-				Upload,
-				Edit,
-				Trash,
-				Mail,
-				Settings,
-				Heart,
-				Star,
-				Share,
-				Copy,
-				Plus,
-				Search,
-				Bell,
-				User,
-				MoreHorizontal,
-				Grid3x3,
-				Filter,
-				Save,
-			])
-			return (
-				<Button variant={variant} size="icon">
-					<ButtonIcon className="h-4 w-4" />
-				</Button>
-			)
-		}
-		case "gradient": {
-			const gradients = [
-				"bg-gradient-to-r from-pink-500 to-violet-500 hover:from-pink-600 hover:to-violet-600",
-				"bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600",
-				"bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600",
-				"bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600",
-				"bg-gradient-to-br from-purple-600 to-blue-500 hover:from-purple-700 hover:to-blue-600",
-			]
-			return (
-				<Button className={getRandom(gradients)} size={size}>
-					{getRandom(texts)}
-				</Button>
-			)
-		}
-		case "rounded":
-			return (
-				<Button variant={variant} size={size} className="rounded-full">
-					{getRandom(texts)}
-				</Button>
-			)
-		case "shadow":
-			return (
-				<Button
-					variant={variant}
-					size={size}
-					className="shadow-lg shadow-primary/25 hover:shadow-xl transition-all"
-				>
-					{getRandom(texts)}
-				</Button>
-			)
-		case "group-hover": {
-			const ButtonIcon = getRandom([ArrowRight, ChevronRight, Sparkles, Zap])
-			return (
-				<Button variant={variant} size={size} className="group">
-					{getRandom(texts)}
-					<ButtonIcon className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-				</Button>
-			)
-		}
-		case "loading":
-			return (
-				<Button variant={variant} size={size} disabled>
-					<div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
-					Loading...
-				</Button>
-			)
-		default:
-			return (
-				<Button variant={variant} size={size}>
-					{getRandom(texts)}
-				</Button>
-			)
-	}
+	// Default random behavior - pick from existing subcategories
+	const randomSubcategory = getRandom(COMPONENT_SUBCATEGORIES.buttons).id
+	return createButtonComponent(randomSubcategory)
 }
 
-export const createBadgeComponent = (subcategory?: string) => {
+export const createBadgeComponent = (
+	subcategory?: string,
+): React.ReactElement => {
 	const variant = getRandom(BADGE_VARIANTS)
 	const texts = [
 		"New",
@@ -764,88 +634,14 @@ export const createBadgeComponent = (subcategory?: string) => {
 		return <Badge className={getRandom(colorClasses)}>{text}</Badge>
 	}
 
-	// Default random behavior with more variety
-	const badgeType = getRandom([
-		"simple",
-		"with-icon",
-		"colored",
-		"gradient",
-		"outlined-colored",
-		"pill",
-		"count",
-	])
-
-	switch (badgeType) {
-		case "simple":
-			return <Badge variant={variant}>{text}</Badge>
-		case "with-icon": {
-			const BadgeIcon = getRandom([
-				Star,
-				Zap,
-				Trophy,
-				Gift,
-				Rocket,
-				Sparkles,
-				Heart,
-				Flame,
-				TrendingUp,
-				CheckCircle,
-			])
-			return (
-				<Badge variant={variant}>
-					<BadgeIcon className="mr-1 h-3 w-3" />
-					{text}
-				</Badge>
-			)
-		}
-		case "colored": {
-			const colorClasses = [
-				"bg-blue-500 hover:bg-blue-600",
-				"bg-green-500 hover:bg-green-600",
-				"bg-purple-500 hover:bg-purple-600",
-				"bg-amber-500 hover:bg-amber-600",
-				"bg-rose-500 hover:bg-rose-600",
-			]
-			return <Badge className={getRandom(colorClasses)}>{text}</Badge>
-		}
-		case "gradient": {
-			const gradients = [
-				"bg-gradient-to-r from-pink-500 to-violet-500",
-				"bg-gradient-to-r from-cyan-500 to-blue-500",
-				"bg-gradient-to-r from-amber-500 to-orange-500",
-				"bg-gradient-to-r from-green-500 to-emerald-500",
-			]
-			return <Badge className={getRandom(gradients)}>{text}</Badge>
-		}
-		case "outlined-colored": {
-			const coloredOutlines = [
-				"text-orange-500 border-orange-200 bg-orange-100 dark:border-orange-800 dark:bg-orange-950/50",
-				"text-purple-500 border-purple-200 bg-purple-100 dark:border-purple-800 dark:bg-purple-950/50",
-				"text-blue-500 border-blue-200 bg-blue-100 dark:border-blue-800 dark:bg-blue-950/50",
-				"text-green-500 border-green-200 bg-green-100 dark:border-green-800 dark:bg-green-950/50",
-			]
-			return (
-				<Badge variant="outline" className={getRandom(coloredOutlines)}>
-					{text}
-				</Badge>
-			)
-		}
-		case "pill":
-			return (
-				<Badge variant={variant} className="rounded-full px-3">
-					{text}
-				</Badge>
-			)
-		case "count": {
-			const count = Math.floor(Math.random() * 99) + 1
-			return <Badge variant={variant}>{count}</Badge>
-		}
-		default:
-			return <Badge variant={variant}>{text}</Badge>
-	}
+	// Default random behavior - pick from existing subcategories
+	const randomSubcategory = getRandom(COMPONENT_SUBCATEGORIES.badges).id
+	return createBadgeComponent(randomSubcategory)
 }
 
-export const createIconComponent = (subcategory?: string) => {
+export const createIconComponent = (
+	subcategory?: string,
+): React.ReactElement => {
 	const IconComponent = getRandom(ICON_COMPONENTS)
 	const colors = [
 		"text-red-500",
@@ -881,17 +677,14 @@ export const createIconComponent = (subcategory?: string) => {
 		)
 	}
 
-	// Default random behavior
-	const color = getRandom(colors)
-	const size = getRandom(sizes)
-	return (
-		<div className={`${color} ${size}`}>
-			<IconComponent />
-		</div>
-	)
+	// Default random behavior - pick from existing subcategories
+	const randomSubcategory = getRandom(COMPONENT_SUBCATEGORIES.icons).id
+	return createIconComponent(randomSubcategory)
 }
 
-export const createCardComponent = (subcategory?: string) => {
+export const createCardComponent = (
+	subcategory?: string,
+): React.ReactElement => {
 	// Handle specific subcategories
 	if (subcategory === "simple") {
 		const cardTitles = [
@@ -1045,15 +838,18 @@ export const createCardComponent = (subcategory?: string) => {
 		const idx = Math.floor(Math.random() * names.length)
 		const status = getRandom(statuses)
 		return (
-			<Card className="w-64">
-				<CardContent className="p-4">
+			<Card className="w-72 hover:shadow-md hover:bg-accent/30 transition-all duration-200 cursor-pointer border-0 bg-gradient-to-br from-background to-muted/20">
+				<CardContent className="px-4">
 					<div className="flex items-center space-x-3">
-						<Avatar className="h-10 w-10">
+						<Avatar className="h-12 w-12 ring-2 ring-background shadow-sm">
 							<AvatarFallback
 								className={getRandom([
-									"bg-blue-500",
-									"bg-green-500",
-									"bg-purple-500",
+									"bg-gradient-to-br from-blue-500 to-blue-600 text-white",
+									"bg-gradient-to-br from-green-500 to-green-600 text-white",
+									"bg-gradient-to-br from-purple-500 to-purple-600 text-white",
+									"bg-gradient-to-br from-orange-500 to-orange-600 text-white",
+									"bg-gradient-to-br from-pink-500 to-pink-600 text-white",
+									"bg-gradient-to-br from-indigo-500 to-indigo-600 text-white",
 								])}
 							>
 								{names[idx]
@@ -1062,26 +858,33 @@ export const createCardComponent = (subcategory?: string) => {
 									.join("")}
 							</AvatarFallback>
 						</Avatar>
-						<div className="flex-1">
-							<p className="text-sm font-medium">{names[idx]}</p>
-							<p className="text-xs text-muted-foreground">{emails[idx]}</p>
-						</div>
-						<div className="flex flex-col items-end gap-1">
-							<Badge
-								variant={idx === 0 ? "default" : "outline"}
-								className="text-xs"
-							>
-								{roles[idx]}
-							</Badge>
-							<div
-								className={`h-2 w-2 rounded-full ${
-									status === "online"
-										? "bg-green-500"
-										: status === "away"
-										? "bg-yellow-500"
-										: "bg-gray-300"
-								}`}
-							/>
+						<div className="flex-1 min-w-0">
+							<div className="flex items-center gap-2 mb-1">
+								<p className="text-sm font-semibold text-foreground truncate">
+									{names[idx]}
+								</p>
+								<div
+									className={`h-2 w-2 rounded-full ${
+										status === "online"
+											? "bg-green-500 shadow-sm shadow-green-500/50"
+											: status === "away"
+											? "bg-yellow-500 shadow-sm shadow-yellow-500/50"
+											: "bg-gray-400"
+									}`}
+								/>
+							</div>
+							<p className="text-xs text-muted-foreground truncate">
+								{emails[idx]}
+							</p>
+							<div className="flex items-center justify-between mt-2">
+								<Badge
+									variant={idx === 0 ? "default" : "secondary"}
+									className="text-xs px-2 py-0.5 font-medium"
+								>
+									{roles[idx]}
+								</Badge>
+								<ChevronRight className="h-4 w-4 text-muted-foreground/50" />
+							</div>
 						</div>
 					</div>
 				</CardContent>
@@ -1234,279 +1037,14 @@ export const createCardComponent = (subcategory?: string) => {
 		)
 	}
 
-	// Default random behavior - more varied card types
-	const cardTypes = [
-		"simple",
-		"stats",
-		"user",
-		"action",
-		"notification",
-		"settings",
-		"hover-card",
-		"feature",
-		"pricing",
-		"image-preview",
-	] as const
-	const type = getRandom(cardTypes)
-
-	switch (type) {
-		case "simple": {
-			const cardTitles = ["Feature", "Update", "News", "Alert", "Info"]
-			const cardDescs = [
-				"Click to learn more",
-				"Physics enabled!",
-				"Drag me around",
-				"Interactive card",
-			]
-			return (
-				<Card className="w-48">
-					<CardHeader className="p-4">
-						<CardTitle className="text-sm">{getRandom(cardTitles)}</CardTitle>
-						<CardDescription className="text-xs">
-							{getRandom(cardDescs)}
-						</CardDescription>
-					</CardHeader>
-				</Card>
-			)
-		}
-		case "stats": {
-			const stats = [
-				{ label: "Users", value: "2.4k", change: "+12%", positive: true },
-				{ label: "Revenue", value: "$45k", change: "+8%", positive: true },
-				{ label: "Orders", value: "89", change: "-3%", positive: false },
-			]
-			const stat = getRandom(stats)
-			return (
-				<Card className="w-56">
-					<CardContent className="p-4">
-						<div className="flex items-center justify-between">
-							<div>
-								<p className="text-xs text-muted-foreground">{stat.label}</p>
-								<p className="text-xl font-bold">{stat.value}</p>
-							</div>
-							<Badge
-								variant={stat.positive ? "default" : "destructive"}
-								className="text-xs"
-							>
-								{stat.change}
-							</Badge>
-						</div>
-						<Progress value={Math.random() * 100} className="mt-3 h-1" />
-					</CardContent>
-				</Card>
-			)
-		}
-		case "user": {
-			const names = ["John Doe", "Jane Smith", "Mark Johnson", "Sarah Wilson"]
-			const emails = [
-				"john@example.com",
-				"jane@example.com",
-				"mark@example.com",
-				"sarah@example.com",
-			]
-			const roles = ["Admin", "Member", "Guest", "Owner"]
-			const idx = Math.floor(Math.random() * names.length)
-			return (
-				<Card className="w-56">
-					<CardContent className="p-4">
-						<div className="flex items-center justify-between">
-							<div>
-								<p className="text-sm font-medium">{names[idx]}</p>
-								<p className="text-xs text-muted-foreground">{emails[idx]}</p>
-							</div>
-							<Badge
-								variant={idx === 0 ? "default" : "outline"}
-								className="text-xs"
-							>
-								{roles[idx]}
-							</Badge>
-						</div>
-					</CardContent>
-				</Card>
-			)
-		}
-		case "action": {
-			const actions = [
-				{ icon: Download, label: "Download", desc: "Get the file" },
-				{ icon: Upload, label: "Upload", desc: "Add new file" },
-				{ icon: Share, label: "Share", desc: "Send to team" },
-			]
-			const action = getRandom(actions)
-			const ActionIcon = action.icon
-			return (
-				<Card className="w-48 hover:shadow-md transition-shadow cursor-pointer">
-					<CardContent className="p-4 text-center">
-						<ActionIcon className="h-8 w-8 mx-auto mb-2 text-primary" />
-						<p className="text-sm font-medium">{action.label}</p>
-						<p className="text-xs text-muted-foreground">{action.desc}</p>
-					</CardContent>
-				</Card>
-			)
-		}
-		case "notification": {
-			const notifications = [
-				{ title: "New message", badge: "New", variant: "default" as const },
-				{
-					title: "Payment successful",
-					badge: "Done",
-					variant: "secondary" as const,
-				},
-				{
-					title: "Update available",
-					badge: "Info",
-					variant: "outline" as const,
-				},
-			]
-			const notif = getRandom(notifications)
-			return (
-				<Card className="w-56">
-					<CardContent className="p-3">
-						<div className="flex items-center justify-between">
-							<p className="text-sm">{notif.title}</p>
-							<Badge variant={notif.variant} className="text-xs">
-								{notif.badge}
-							</Badge>
-						</div>
-					</CardContent>
-				</Card>
-			)
-		}
-		case "settings": {
-			const settingIcons = [User, CreditCard, Calendar, Settings, Mail, Bell]
-			const settingTitles = [
-				"Profile",
-				"Billing",
-				"Schedule",
-				"Preferences",
-				"Messages",
-				"Alerts",
-			]
-			const idx = Math.floor(Math.random() * settingIcons.length)
-			const SettingIcon = settingIcons[idx]
-			return (
-				<Card className="py-">
-					<CardContent className="px-3">
-						<div className="flex items-center justify-between">
-							<div className="flex items-center space-x-3">
-								<SettingIcon className="h-4 w-4 text-muted-foreground" />
-								<div>
-									<p className="text-sm font-medium">{settingTitles[idx]}</p>
-									<p className="text-xs text-muted-foreground">Manage</p>
-								</div>
-							</div>
-							<ChevronRight className="h-4 w-4 text-muted-foreground" />
-						</div>
-					</CardContent>
-				</Card>
-			)
-		}
-		case "hover-card":
-			return (
-				<HoverCard>
-					<HoverCardTrigger asChild>
-						<Button variant="link">Hover me!</Button>
-					</HoverCardTrigger>
-					<HoverCardContent className="w-40 p-2">
-						<p className="text-xs">Hidden content!</p>
-					</HoverCardContent>
-				</HoverCard>
-			)
-		case "feature": {
-			const features = [
-				{
-					icon: Zap,
-					title: "Fast",
-					desc: "Lightning quick",
-					progress: 66,
-				},
-				{
-					icon: Shield,
-					title: "Secure",
-					desc: "Bank-level security",
-					progress: 100,
-				},
-				{
-					icon: Cloud,
-					title: "Cloud",
-					desc: "Always synced",
-					progress: 75,
-				},
-				{
-					icon: Sparkles,
-					title: "Smart",
-					desc: "AI-powered",
-					progress: 90,
-				},
-			]
-			const feature = getRandom(features)
-			const FeatureIcon = feature.icon
-			return (
-				<Card className="w-48">
-					<CardHeader className="p-3 pb-2">
-						<div className="flex items-center justify-between">
-							<CardTitle className="text-sm">{feature.title}</CardTitle>
-							<FeatureIcon className="h-4 w-4 text-primary" />
-						</div>
-					</CardHeader>
-					<CardContent className="p-3 pt-0">
-						<p className="text-xs text-muted-foreground">{feature.desc}</p>
-						<Progress value={feature.progress} className="mt-2 h-1" />
-					</CardContent>
-				</Card>
-			)
-		}
-		case "pricing": {
-			const plans = [
-				{ name: "Free", price: "$0", features: "5 projects" },
-				{ name: "Pro", price: "$19", features: "Unlimited" },
-				{ name: "Team", price: "$49", features: "Everything" },
-			]
-			const plan = getRandom(plans)
-			return (
-				<Card className="w-48">
-					<CardHeader className="p-3 text-center">
-						<CardTitle className="text-sm">{plan.name}</CardTitle>
-						<p className="text-2xl font-bold">{plan.price}</p>
-					</CardHeader>
-					<CardContent className="p-3 pt-0">
-						<p className="text-xs text-center text-muted-foreground">
-							{plan.features}
-						</p>
-						<Button size="sm" className="w-full mt-2">
-							Choose
-						</Button>
-					</CardContent>
-				</Card>
-			)
-		}
-		case "image-preview": {
-			const previews = [
-				{ title: "Screenshot", size: "2.4 MB", type: "PNG" },
-				{ title: "Document", size: "156 KB", type: "PDF" },
-				{ title: "Presentation", size: "4.2 MB", type: "PPT" },
-			]
-			const preview = getRandom(previews)
-			return (
-				<Card className="w-56">
-					<CardContent className="p-3">
-						<div className="h-20 bg-gradient-to-br from-primary/20 to-primary/10 rounded-md mb-3 flex items-center justify-center">
-							<FileText className="h-8 w-8 text-primary/50" />
-						</div>
-						<p className="text-sm font-medium">{preview.title}</p>
-						<div className="flex items-center justify-between mt-1">
-							<p className="text-xs text-muted-foreground">{preview.size}</p>
-							<Badge variant="outline" className="text-xs">
-								{preview.type}
-							</Badge>
-						</div>
-					</CardContent>
-				</Card>
-			)
-		}
-	}
+	// Default random behavior - pick from existing subcategories
+	const randomSubcategory = getRandom(COMPONENT_SUBCATEGORIES.cards).id
+	return createCardComponent(randomSubcategory)
 }
 
-export const createToggleComponent = (subcategory?: string) => {
+export const createToggleComponent = (
+	subcategory?: string,
+): React.ReactElement => {
 	// Handle specific subcategories
 	if (subcategory === "switch") {
 		// Sometimes add custom colors
@@ -1731,139 +1269,14 @@ export const createToggleComponent = (subcategory?: string) => {
 		)
 	}
 
-	// Default random behavior
-	const toggleTypes = [
-		"switch",
-		"checkbox",
-		"toggle",
-		"toggle-group",
-		"radio",
-		"icon-toggles",
-		"labeled-switch",
-		"checkbox-card",
-		"switch-card",
-	] as const
-	const type = getRandom(toggleTypes)
-
-	switch (type) {
-		case "switch":
-			return <Switch defaultChecked={Math.random() > 0.5} />
-		case "checkbox":
-			return <Checkbox defaultChecked={Math.random() > 0.5} />
-		case "toggle": {
-			const toggleVariants = ["default", "outline"] as const
-			const toggleIcons = [Star, Heart, Bell, Bookmark, Sun, Moon]
-			const ToggleIcon = getRandom(toggleIcons)
-			return (
-				<Toggle
-					variant={getRandom(toggleVariants)}
-					defaultPressed={Math.random() > 0.5}
-				>
-					<ToggleIcon className="h-4 w-4" />
-				</Toggle>
-			)
-		}
-		case "toggle-group":
-			return (
-				<ToggleGroup type="single" defaultValue="a" className="gap-0">
-					<ToggleGroupItem value="a" className="h-8 px-2">
-						A
-					</ToggleGroupItem>
-					<ToggleGroupItem value="b" className="h-8 px-2">
-						B
-					</ToggleGroupItem>
-					<ToggleGroupItem value="c" className="h-8 px-2">
-						C
-					</ToggleGroupItem>
-				</ToggleGroup>
-			)
-		case "radio":
-			return (
-				<RadioGroup defaultValue="option-1" className="flex gap-2">
-					<div className="flex items-center space-x-1">
-						<RadioGroupItem value="option-1" id="option-1" />
-						<Label htmlFor="option-1" className="text-xs">
-							A
-						</Label>
-					</div>
-					<div className="flex items-center space-x-1">
-						<RadioGroupItem value="option-2" id="option-2" />
-						<Label htmlFor="option-2" className="text-xs">
-							B
-						</Label>
-					</div>
-				</RadioGroup>
-			)
-		case "icon-toggles": {
-			const iconSets = [
-				[Sun, Moon],
-				[Music, Bell],
-				[User, Users],
-				[Grid3x3, FileText],
-			] as const
-			const icons = getRandom(iconSets)
-			const Icon1 = icons[0]
-			const Icon2 = icons[1]
-			return (
-				<ToggleGroup type="single" defaultValue="a" className="gap-1">
-					<ToggleGroupItem value="a" className="h-8 w-8 p-0">
-						<Icon1 className="h-4 w-4" />
-					</ToggleGroupItem>
-					<ToggleGroupItem value="b" className="h-8 w-8 p-0">
-						<Icon2 className="h-4 w-4" />
-					</ToggleGroupItem>
-				</ToggleGroup>
-			)
-		}
-		case "labeled-switch": {
-			const labels = ["Dark Mode", "Notifications", "Auto-save", "Public"]
-			return (
-				<div className="flex items-center space-x-2">
-					<Switch id="labeled" defaultChecked={Math.random() > 0.5} />
-					<Label htmlFor="labeled" className="text-xs">
-						{getRandom(labels)}
-					</Label>
-				</div>
-			)
-		}
-		case "checkbox-card": {
-			const options = [
-				{ label: "Email", desc: "Get email notifications" },
-				{ label: "SMS", desc: "Text message alerts" },
-				{ label: "Push", desc: "Mobile notifications" },
-			]
-			const option = getRandom(options)
-			return (
-				<Label className="flex items-start gap-3 rounded-lg border p-3 cursor-pointer hover:bg-accent/50 has-[[aria-checked=true]]:border-primary">
-					<Checkbox defaultChecked={Math.random() > 0.5} className="mt-0.5" />
-					<div>
-						<p className="text-sm font-medium">{option.label}</p>
-						<p className="text-xs text-muted-foreground">{option.desc}</p>
-					</div>
-				</Label>
-			)
-		}
-		case "switch-card": {
-			const settings = [
-				{ label: "Auto-update", desc: "Keep app updated" },
-				{ label: "Analytics", desc: "Help us improve" },
-				{ label: "Beta features", desc: "Try new features" },
-			]
-			const setting = getRandom(settings)
-			return (
-				<div className="flex items-center justify-between gap-3 rounded-lg border p-3">
-					<div>
-						<p className="text-sm font-medium">{setting.label}</p>
-						<p className="text-xs text-muted-foreground">{setting.desc}</p>
-					</div>
-					<Switch defaultChecked={Math.random() > 0.5} />
-				</div>
-			)
-		}
-	}
+	// Default random behavior - pick from existing subcategories
+	const randomSubcategory = getRandom(COMPONENT_SUBCATEGORIES.toggles).id
+	return createToggleComponent(randomSubcategory)
 }
 
-export const createInputComponent = (subcategory?: string) => {
+export const createInputComponent = (
+	subcategory?: string,
+): React.ReactElement => {
 	// Handle specific subcategories
 	if (subcategory === "text") {
 		const placeholders = [
@@ -1905,7 +1318,7 @@ export const createInputComponent = (subcategory?: string) => {
 
 		return (
 			<Input
-				className="w-32 h-8"
+				className="w-48 h-8"
 				type={getRandom(types)}
 				placeholder={getRandom(placeholders)}
 				defaultValue=""
@@ -2145,154 +1558,14 @@ export const createInputComponent = (subcategory?: string) => {
 		}
 	}
 
-	// Default random behavior with more variety
-	const inputTypes = [
-		"input",
-		"avatar",
-		"slider",
-		"progress",
-		"search-input",
-		"avatar-group",
-		"multi-slider",
-		"input-group",
-		"color-input",
-	] as const
-	const type = getRandom(inputTypes)
-
-	switch (type) {
-		case "avatar": {
-			const initials = ["AB", "CD", "EF", "GH", "JK", "LM", "NP", "QR"]
-			const sizes = ["", "w-8 h-8", "w-12 h-12"] as const
-			const colors = [
-				"",
-				"bg-blue-500",
-				"bg-green-500",
-				"bg-purple-500",
-				"bg-orange-500",
-			]
-			return (
-				<Avatar className={getRandom(sizes)}>
-					<AvatarFallback className={getRandom(colors)}>
-						{getRandom(initials)}
-					</AvatarFallback>
-				</Avatar>
-			)
-		}
-		case "input": {
-			const placeholders = [
-				"Type here...",
-				"Search...",
-				"Enter text...",
-				"Name",
-				"Email",
-				"Password",
-			]
-			const types = ["text", "email", "search"] as const
-			return (
-				<Input
-					className="w-32 h-8"
-					type={getRandom(types)}
-					placeholder={getRandom(placeholders)}
-					defaultValue=""
-				/>
-			)
-		}
-		case "slider":
-			return (
-				<Slider
-					defaultValue={[Math.floor(Math.random() * 100)]}
-					max={100}
-					step={1}
-					className="w-32"
-				/>
-			)
-		case "progress": {
-			const value = Math.random() * 100
-			return (
-				<div className="w-32 space-y-1">
-					<div className="flex justify-between text-xs">
-						<span className="text-muted-foreground">Loading</span>
-						<span>{Math.floor(value)}%</span>
-					</div>
-					<Progress value={value} className="h-2" />
-				</div>
-			)
-		}
-		case "search-input": {
-			return (
-				<div className="relative w-40">
-					<Search className="absolute left-2 top-1/2 h-3 w-3 -translate-y-1/2 text-muted-foreground" />
-					<Input
-						className="h-8 pl-7 pr-2"
-						placeholder="Search..."
-						defaultValue=""
-					/>
-				</div>
-			)
-		}
-		case "avatar-group": {
-			const count = Math.floor(Math.random() * 3) + 2
-			return (
-				<div className="flex -space-x-2">
-					{Array.from({ length: count }).map((_, i) => (
-						<Avatar key={i} className="h-8 w-8 border-2 border-background">
-							<AvatarFallback
-								className={getRandom([
-									"bg-blue-500",
-									"bg-green-500",
-									"bg-purple-500",
-								])}
-							>
-								{getRandom(["AB", "CD", "EF", "GH"])}
-							</AvatarFallback>
-						</Avatar>
-					))}
-				</div>
-			)
-		}
-		case "multi-slider": {
-			return (
-				<div className="w-40 space-y-2">
-					<Slider defaultValue={[25]} max={100} className="h-1" />
-					<Slider defaultValue={[50]} max={100} className="h-1" />
-					<Slider defaultValue={[75]} max={100} className="h-1" />
-				</div>
-			)
-		}
-		case "input-group": {
-			return (
-				<div className="flex w-48">
-					<Button
-						size="sm"
-						variant="outline"
-						className="h-8 rounded-r-none px-3"
-					>
-						@
-					</Button>
-					<Input
-						className="h-8 rounded-l-none"
-						placeholder="username"
-						defaultValue=""
-					/>
-				</div>
-			)
-		}
-		case "color-input": {
-			const colors = ["#3B82F6", "#10B981", "#8B5CF6", "#F59E0B", "#EF4444"]
-			return (
-				<div className="flex items-center gap-2">
-					<div
-						className="h-8 w-8 rounded-md border"
-						style={{ backgroundColor: getRandom(colors) }}
-					/>
-					<Input className="w-24 h-8" value={getRandom(colors)} readOnly />
-				</div>
-			)
-		}
-	}
+	// Default random behavior - pick from existing subcategories
+	const randomSubcategory = getRandom(COMPONENT_SUBCATEGORIES.inputs).id
+	return createInputComponent(randomSubcategory)
 }
 
-export const createComplexComponent = (subcategory?: string) => {
+export const createComplexComponent = (
+	subcategory?: string,
+): React.ReactElement => {
 	// Handle specific subcategories
 	if (subcategory === "tabs") {
 		const tabVariants = ["simple", "with-icons", "pills", "underline"] as const
@@ -2691,132 +1964,9 @@ export const createComplexComponent = (subcategory?: string) => {
 		}
 	}
 
-	// Default random behavior
-	const complexTypes = [
-		"tabs",
-		"alert",
-		"skeleton",
-		"separator",
-		"accordion",
-		"breadcrumb",
-		"tooltip",
-	] as const
-	const type = getRandom(complexTypes)
-
-	switch (type) {
-		case "tabs":
-			return (
-				<Tabs defaultValue="tab1" className="w-48">
-					<TabsList className="grid w-full grid-cols-2 h-8">
-						<TabsTrigger value="tab1" className="text-xs">
-							Tab 1
-						</TabsTrigger>
-						<TabsTrigger value="tab2" className="text-xs">
-							Tab 2
-						</TabsTrigger>
-					</TabsList>
-					<TabsContent value="tab1" className="p-2">
-						<p className="text-xs">Content 1</p>
-					</TabsContent>
-					<TabsContent value="tab2" className="p-2">
-						<p className="text-xs">Content 2</p>
-					</TabsContent>
-				</Tabs>
-			)
-		case "alert": {
-			const alertVariants = ["default", "destructive"] as const
-			const variant = getRandom(alertVariants)
-			const IconComponent = variant === "destructive" ? AlertCircle : Info
-			// Compact alert
-			return (
-				<Alert variant={variant} className="w-56 py-2 px-3">
-					<IconComponent className="h-4 w-4" />
-					<AlertTitle className="text-sm">Alert!</AlertTitle>
-					<AlertDescription className="text-xs">
-						This is a physics-enabled alert.
-					</AlertDescription>
-				</Alert>
-			)
-		}
-		case "skeleton": {
-			const skeletonTypes = ["line", "circle", "card"] as const
-			const skelType = getRandom(skeletonTypes)
-			if (skelType === "line") {
-				return <Skeleton className="h-4 w-32" />
-			} else if (skelType === "circle") {
-				return <Skeleton className="h-12 w-12 rounded-full" />
-			} else {
-				return (
-					<div className="space-y-2">
-						<Skeleton className="h-4 w-32" />
-						<Skeleton className="h-4 w-24" />
-					</div>
-				)
-			}
-		}
-		case "separator": {
-			const orientations = ["horizontal", "vertical"] as const
-			const orientation = getRandom(orientations)
-			return (
-				<Separator
-					orientation={orientation}
-					className={orientation === "horizontal" ? "w-20" : "h-20"}
-				/>
-			)
-		}
-		case "accordion": {
-			return (
-				<Accordion type="single" collapsible className="w-48">
-					<AccordionItem value="item-1" className="border-b-0">
-						<AccordionTrigger className="text-xs py-2">
-							Question?
-						</AccordionTrigger>
-						<AccordionContent className="text-xs pb-2">
-							Answer here!
-						</AccordionContent>
-					</AccordionItem>
-				</Accordion>
-			)
-		}
-		case "breadcrumb": {
-			return (
-				<Breadcrumb>
-					<BreadcrumbList className="text-xs">
-						<BreadcrumbItem>
-							<BreadcrumbLink>Home</BreadcrumbLink>
-						</BreadcrumbItem>
-						<BreadcrumbSeparator />
-						<BreadcrumbItem>
-							<BreadcrumbPage>Page</BreadcrumbPage>
-						</BreadcrumbItem>
-					</BreadcrumbList>
-				</Breadcrumb>
-			)
-		}
-		case "tooltip": {
-			const tooltipTexts = [
-				"Helpful tip!",
-				"Click me!",
-				"More info",
-				"Hover for details",
-			]
-			return (
-				<TooltipProvider>
-					<Tooltip>
-						<TooltipTrigger asChild>
-							<Button variant="outline" size="sm">
-								<Info className="h-3 w-3 mr-1" />
-								Hover
-							</Button>
-						</TooltipTrigger>
-						<TooltipContent>
-							<p className="text-xs">{getRandom(tooltipTexts)}</p>
-						</TooltipContent>
-					</Tooltip>
-				</TooltipProvider>
-			)
-		}
-	}
+	// Default random behavior - pick from existing subcategories
+	const randomSubcategory = getRandom(COMPONENT_SUBCATEGORIES.complex).id
+	return createComplexComponent(randomSubcategory)
 }
 
 export const createUpsellComponent = (
@@ -2972,16 +2122,7 @@ export const createUpsellComponent = (
 		)
 	}
 
-	// Default random upsell
-	const upsellTypes = [
-		"premium-popup",
-		"countdown-timer",
-		"exit-intent",
-		"fake-discount",
-		"social-proof",
-		"limited-spots",
-		"cookie-monster",
-	] as const
-
-	return createUpsellComponent(getRandom(upsellTypes))
+	// Default random behavior - pick from existing subcategories
+	const randomSubcategory = getRandom(COMPONENT_SUBCATEGORIES.upsells).id
+	return createUpsellComponent(randomSubcategory)
 }
