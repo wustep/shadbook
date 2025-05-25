@@ -38,6 +38,8 @@ import {
 	MoreHorizontal,
 	Music,
 	Palette,
+	Pause,
+	Play,
 	Plus,
 	Rocket,
 	Save,
@@ -108,6 +110,7 @@ import {
 	SelectValue,
 } from "@/components/ui/select"
 import { Separator } from "@/components/ui/separator"
+import { useSidebar } from "@/components/ui/sidebar"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Slider } from "@/components/ui/slider"
 import { Switch } from "@/components/ui/switch"
@@ -3081,6 +3084,7 @@ const createComplexComponent = (subcategory?: string) => {
 }
 
 export function PhysicsPlayground() {
+	const { state } = useSidebar()
 	const sceneRef = useRef<HTMLDivElement>(null)
 	const engineRef = useRef<Matter.Engine | undefined>(undefined)
 	const runnerRef = useRef<Matter.Runner | undefined>(undefined)
@@ -3099,10 +3103,13 @@ export function PhysicsPlayground() {
 	// Keyboard shortcuts
 	useEffect(() => {
 		const handleKeyPress = (e: KeyboardEvent) => {
-			// Check if user is typing in an input
+			// Check if user is typing in any form control
 			if (
 				e.target instanceof HTMLInputElement ||
-				e.target instanceof HTMLTextAreaElement
+				e.target instanceof HTMLTextAreaElement ||
+				e.target instanceof HTMLSelectElement ||
+				e.target instanceof HTMLButtonElement ||
+				(e.target instanceof HTMLElement && e.target.isContentEditable)
 			) {
 				return
 			}
@@ -3132,60 +3139,24 @@ export function PhysicsPlayground() {
 	useEffect(() => {
 		if (!sceneRef.current) return
 
-		// Create engine
-		const engine = Matter.Engine.create()
+		// Create engine with improved settings
+		const engine = Matter.Engine.create({
+			enableSleeping: true,
+			gravity: {
+				x: 0,
+				y: gravity * 0.001, // Scale the initial gravity
+				scale: 1, // Keep scale at 1 and handle scaling in the value instead
+			},
+		})
 		engineRef.current = engine
 
-		// Set gravity
-		engine.world.gravity.y = gravity
-
 		// We don't need a renderer since we're using DOM elements
-		// Just create the runner
-		const runner = Matter.Runner.create()
+		// Just create the runner with fixed timestep
+		const runner = Matter.Runner.create({
+			isFixed: true,
+			delta: 1000 / 60, // 60 FPS
+		})
 		runnerRef.current = runner
-
-		// Create boundaries
-		const bounds = {
-			width: sceneRef.current.clientWidth,
-			height: sceneRef.current.clientHeight,
-		}
-
-		const walls = [
-			// Bottom
-			Matter.Bodies.rectangle(
-				bounds.width / 2,
-				bounds.height - 25,
-				bounds.width,
-				50,
-				{
-					isStatic: true,
-					label: "floor",
-				},
-			),
-			// Left
-			Matter.Bodies.rectangle(25, bounds.height / 2, 50, bounds.height, {
-				isStatic: true,
-				label: "wall-left",
-			}),
-			// Right
-			Matter.Bodies.rectangle(
-				bounds.width - 25,
-				bounds.height / 2,
-				50,
-				bounds.height,
-				{
-					isStatic: true,
-					label: "wall-right",
-				},
-			),
-			// Top
-			Matter.Bodies.rectangle(bounds.width / 2, 25, bounds.width, 50, {
-				isStatic: true,
-				label: "ceiling",
-			}),
-		]
-
-		Matter.World.add(engine.world, walls)
 
 		// Run the engine
 		Matter.Runner.run(runner, engine)
@@ -3217,9 +3188,8 @@ export function PhysicsPlayground() {
 		}
 		updateLoop()
 
-		// Handle window resize
-		const handleResize = () => {
-			if (!sceneRef.current) return
+		const updateBounds = () => {
+			if (!sceneRef.current || !engineRef.current) return
 
 			// Update wall positions on resize
 			const newBounds = {
@@ -3228,10 +3198,10 @@ export function PhysicsPlayground() {
 			}
 
 			// Remove old walls
-			const oldWalls = Matter.Composite.allBodies(engine.world).filter(
-				body => body.isStatic,
-			)
-			Matter.Composite.remove(engine.world, oldWalls)
+			const oldWalls = Matter.Composite.allBodies(
+				engineRef.current.world,
+			).filter(body => body.isStatic)
+			Matter.Composite.remove(engineRef.current.world, oldWalls)
 
 			// Add new walls with updated positions
 			const newWalls = [
@@ -3240,46 +3210,81 @@ export function PhysicsPlayground() {
 					newBounds.height - 25,
 					newBounds.width,
 					50,
-					{ isStatic: true, label: "floor" },
+					{
+						isStatic: true,
+						label: "floor",
+						friction: 0.3,
+						restitution: 0.3,
+					},
 				),
 				Matter.Bodies.rectangle(
 					25,
 					newBounds.height / 2,
 					50,
 					newBounds.height,
-					{ isStatic: true, label: "wall-left" },
+					{
+						isStatic: true,
+						label: "wall-left",
+						friction: 0.3,
+						restitution: 0.3,
+					},
 				),
 				Matter.Bodies.rectangle(
 					newBounds.width - 25,
 					newBounds.height / 2,
 					50,
 					newBounds.height,
-					{ isStatic: true, label: "wall-right" },
+					{
+						isStatic: true,
+						label: "wall-right",
+						friction: 0.3,
+						restitution: 0.3,
+					},
 				),
 				Matter.Bodies.rectangle(newBounds.width / 2, 25, newBounds.width, 50, {
 					isStatic: true,
 					label: "ceiling",
+					friction: 0.2,
+					restitution: 0.5,
 				}),
 			]
 
-			Matter.World.add(engine.world, newWalls)
+			Matter.World.add(engineRef.current.world, newWalls)
 		}
-		window.addEventListener("resize", handleResize)
+
+		// Initial setup
+		updateBounds()
+
+		// Handle window resize and sidebar state changes
+		window.addEventListener("resize", updateBounds)
 
 		// Cleanup
 		return () => {
-			window.removeEventListener("resize", handleResize)
+			window.removeEventListener("resize", updateBounds)
 			Matter.Runner.stop(runner)
 			Matter.Composite.clear(engine.world, false)
 			Matter.Engine.clear(engine)
 			bodiesRef.current.clear()
 		}
-	}, []) // Remove gravity from dependencies
+	}, [gravity]) // Add gravity back to dependencies
+
+	// Update bounds when sidebar state changes
+	useEffect(() => {
+		const handleResize = () => {
+			if (!sceneRef.current) return
+			const resizeEvent = new Event("resize")
+			window.dispatchEvent(resizeEvent)
+		}
+
+		// Small delay to let the transition complete
+		const timer = setTimeout(handleResize, 200)
+		return () => clearTimeout(timer)
+	}, [state])
 
 	// Update gravity when slider changes
 	useEffect(() => {
 		if (engineRef.current) {
-			engineRef.current.world.gravity.y = gravity
+			engineRef.current.world.gravity.y = gravity * 0.001 // Scale the gravity value directly
 		}
 	}, [gravity])
 
@@ -3429,35 +3434,29 @@ export function PhysicsPlayground() {
 			const rect = element.getBoundingClientRect()
 			const sceneRect = sceneRef.current!.getBoundingClientRect()
 
-			// Random spawn position at top
-			const x = Math.random() * (sceneRect.width - rect.width) + rect.width / 2
-			const y = 50
+			// Random spawn position at top with some margin
+			const x =
+				Math.random() * (sceneRect.width - rect.width - 100) +
+				rect.width / 2 +
+				50
+			const y = rect.height / 2 + 50 // Start a bit lower to avoid ceiling
 
 			// Smooth bias towards upright orientation
 			// Using a power function to bias the distribution
-
-			// Generate a random value between 0 and 1
 			const randomValue = Math.random()
-
-			// Apply a power function to bias towards 0 (upright)
-			// Higher power = stronger bias towards upright
-			// Using power of 3 gives a nice distribution
 			const biasedValue = Math.pow(randomValue, 3)
-
-			// Convert to angle: biased value determines how far from upright
-			// Maximum deviation is π (180 degrees) in either direction
 			const deviation = biasedValue * Math.PI
-
-			// Randomly choose left or right deviation
 			const initialAngle = Math.random() < 0.5 ? deviation : -deviation
 
-			// Create physics body
+			// Create physics body with improved settings
 			const body = Matter.Bodies.rectangle(x, y, rect.width, rect.height, {
 				restitution: bounce,
-				friction: 0.3,
+				friction: 0.1, // Reduced friction
+				frictionAir: 0.0001, // Reduced air friction
 				density: 0.001,
 				angle: initialAngle,
-				angularVelocity: (Math.random() - 0.5) * 0.1,
+				angularVelocity: (Math.random() - 0.5) * 0.05, // Reduced initial spin
+				inertia: Infinity, // This prevents rotation from gravity
 			})
 
 			// Add to world
@@ -3480,11 +3479,18 @@ export function PhysicsPlayground() {
 				element.style.cursor = "grabbing"
 				const startX = e.clientX
 				const startY = e.clientY
+				const startBodyX = body.position.x
+				const startBodyY = body.position.y
 
 				const handleMouseMove = (e: MouseEvent) => {
 					const dx = e.clientX - startX
 					const dy = e.clientY - startY
-					Matter.Body.setVelocity(body, { x: dx * 0.5, y: dy * 0.5 })
+					Matter.Body.setPosition(body, {
+						x: startBodyX + dx,
+						y: startBodyY + dy,
+					})
+					Matter.Body.setVelocity(body, { x: 0, y: 0 })
+					Matter.Body.setAngularVelocity(body, 0)
 				}
 
 				const handleMouseUp = () => {
@@ -3521,7 +3527,10 @@ export function PhysicsPlayground() {
 	}
 
 	return (
-		<div className="h-[calc(100vh-var(--header-height))] flex flex-col">
+		<div
+			data-sidebar-state={state}
+			className="h-[calc(100vh-var(--header-height))] flex flex-col transition-[width,margin] duration-200 ease-linear data-[sidebar-state=collapsed]:ml-0"
+		>
 			{/* Controls */}
 			<div className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 p-4">
 				<div className="flex flex-wrap gap-1 items-center">
@@ -3641,14 +3650,18 @@ export function PhysicsPlayground() {
 						<TooltipProvider>
 							<Tooltip>
 								<TooltipTrigger asChild>
-									<div className="flex items-center gap-2">
-										<Switch
-											id="pause"
-											checked={isPaused}
-											onCheckedChange={setIsPaused}
-										/>
-										<Label htmlFor="pause">Pause</Label>
-									</div>
+									<Button
+										size="icon"
+										variant="outline"
+										onClick={() => setIsPaused(prev => !prev)}
+										className="h-8 w-8"
+									>
+										{isPaused ? (
+											<Play className="h-4 w-4" />
+										) : (
+											<Pause className="h-4 w-4" />
+										)}
+									</Button>
 								</TooltipTrigger>
 								<TooltipContent>
 									<p className="text-xs">Press 'P' to toggle</p>
