@@ -1026,7 +1026,7 @@ export const createCardComponent = (
 		]
 		const hover = getRandom(hoverTexts)
 		return (
-			<HoverCard>
+			<HoverCard openDelay={300}>
 				<HoverCardTrigger asChild>
 					<Button variant="link">{hover.trigger}</Button>
 				</HoverCardTrigger>

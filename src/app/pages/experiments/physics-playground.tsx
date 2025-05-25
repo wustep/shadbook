@@ -1,6 +1,6 @@
 import { ChevronRight, Pause, Play } from "lucide-react"
 import Matter from "matter-js"
-import { useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { createRoot } from "react-dom/client"
 
 import {
@@ -53,125 +53,6 @@ export function PhysicsPlayground() {
 	const [isPaused, setIsPaused] = useState(false)
 	const [componentCount, setComponentCount] = useState(0)
 	const [controlsVisible, setControlsVisible] = useState(true)
-
-	// Keyboard shortcuts
-	useEffect(() => {
-		let spawnInterval: NodeJS.Timeout | null = null
-		let isSpacePressed = false
-
-		const handleKeyDown = (e: KeyboardEvent) => {
-			// Prevent space from scrolling the page
-			if (e.key === " ") {
-				// Check if the target is within a Select component
-				const target = e.target as HTMLElement
-				const isInSelect =
-					target.closest('[role="combobox"]') ||
-					target.closest("[data-radix-collection-item]") ||
-					target.closest('[role="listbox"]')
-
-				if (isInSelect) {
-					e.stopPropagation()
-					return
-				}
-
-				// Prevent default scrolling behavior
-				e.preventDefault()
-			}
-
-			// Check if user is typing in any form control
-			if (
-				e.target instanceof HTMLInputElement ||
-				e.target instanceof HTMLTextAreaElement ||
-				e.target instanceof HTMLSelectElement ||
-				e.target instanceof HTMLButtonElement ||
-				(e.target instanceof HTMLElement && e.target.isContentEditable)
-			) {
-				return
-			}
-
-			// Space key to spawn
-			if (e.key === " ") {
-				// Only set up interval on first press, not on repeats
-				if (!isSpacePressed) {
-					isSpacePressed = true
-					// Spawn immediately on first press
-					setTimeout(() => spawnComponent(), 0)
-
-					// If shift is held, start rapid spawning
-					if (e.shiftKey && !spawnInterval) {
-						spawnInterval = setInterval(() => {
-							// Only continue spawning if space is still pressed
-							if (isSpacePressed) {
-								spawnComponent()
-							} else {
-								// Clean up interval if space was released
-								if (spawnInterval) {
-									clearInterval(spawnInterval)
-									spawnInterval = null
-								}
-							}
-						}, 100) // Spawn every 100ms (10 per second) when shift is held
-					} else if (!e.shiftKey && !spawnInterval) {
-						// For normal space holding (without shift), spawn at a slower rate
-						spawnInterval = setInterval(() => {
-							if (isSpacePressed) {
-								spawnComponent()
-							} else {
-								if (spawnInterval) {
-									clearInterval(spawnInterval)
-									spawnInterval = null
-								}
-							}
-						}, 200) // Spawn every 200ms (5 per second) when just holding space
-					}
-				}
-			}
-			// 'c' key to clear
-			else if (e.key === "c" || e.key === "C") {
-				e.preventDefault()
-				setTimeout(() => clearAll(), 0)
-			}
-			// 'p' key to pause/unpause
-			else if (e.key === "p" || e.key === "P") {
-				e.preventDefault()
-				setIsPaused(prev => !prev)
-			}
-		}
-
-		const handleKeyUp = (e: KeyboardEvent) => {
-			// Stop rapid spawning when space is released
-			if (e.key === " ") {
-				isSpacePressed = false
-				if (spawnInterval) {
-					clearInterval(spawnInterval)
-					spawnInterval = null
-				}
-			}
-		}
-
-		// Use keydown for all handling
-		window.addEventListener("keydown", handleKeyDown)
-		window.addEventListener("keyup", handleKeyUp)
-
-		// Also handle blur event in case the window loses focus
-		const handleBlur = () => {
-			isSpacePressed = false
-			if (spawnInterval) {
-				clearInterval(spawnInterval)
-				spawnInterval = null
-			}
-		}
-		window.addEventListener("blur", handleBlur)
-
-		return () => {
-			window.removeEventListener("keydown", handleKeyDown)
-			window.removeEventListener("keyup", handleKeyUp)
-			window.removeEventListener("blur", handleBlur)
-			if (spawnInterval) {
-				clearInterval(spawnInterval)
-			}
-		}
-	}, [selectedCategory, selectedSubcategory])
 
 	// Initialize Matter.js
 	useEffect(() => {
@@ -351,289 +232,295 @@ export function PhysicsPlayground() {
 	}, [isPaused])
 
 	// Create a shadcn component element
-	const createComponentElement = (
-		category: ComponentCategory,
-		subcategory?: ComponentSubcategory,
-	) => {
-		const element = document.createElement("div")
-		element.className = "absolute"
-		element.style.transformOrigin = "center"
-		element.style.zIndex = "10"
+	const createComponentElement = useCallback(
+		(category: ComponentCategory, subcategory?: ComponentSubcategory) => {
+			const element = document.createElement("div")
+			element.className = "absolute"
+			element.style.transformOrigin = "center"
+			element.style.zIndex = "10"
 
-		// Create a root for React to render into
-		const root = createRoot(element)
+			// Create a root for React to render into
+			const root = createRoot(element)
 
-		// Determine what component to create based on category
-		let component: React.ReactElement
+			// Determine what component to create based on category
+			let component: React.ReactElement
 
-		// Handle random category - pick a random component type
-		if (category === "random") {
-			const componentTypes = [
-				"buttons",
-				"badges",
-				"cards",
-				"icons",
-				"toggles",
-				"inputs",
-				"complex",
-				// Note: upsells are excluded from random selection
-			]
-			const weights = [0.2, 0.2, 0.15, 0.2, 0.15, 0.15, 0.15] // Weighted distribution
-			const random = Math.random()
-			let cumulative = 0
-			let selectedType = "buttons"
+			// Handle random category - pick a random component type
+			if (category === "random") {
+				const componentTypes = [
+					"buttons",
+					"badges",
+					"cards",
+					"icons",
+					"toggles",
+					"inputs",
+					"complex",
+					// Note: upsells are excluded from random selection
+				]
+				const weights = [0.2, 0.2, 0.15, 0.2, 0.15, 0.15, 0.15] // Weighted distribution
+				const random = Math.random()
+				let cumulative = 0
+				let selectedType = "buttons"
 
-			for (let i = 0; i < componentTypes.length; i++) {
-				cumulative += weights[i]
-				if (random < cumulative) {
-					selectedType = componentTypes[i]
-					break
+				for (let i = 0; i < componentTypes.length; i++) {
+					cumulative += weights[i]
+					if (random < cumulative) {
+						selectedType = componentTypes[i]
+						break
+					}
+				}
+
+				// Create component based on selected type
+				switch (selectedType) {
+					case "buttons":
+						component = createButtonComponent()
+						break
+					case "badges":
+						component = createBadgeComponent()
+						break
+					case "cards":
+						component = createCardComponent()
+						break
+					case "icons":
+						component = createIconComponent()
+						break
+					case "toggles":
+						component = createToggleComponent()
+						break
+					case "inputs":
+						component = createInputComponent()
+						break
+					case "complex":
+						component = createComplexComponent()
+						break
+					default:
+						component = createButtonComponent()
+				}
+			} else {
+				// Create specific component type
+				switch (category) {
+					case "buttons":
+						component = createButtonComponent(subcategory)
+						break
+					case "badges":
+						component = createBadgeComponent(subcategory)
+						break
+					case "cards":
+						component = createCardComponent(subcategory)
+						break
+					case "icons":
+						component = createIconComponent(subcategory)
+						break
+					case "toggles":
+						component = createToggleComponent(subcategory)
+						break
+					case "inputs":
+						component = createInputComponent(subcategory)
+						break
+					case "complex":
+						component = createComplexComponent(subcategory)
+						break
+					case "upsells":
+						component = createUpsellComponent(subcategory)
+						break
+					default: {
+						// Fallback - simple button
+						component = createButtonComponent()
+					}
 				}
 			}
 
-			// Create component based on selected type
-			switch (selectedType) {
-				case "buttons":
-					component = createButtonComponent()
-					break
-				case "badges":
-					component = createBadgeComponent()
-					break
-				case "cards":
-					component = createCardComponent()
-					break
-				case "icons":
-					component = createIconComponent()
-					break
-				case "toggles":
-					component = createToggleComponent()
-					break
-				case "inputs":
-					component = createInputComponent()
-					break
-				case "complex":
-					component = createComplexComponent()
-					break
-				default:
-					component = createButtonComponent()
-			}
-		} else {
-			// Create specific component type
-			switch (category) {
-				case "buttons":
-					component = createButtonComponent(subcategory)
-					break
-				case "badges":
-					component = createBadgeComponent(subcategory)
-					break
-				case "cards":
-					component = createCardComponent(subcategory)
-					break
-				case "icons":
-					component = createIconComponent(subcategory)
-					break
-				case "toggles":
-					component = createToggleComponent(subcategory)
-					break
-				case "inputs":
-					component = createInputComponent(subcategory)
-					break
-				case "complex":
-					component = createComplexComponent(subcategory)
-					break
-				case "upsells":
-					component = createUpsellComponent(subcategory)
-					break
-				default: {
-					// Fallback - simple button
-					component = createButtonComponent()
-				}
-			}
-		}
+			// Render the component
+			root.render(component)
 
-		// Render the component
-		root.render(component)
+			// Store the root for cleanup
+			element.setAttribute("data-react-root", "true")
 
-		// Store the root for cleanup
-		element.setAttribute("data-react-root", "true")
-
-		return element
-	}
+			return element
+		},
+		[], // No dependencies since it only uses imported functions
+	)
 
 	// Spawn a component
-	const spawnComponent = (
-		componentType?: ComponentCategory,
-		subcategory?: ComponentSubcategory,
-	) => {
-		if (!sceneRef.current || !engineRef.current) return
+	const spawnComponent = useCallback(
+		(componentType?: ComponentCategory, subcategory?: ComponentSubcategory) => {
+			if (!sceneRef.current || !engineRef.current) return
 
-		const type = componentType || selectedCategory
-		const subtype = subcategory || selectedSubcategory
-		const element = createComponentElement(type, subtype)
+			const type = componentType || selectedCategory
+			const subtype = subcategory || selectedSubcategory
+			const element = createComponentElement(type, subtype)
 
-		// Append to scene first
-		sceneRef.current.appendChild(element)
+			// Append to scene first
+			sceneRef.current.appendChild(element)
 
-		// Wait for next frame to ensure element is rendered
-		requestAnimationFrame(() => {
-			// Get element dimensions
-			const rect = element.getBoundingClientRect()
-			const sceneRect = sceneRef.current!.getBoundingClientRect()
+			// Wait for next frame to ensure element is rendered
+			requestAnimationFrame(() => {
+				// Get element dimensions
+				const rect = element.getBoundingClientRect()
+				const sceneRect = sceneRef.current!.getBoundingClientRect()
 
-			// Random spawn position at top with proper margin calculation
-			const margin = 60 // Margin from walls
-			const availableWidth = sceneRect.width - margin * 2 - rect.width
-			const x =
-				Math.random() * Math.max(availableWidth, 0) + margin + rect.width / 2
+				// Random spawn position at top with proper margin calculation
+				const margin = 60 // Margin from walls
+				const availableWidth = sceneRect.width - margin * 2 - rect.width
+				const x =
+					Math.random() * Math.max(availableWidth, 0) + margin + rect.width / 2
 
-			// Reduce initial angle to prevent getting stuck - smaller angles are safer
-			const initialAngle = (Math.random() - 0.5) * Math.PI * 0.25 // Random angle within ±22.5 degrees (reduced from ±45)
+				// Reduce initial angle to prevent getting stuck - smaller angles are safer
+				const initialAngle = (Math.random() - 0.5) * Math.PI * 0.25 // Random angle within ±22.5 degrees (reduced from ±45)
 
-			// Calculate safe Y position accounting for rotation
-			// When rotated, the component takes up more vertical space
-			const rotatedHeight =
-				Math.abs(rect.width * Math.sin(initialAngle)) +
-				Math.abs(rect.height * Math.cos(initialAngle))
-			const safeMargin = Math.max(margin, rotatedHeight / 2 + 20) // Increased buffer from 10px to 20px
-			const y = safeMargin + rect.height / 2
+				// Calculate safe Y position accounting for rotation
+				// When rotated, the component takes up more vertical space
+				const rotatedHeight =
+					Math.abs(rect.width * Math.sin(initialAngle)) +
+					Math.abs(rect.height * Math.cos(initialAngle))
+				const safeMargin = Math.max(margin, rotatedHeight / 2 + 20) // Increased buffer from 10px to 20px
+				const y = safeMargin + rect.height / 2
 
-			// Ensure minimum distance from ceiling (extra safety check)
-			const minYFromCeiling = 80 // Minimum 80px from top
-			const finalY = Math.max(y, minYFromCeiling)
+				// Ensure minimum distance from ceiling (extra safety check)
+				const minYFromCeiling = 80 // Minimum 80px from top
+				const finalY = Math.max(y, minYFromCeiling)
 
-			// Create physics body with improved settings
-			const body = Matter.Bodies.rectangle(x, finalY, rect.width, rect.height, {
-				restitution: bounce,
-				friction: 0.1, // Reduced friction for better movement
-				frictionAir: 0.001, // Increased air friction to prevent floating/sticking (was 0.0001)
-				density: 0.01, // Increased density for more stable physics (was 0.001)
-				angle: initialAngle,
-				angularVelocity: (Math.random() - 0.5) * 0.1, // Restored initial spin
-				// Removed inertia: Infinity to allow natural rotation
-			})
+				// Create physics body with improved settings
+				const body = Matter.Bodies.rectangle(
+					x,
+					finalY,
+					rect.width,
+					rect.height,
+					{
+						restitution: bounce,
+						friction: 0.1, // Reduced friction for better movement
+						frictionAir: 0.001, // Increased air friction to prevent floating/sticking (was 0.0001)
+						density: 0.01, // Increased density for more stable physics (was 0.001)
+						angle: initialAngle,
+						angularVelocity: (Math.random() - 0.5) * 0.1, // Restored initial spin
+						// Removed inertia: Infinity to allow natural rotation
+					},
+				)
 
-			// Add to world
-			Matter.World.add(engineRef.current!.world, body)
-			bodiesRef.current.set(body.id, element)
+				// Add to world
+				Matter.World.add(engineRef.current!.world, body)
+				bodiesRef.current.set(body.id, element)
 
-			// Give a small downward velocity to help prevent getting stuck
-			Matter.Body.setVelocity(body, {
-				x: (Math.random() - 0.5) * 0.5, // Small random horizontal velocity
-				y: Math.random() * 0.5 + 0.2, // Small downward velocity (0.2 to 0.7)
-			})
+				// Give a small downward velocity to help prevent getting stuck
+				Matter.Body.setVelocity(body, {
+					x: (Math.random() - 0.5) * 0.5, // Small random horizontal velocity
+					y: Math.random() * 0.5 + 0.2, // Small downward velocity (0.2 to 0.7)
+				})
 
-			// Set initial position
-			element.style.left = "0px"
-			element.style.top = "0px"
-			element.style.transform = `translate(${x - rect.width / 2}px, ${
-				finalY - rect.height / 2
-			}px) rotate(${initialAngle}rad)`
+				// Set initial position
+				element.style.left = "0px"
+				element.style.top = "0px"
+				element.style.transform = `translate(${x - rect.width / 2}px, ${
+					finalY - rect.height / 2
+				}px) rotate(${initialAngle}rad)`
 
-			// Make element draggable with mobile-friendly styling
-			element.style.cursor = "grab"
-			element.style.touchAction = "none" // Prevent default touch behaviors
-			element.style.userSelect = "none" // Prevent text selection on drag
+				// Make element draggable with mobile-friendly styling
+				element.style.cursor = "grab"
+				element.style.touchAction = "none" // Prevent default touch behaviors
+				element.style.userSelect = "none" // Prevent text selection on drag
 
-			// Add mouse and touch interaction
-			const handlePointerStart = (clientX: number, clientY: number) => {
-				element.style.cursor = "grabbing"
-				element.style.transform = element.style.transform + " scale(1.05)" // Slight scale feedback
-				const startX = clientX
-				const startY = clientY
-				const startBodyX = body.position.x
-				const startBodyY = body.position.y
-				let lastX = startX
-				let lastY = startY
-				let lastTime = Date.now()
+				// Add mouse and touch interaction
+				const handlePointerStart = (clientX: number, clientY: number) => {
+					element.style.cursor = "grabbing"
+					element.style.transform = element.style.transform + " scale(1.05)" // Slight scale feedback
+					const startX = clientX
+					const startY = clientY
+					const startBodyX = body.position.x
+					const startBodyY = body.position.y
+					let lastX = startX
+					let lastY = startY
+					let lastTime = Date.now()
 
-				const handlePointerMove = (currentX: number, currentY: number) => {
-					const currentTime = Date.now()
-					const dt = Math.max(currentTime - lastTime, 1) // Prevent division by zero
+					const handlePointerMove = (currentX: number, currentY: number) => {
+						const currentTime = Date.now()
+						const dt = Math.max(currentTime - lastTime, 1) // Prevent division by zero
 
-					const dx = currentX - startX
-					const dy = currentY - startY
+						const dx = currentX - startX
+						const dy = currentY - startY
 
-					// Calculate velocity based on pointer movement
-					const velocityX = ((currentX - lastX) / dt) * 50 // Scale factor for responsiveness
-					const velocityY = ((currentY - lastY) / dt) * 50
+						// Calculate velocity based on pointer movement
+						const velocityX = ((currentX - lastX) / dt) * 50 // Scale factor for responsiveness
+						const velocityY = ((currentY - lastY) / dt) * 50
 
-					// Set position and apply velocity for smooth throwing
-					Matter.Body.setPosition(body, {
-						x: startBodyX + dx,
-						y: startBodyY + dy,
+						// Set position and apply velocity for smooth throwing
+						Matter.Body.setPosition(body, {
+							x: startBodyX + dx,
+							y: startBodyY + dy,
+						})
+						Matter.Body.setVelocity(body, { x: velocityX, y: velocityY })
+
+						lastX = currentX
+						lastY = currentY
+						lastTime = currentTime
+					}
+
+					const handleMouseMove = (e: MouseEvent) => {
+						e.preventDefault()
+						handlePointerMove(e.clientX, e.clientY)
+					}
+
+					const handleTouchMove = (e: TouchEvent) => {
+						e.preventDefault()
+						if (e.touches.length > 0) {
+							handlePointerMove(e.touches[0].clientX, e.touches[0].clientY)
+						}
+					}
+
+					const handlePointerEnd = () => {
+						element.style.cursor = "grab"
+						// Remove scale feedback by recalculating transform without scale
+						const x = body.position.x
+						const y = body.position.y
+						const angle = body.angle
+						element.style.transform = `translate(${
+							x - element.offsetWidth / 2
+						}px, ${y - element.offsetHeight / 2}px) rotate(${angle}rad)`
+						document.removeEventListener("mousemove", handleMouseMove)
+						document.removeEventListener("mouseup", handlePointerEnd)
+						document.removeEventListener("touchmove", handleTouchMove)
+						document.removeEventListener("touchend", handlePointerEnd)
+						document.removeEventListener("touchcancel", handlePointerEnd)
+					}
+
+					document.addEventListener("mousemove", handleMouseMove, {
+						passive: false,
 					})
-					Matter.Body.setVelocity(body, { x: velocityX, y: velocityY })
+					document.addEventListener("mouseup", handlePointerEnd)
+					document.addEventListener("touchmove", handleTouchMove, {
+						passive: false,
+					})
+					document.addEventListener("touchend", handlePointerEnd)
+					document.addEventListener("touchcancel", handlePointerEnd)
 
-					lastX = currentX
-					lastY = currentY
-					lastTime = currentTime
+					return handlePointerEnd
 				}
 
-				const handleMouseMove = (e: MouseEvent) => {
+				// Mouse events
+				element.addEventListener("mousedown", e => {
 					e.preventDefault()
-					handlePointerMove(e.clientX, e.clientY)
-				}
-
-				const handleTouchMove = (e: TouchEvent) => {
-					e.preventDefault()
-					if (e.touches.length > 0) {
-						handlePointerMove(e.touches[0].clientX, e.touches[0].clientY)
-					}
-				}
-
-				const handlePointerEnd = () => {
-					element.style.cursor = "grab"
-					// Remove scale feedback by recalculating transform without scale
-					const x = body.position.x
-					const y = body.position.y
-					const angle = body.angle
-					element.style.transform = `translate(${
-						x - element.offsetWidth / 2
-					}px, ${y - element.offsetHeight / 2}px) rotate(${angle}rad)`
-					document.removeEventListener("mousemove", handleMouseMove)
-					document.removeEventListener("mouseup", handlePointerEnd)
-					document.removeEventListener("touchmove", handleTouchMove)
-					document.removeEventListener("touchend", handlePointerEnd)
-					document.removeEventListener("touchcancel", handlePointerEnd)
-				}
-
-				document.addEventListener("mousemove", handleMouseMove, {
-					passive: false,
+					handlePointerStart(e.clientX, e.clientY)
 				})
-				document.addEventListener("mouseup", handlePointerEnd)
-				document.addEventListener("touchmove", handleTouchMove, {
-					passive: false,
-				})
-				document.addEventListener("touchend", handlePointerEnd)
-				document.addEventListener("touchcancel", handlePointerEnd)
 
-				return handlePointerEnd
-			}
-
-			// Mouse events
-			element.addEventListener("mousedown", e => {
-				e.preventDefault()
-				handlePointerStart(e.clientX, e.clientY)
+				// Touch events
+				element.addEventListener(
+					"touchstart",
+					e => {
+						e.preventDefault()
+						if (e.touches.length > 0) {
+							handlePointerStart(e.touches[0].clientX, e.touches[0].clientY)
+						}
+					},
+					{ passive: false },
+				)
 			})
 
-			// Touch events
-			element.addEventListener(
-				"touchstart",
-				e => {
-					e.preventDefault()
-					if (e.touches.length > 0) {
-						handlePointerStart(e.touches[0].clientX, e.touches[0].clientY)
-					}
-				},
-				{ passive: false },
-			)
-		})
-
-		setComponentCount(prev => prev + 1)
-	}
+			setComponentCount(prev => prev + 1)
+		},
+		[selectedCategory, selectedSubcategory, bounce, createComponentElement],
+	)
 
 	// Clear all components
-	const clearAll = () => {
+	const clearAll = useCallback(() => {
 		if (!engineRef.current) return
 
 		const bodies = Matter.Composite.allBodies(engineRef.current.world)
@@ -649,7 +536,126 @@ export function PhysicsPlayground() {
 		})
 
 		setComponentCount(0)
-	}
+	}, [])
+
+	// Keyboard shortcuts
+	useEffect(() => {
+		let spawnInterval: NodeJS.Timeout | null = null
+		let isSpacePressed = false
+
+		const handleKeyDown = (e: KeyboardEvent) => {
+			// Prevent space from scrolling the page
+			if (e.key === " ") {
+				// Check if the target is within a Select component
+				const target = e.target as HTMLElement
+				const isInSelect =
+					target.closest('[role="combobox"]') ||
+					target.closest("[data-radix-collection-item]") ||
+					target.closest('[role="listbox"]')
+
+				if (isInSelect) {
+					e.stopPropagation()
+					return
+				}
+
+				// Prevent default scrolling behavior
+				e.preventDefault()
+			}
+
+			// Check if user is typing in any form control
+			if (
+				e.target instanceof HTMLInputElement ||
+				e.target instanceof HTMLTextAreaElement ||
+				e.target instanceof HTMLSelectElement ||
+				e.target instanceof HTMLButtonElement ||
+				(e.target instanceof HTMLElement && e.target.isContentEditable)
+			) {
+				return
+			}
+
+			// Space key to spawn
+			if (e.key === " ") {
+				// Only set up interval on first press, not on repeats
+				if (!isSpacePressed) {
+					isSpacePressed = true
+					// Spawn immediately on first press
+					setTimeout(() => spawnComponent(), 0)
+
+					// If shift is held, start rapid spawning
+					if (e.shiftKey && !spawnInterval) {
+						spawnInterval = setInterval(() => {
+							// Only continue spawning if space is still pressed
+							if (isSpacePressed) {
+								spawnComponent()
+							} else {
+								// Clean up interval if space was released
+								if (spawnInterval) {
+									clearInterval(spawnInterval)
+									spawnInterval = null
+								}
+							}
+						}, 100) // Spawn every 100ms (10 per second) when shift is held
+					} else if (!e.shiftKey && !spawnInterval) {
+						// For normal space holding (without shift), spawn at a slower rate
+						spawnInterval = setInterval(() => {
+							if (isSpacePressed) {
+								spawnComponent()
+							} else {
+								if (spawnInterval) {
+									clearInterval(spawnInterval)
+									spawnInterval = null
+								}
+							}
+						}, 200) // Spawn every 200ms (5 per second) when just holding space
+					}
+				}
+			}
+			// 'c' key to clear
+			else if (e.key === "c" || e.key === "C") {
+				e.preventDefault()
+				setTimeout(() => clearAll(), 0)
+			}
+			// 'p' key to pause/unpause
+			else if (e.key === "p" || e.key === "P") {
+				e.preventDefault()
+				setIsPaused(prev => !prev)
+			}
+		}
+
+		const handleKeyUp = (e: KeyboardEvent) => {
+			// Stop rapid spawning when space is released
+			if (e.key === " ") {
+				isSpacePressed = false
+				if (spawnInterval) {
+					clearInterval(spawnInterval)
+					spawnInterval = null
+				}
+			}
+		}
+
+		// Use keydown for all handling
+		window.addEventListener("keydown", handleKeyDown)
+		window.addEventListener("keyup", handleKeyUp)
+
+		// Also handle blur event in case the window loses focus
+		const handleBlur = () => {
+			isSpacePressed = false
+			if (spawnInterval) {
+				clearInterval(spawnInterval)
+				spawnInterval = null
+			}
+		}
+		window.addEventListener("blur", handleBlur)
+
+		return () => {
+			window.removeEventListener("keydown", handleKeyDown)
+			window.removeEventListener("keyup", handleKeyUp)
+			window.removeEventListener("blur", handleBlur)
+			if (spawnInterval) {
+				clearInterval(spawnInterval)
+			}
+		}
+	}, [spawnComponent, clearAll])
 
 	return (
 		<div
