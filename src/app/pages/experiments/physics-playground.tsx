@@ -106,19 +106,136 @@ import {
 	TooltipTrigger,
 } from "@/components/ui/tooltip"
 
+// Component subcategories
+const COMPONENT_SUBCATEGORIES = {
+	buttons: [
+		{ id: "text", name: "Text Button" },
+		{ id: "icon", name: "Icon Button" },
+		{ id: "icon-text", name: "Icon + Text" },
+		{ id: "link", name: "Link Button" },
+	],
+	badges: [
+		{ id: "simple", name: "Simple Badge" },
+		{ id: "icon", name: "Icon Badge" },
+		{ id: "colored", name: "Colored Badge" },
+	],
+	cards: [
+		{ id: "simple", name: "Simple Card" },
+		{ id: "stats", name: "Stats Card" },
+		{ id: "user", name: "User Card" },
+		{ id: "action", name: "Action Card" },
+		{ id: "notification", name: "Notification Card" },
+		{ id: "settings", name: "Settings Card" },
+		{ id: "hover", name: "Hover Card" },
+	],
+	icons: [
+		{ id: "single", name: "Single Icon" },
+		{ id: "colored", name: "Colored Icon" },
+		{ id: "sized", name: "Different Sizes" },
+	],
+	inputs: [
+		{ id: "text", name: "Text Input" },
+		{ id: "search", name: "Search Input" },
+		{ id: "avatar", name: "Avatar" },
+		{ id: "avatar-group", name: "Avatar Group" },
+		{ id: "slider", name: "Slider" },
+		{ id: "progress", name: "Progress Bar" },
+	],
+	toggles: [
+		{ id: "switch", name: "Switch" },
+		{ id: "checkbox", name: "Checkbox" },
+		{ id: "toggle", name: "Toggle Button" },
+		{ id: "toggle-group", name: "Toggle Group" },
+		{ id: "radio", name: "Radio Group" },
+		{ id: "labeled-switch", name: "Labeled Switch" },
+	],
+	complex: [
+		{ id: "tabs", name: "Tabs" },
+		{ id: "alert", name: "Alert" },
+		{ id: "skeleton", name: "Skeleton" },
+		{ id: "separator", name: "Separator" },
+		{ id: "accordion", name: "Accordion" },
+		{ id: "breadcrumb", name: "Breadcrumb" },
+		{ id: "tooltip", name: "Tooltip" },
+		{ id: "compound-card", name: "Compound Card" },
+	],
+	upsells: [
+		{ id: "premium-popup", name: "Premium Popup" },
+		{ id: "countdown-timer", name: "Countdown Timer" },
+		{ id: "exit-intent", name: "Exit Intent" },
+		{ id: "fake-discount", name: "Fake Discount" },
+		{ id: "social-proof", name: "Social Proof" },
+		{ id: "limited-spots", name: "Limited Spots" },
+		{ id: "cookie-monster", name: "Cookie Monster" },
+		{ id: "newsletter-trap", name: "Newsletter Trap" },
+		{ id: "survey-blocker", name: "Survey Blocker" },
+		{ id: "fake-loading", name: "Fake Loading" },
+		{ id: "notification-spam", name: "Notification Spam" },
+		{ id: "paywall-tease", name: "Paywall Tease" },
+		{ id: "guilt-trip", name: "Guilt Trip" },
+		{ id: "fake-chat", name: "Fake Chat" },
+		{ id: "bait-switch", name: "Bait & Switch" },
+		{ id: "dark-confirm", name: "Dark Confirm" },
+	],
+} as const
+
 // Component categories
 const COMPONENT_CATEGORIES = [
-	{ id: "random", name: "Random", icon: Sparkles },
-	{ id: "buttons", name: "Buttons", icon: Square },
-	{ id: "badges", name: "Badges", icon: Circle },
-	{ id: "cards", name: "Cards", icon: CreditCard },
-	{ id: "icons", name: "Icons", icon: Palette },
-	{ id: "inputs", name: "Inputs", icon: Edit },
-	{ id: "toggles", name: "Toggles", icon: ToggleLeft },
-	{ id: "complex", name: "Complex", icon: Layers },
+	{ id: "random", name: "Random", icon: Sparkles, subcategories: [] },
+	{
+		id: "buttons",
+		name: "Buttons",
+		icon: Square,
+		subcategories: COMPONENT_SUBCATEGORIES.buttons,
+	},
+	{
+		id: "badges",
+		name: "Badges",
+		icon: Circle,
+		subcategories: COMPONENT_SUBCATEGORIES.badges,
+	},
+	{
+		id: "cards",
+		name: "Cards",
+		icon: CreditCard,
+		subcategories: COMPONENT_SUBCATEGORIES.cards,
+	},
+	{
+		id: "icons",
+		name: "Icons",
+		icon: Palette,
+		subcategories: COMPONENT_SUBCATEGORIES.icons,
+	},
+	{
+		id: "inputs",
+		name: "Inputs",
+		icon: Edit,
+		subcategories: COMPONENT_SUBCATEGORIES.inputs,
+	},
+	{
+		id: "toggles",
+		name: "Toggles",
+		icon: ToggleLeft,
+		subcategories: COMPONENT_SUBCATEGORIES.toggles,
+	},
+	{
+		id: "complex",
+		name: "Complex",
+		icon: Layers,
+		subcategories: COMPONENT_SUBCATEGORIES.complex,
+	},
+	{
+		id: "upsells",
+		name: "Upsells",
+		icon: AlertCircle,
+		subcategories: COMPONENT_SUBCATEGORIES.upsells,
+	},
 ] as const
 
 type ComponentCategory = (typeof COMPONENT_CATEGORIES)[number]["id"]
+type ComponentSubcategory = {
+	[K in keyof typeof COMPONENT_SUBCATEGORIES]: (typeof COMPONENT_SUBCATEGORIES)[K][number]["id"]
+}[keyof typeof COMPONENT_SUBCATEGORIES]
 
 // Available icons
 const ICON_COMPONENTS = [
@@ -183,7 +300,7 @@ const getRandom = <T,>(arr: readonly T[]): T =>
 	arr[Math.floor(Math.random() * arr.length)]
 
 // Component creation functions
-const createButtonComponent = () => {
+const createButtonComponent = (subcategory?: string) => {
 	const variant = getRandom(BUTTON_VARIANTS)
 	const sizes = ["sm", "default", "lg"] as const
 	const size = getRandom(sizes)
@@ -198,7 +315,70 @@ const createButtonComponent = () => {
 		"Share",
 	]
 
-	// Sometimes add icons to buttons
+	// Handle specific subcategories
+	if (subcategory === "icon") {
+		const ButtonIcon = getRandom([
+			Check,
+			X,
+			Download,
+			Upload,
+			Edit,
+			Trash,
+			Mail,
+			Settings,
+		])
+		return (
+			<Button variant={variant} size="icon">
+				<ButtonIcon className="h-4 w-4" />
+			</Button>
+		)
+	} else if (subcategory === "text") {
+		return (
+			<Button variant={variant} size={size}>
+				{getRandom(texts)}
+			</Button>
+		)
+	} else if (subcategory === "icon-text") {
+		const ButtonIcon = getRandom([
+			Check,
+			X,
+			Download,
+			Upload,
+			Edit,
+			Trash,
+			Mail,
+			Settings,
+		])
+		const iconPosition = getRandom(["left", "right"])
+		if (iconPosition === "left") {
+			return (
+				<Button variant={variant} size={size}>
+					<ButtonIcon className="mr-2 h-4 w-4" />
+					{getRandom(texts)}
+				</Button>
+			)
+		} else {
+			return (
+				<Button variant={variant} size={size}>
+					{getRandom(texts)}
+					<ButtonIcon className="ml-2 h-4 w-4" />
+				</Button>
+			)
+		}
+	} else if (subcategory === "link") {
+		return (
+			<Button variant="link" size={size}>
+				{getRandom([
+					"Learn more",
+					"View details",
+					"Read more",
+					"Documentation",
+				])}
+			</Button>
+		)
+	}
+
+	// Default random behavior
 	if (Math.random() > 0.5) {
 		const ButtonIcon = getRandom([
 			Check,
@@ -242,7 +422,7 @@ const createButtonComponent = () => {
 	}
 }
 
-const createBadgeComponent = () => {
+const createBadgeComponent = (subcategory?: string) => {
 	const variant = getRandom(BADGE_VARIANTS)
 	const texts = [
 		"New",
@@ -258,7 +438,23 @@ const createBadgeComponent = () => {
 	]
 	const text = getRandom(texts)
 
-	// Sometimes add icons to badges
+	// Handle specific subcategories
+	if (subcategory === "simple") {
+		return <Badge variant={variant}>{text}</Badge>
+	} else if (subcategory === "icon") {
+		const BadgeIcon = getRandom([Star, Zap, Trophy, Gift, Rocket])
+		return (
+			<Badge variant={variant}>
+				<BadgeIcon className="mr-1 h-3 w-3" />
+				{text}
+			</Badge>
+		)
+	} else if (subcategory === "colored") {
+		const coloredVariants = ["default", "secondary", "destructive"] as const
+		return <Badge variant={getRandom(coloredVariants)}>{text}</Badge>
+	}
+
+	// Default random behavior
 	if (Math.random() > 0.6) {
 		const BadgeIcon = getRandom([Star, Zap, Trophy, Gift, Rocket])
 		return (
@@ -272,7 +468,7 @@ const createBadgeComponent = () => {
 	}
 }
 
-const createIconComponent = () => {
+const createIconComponent = (subcategory?: string) => {
 	const IconComponent = getRandom(ICON_COMPONENTS)
 	const colors = [
 		"text-red-500",
@@ -283,8 +479,33 @@ const createIconComponent = () => {
 		"text-orange-500",
 		"text-pink-500",
 	]
-	const color = getRandom(colors)
 	const sizes = ["h-6 w-6", "h-8 w-8", "h-10 w-10", "h-12 w-12"]
+
+	// Handle specific subcategories
+	if (subcategory === "single") {
+		return (
+			<div className="h-8 w-8">
+				<IconComponent />
+			</div>
+		)
+	} else if (subcategory === "colored") {
+		const color = getRandom(colors)
+		return (
+			<div className={`${color} h-8 w-8`}>
+				<IconComponent />
+			</div>
+		)
+	} else if (subcategory === "sized") {
+		const size = getRandom(sizes)
+		return (
+			<div className={size}>
+				<IconComponent />
+			</div>
+		)
+	}
+
+	// Default random behavior
+	const color = getRandom(colors)
 	const size = getRandom(sizes)
 	return (
 		<div className={`${color} ${size}`}>
@@ -293,7 +514,153 @@ const createIconComponent = () => {
 	)
 }
 
-const createCardComponent = () => {
+const createCardComponent = (subcategory?: string) => {
+	// Handle specific subcategories
+	if (subcategory === "simple") {
+		const cardTitles = ["Feature", "Update", "News", "Alert", "Info"]
+		const cardDescs = [
+			"Click to learn more",
+			"Physics enabled!",
+			"Drag me around",
+			"Interactive card",
+		]
+		return (
+			<Card className="w-48">
+				<CardHeader className="p-4">
+					<CardTitle className="text-sm">{getRandom(cardTitles)}</CardTitle>
+					<CardDescription className="text-xs">
+						{getRandom(cardDescs)}
+					</CardDescription>
+				</CardHeader>
+			</Card>
+		)
+	} else if (subcategory === "stats") {
+		return (
+			<Card className="w-56">
+				<CardHeader className="p-3">
+					<CardTitle className="text-sm">Statistics</CardTitle>
+				</CardHeader>
+				<CardContent className="p-3 pt-0">
+					<div className="flex items-center justify-between text-xs">
+						<span className="text-muted-foreground">Progress</span>
+						<span className="font-semibold">
+							{Math.floor(Math.random() * 100)}%
+						</span>
+					</div>
+					<Progress value={Math.random() * 100} className="mt-2 h-1" />
+				</CardContent>
+			</Card>
+		)
+	} else if (subcategory === "user") {
+		const names = ["John Doe", "Jane Smith", "Mark Johnson", "Sarah Wilson"]
+		const emails = [
+			"john@example.com",
+			"jane@example.com",
+			"mark@example.com",
+			"sarah@example.com",
+		]
+		const roles = ["Admin", "Member", "Guest", "Owner"]
+		const idx = Math.floor(Math.random() * names.length)
+		return (
+			<Card className="w-56">
+				<CardContent className="p-4">
+					<div className="flex items-center justify-between">
+						<div>
+							<p className="text-sm font-medium">{names[idx]}</p>
+							<p className="text-xs text-muted-foreground">{emails[idx]}</p>
+						</div>
+						<Badge
+							variant={idx === 0 ? "default" : "outline"}
+							className="text-xs"
+						>
+							{roles[idx]}
+						</Badge>
+					</div>
+				</CardContent>
+			</Card>
+		)
+	} else if (subcategory === "action") {
+		return (
+			<Card className="w-48">
+				<CardHeader className="p-3">
+					<CardTitle className="text-sm">Quick Action</CardTitle>
+				</CardHeader>
+				<CardContent className="p-3 pt-0">
+					<Button size="sm" className="w-full">
+						Execute
+					</Button>
+				</CardContent>
+			</Card>
+		)
+	} else if (subcategory === "notification") {
+		const notifications = [
+			{ title: "New message", badge: "New", variant: "default" as const },
+			{
+				title: "Payment successful",
+				badge: "Done",
+				variant: "secondary" as const,
+			},
+			{
+				title: "Update available",
+				badge: "Info",
+				variant: "outline" as const,
+			},
+		]
+		const notif = getRandom(notifications)
+		return (
+			<Card className="w-56">
+				<CardContent className="p-3">
+					<div className="flex items-center justify-between">
+						<p className="text-sm">{notif.title}</p>
+						<Badge variant={notif.variant} className="text-xs">
+							{notif.badge}
+						</Badge>
+					</div>
+				</CardContent>
+			</Card>
+		)
+	} else if (subcategory === "settings") {
+		const settingIcons = [User, CreditCard, Calendar, Settings, Mail, Bell]
+		const settingTitles = [
+			"Profile",
+			"Billing",
+			"Schedule",
+			"Preferences",
+			"Messages",
+			"Alerts",
+		]
+		const idx = Math.floor(Math.random() * settingIcons.length)
+		const SettingIcon = settingIcons[idx]
+		return (
+			<Card className="w-56">
+				<CardContent className="p-3">
+					<div className="flex items-center justify-between">
+						<div className="flex items-center space-x-3">
+							<SettingIcon className="h-4 w-4 text-muted-foreground" />
+							<div>
+								<p className="text-sm font-medium">{settingTitles[idx]}</p>
+								<p className="text-xs text-muted-foreground">Manage</p>
+							</div>
+						</div>
+						<ChevronRight className="h-4 w-4 text-muted-foreground" />
+					</div>
+				</CardContent>
+			</Card>
+		)
+	} else if (subcategory === "hover") {
+		return (
+			<HoverCard>
+				<HoverCardTrigger asChild>
+					<Button variant="link">Hover me!</Button>
+				</HoverCardTrigger>
+				<HoverCardContent className="w-40 p-2">
+					<p className="text-xs">Hidden content!</p>
+				</HoverCardContent>
+			</HoverCard>
+		)
+	}
+
+	// Default random behavior - existing logic
 	const cardTypes = [
 		"simple",
 		"with-content",
@@ -496,7 +863,68 @@ const createCardComponent = () => {
 	}
 }
 
-const createToggleComponent = () => {
+const createToggleComponent = (subcategory?: string) => {
+	// Handle specific subcategories
+	if (subcategory === "switch") {
+		return <Switch defaultChecked={Math.random() > 0.5} />
+	} else if (subcategory === "checkbox") {
+		return <Checkbox defaultChecked={Math.random() > 0.5} />
+	} else if (subcategory === "toggle") {
+		const toggleVariants = ["default", "outline"] as const
+		const toggleIcons = [Star, Heart, Bell, Bookmark, Sun, Moon]
+		const ToggleIcon = getRandom(toggleIcons)
+		return (
+			<Toggle
+				variant={getRandom(toggleVariants)}
+				defaultPressed={Math.random() > 0.5}
+			>
+				<ToggleIcon className="h-4 w-4" />
+			</Toggle>
+		)
+	} else if (subcategory === "toggle-group") {
+		return (
+			<ToggleGroup type="single" defaultValue="a" className="gap-0">
+				<ToggleGroupItem value="a" className="h-8 px-2">
+					A
+				</ToggleGroupItem>
+				<ToggleGroupItem value="b" className="h-8 px-2">
+					B
+				</ToggleGroupItem>
+				<ToggleGroupItem value="c" className="h-8 px-2">
+					C
+				</ToggleGroupItem>
+			</ToggleGroup>
+		)
+	} else if (subcategory === "radio") {
+		return (
+			<RadioGroup defaultValue="option-1" className="flex gap-2">
+				<div className="flex items-center space-x-1">
+					<RadioGroupItem value="option-1" id="option-1" />
+					<Label htmlFor="option-1" className="text-xs">
+						A
+					</Label>
+				</div>
+				<div className="flex items-center space-x-1">
+					<RadioGroupItem value="option-2" id="option-2" />
+					<Label htmlFor="option-2" className="text-xs">
+						B
+					</Label>
+				</div>
+			</RadioGroup>
+		)
+	} else if (subcategory === "labeled-switch") {
+		const labels = ["Dark Mode", "Notifications", "Auto-save", "Public"]
+		return (
+			<div className="flex items-center space-x-2">
+				<Switch id="labeled" defaultChecked={Math.random() > 0.5} />
+				<Label htmlFor="labeled" className="text-xs">
+					{getRandom(labels)}
+				</Label>
+			</div>
+		)
+	}
+
+	// Default random behavior
 	const toggleTypes = [
 		"switch",
 		"checkbox",
@@ -592,7 +1020,96 @@ const createToggleComponent = () => {
 	}
 }
 
-const createInputComponent = () => {
+const createInputComponent = (subcategory?: string) => {
+	// Handle specific subcategories
+	if (subcategory === "text") {
+		const placeholders = [
+			"Type here...",
+			"Search...",
+			"Enter text...",
+			"Name",
+			"Email",
+			"Password",
+		]
+		const types = ["text", "email", "search"] as const
+		return (
+			<Input
+				className="w-32 h-8"
+				type={getRandom(types)}
+				placeholder={getRandom(placeholders)}
+				defaultValue=""
+			/>
+		)
+	} else if (subcategory === "search") {
+		return (
+			<div className="relative w-40">
+				<Search className="absolute left-2 top-1/2 h-3 w-3 -translate-y-1/2 text-muted-foreground" />
+				<Input
+					className="h-8 pl-7 pr-2"
+					placeholder="Search..."
+					defaultValue=""
+				/>
+			</div>
+		)
+	} else if (subcategory === "avatar") {
+		const initials = ["AB", "CD", "EF", "GH", "JK", "LM", "NP", "QR"]
+		const sizes = ["", "w-8 h-8", "w-12 h-12"] as const
+		const colors = [
+			"",
+			"bg-blue-500",
+			"bg-green-500",
+			"bg-purple-500",
+			"bg-orange-500",
+		]
+		return (
+			<Avatar className={getRandom(sizes)}>
+				<AvatarFallback className={getRandom(colors)}>
+					{getRandom(initials)}
+				</AvatarFallback>
+			</Avatar>
+		)
+	} else if (subcategory === "avatar-group") {
+		const count = Math.floor(Math.random() * 3) + 2
+		return (
+			<div className="flex -space-x-2">
+				{Array.from({ length: count }).map((_, i) => (
+					<Avatar key={i} className="h-8 w-8 border-2 border-background">
+						<AvatarFallback
+							className={getRandom([
+								"bg-blue-500",
+								"bg-green-500",
+								"bg-purple-500",
+							])}
+						>
+							{getRandom(["AB", "CD", "EF", "GH"])}
+						</AvatarFallback>
+					</Avatar>
+				))}
+			</div>
+		)
+	} else if (subcategory === "slider") {
+		return (
+			<Slider
+				defaultValue={[Math.floor(Math.random() * 100)]}
+				max={100}
+				step={1}
+				className="w-32"
+			/>
+		)
+	} else if (subcategory === "progress") {
+		const value = Math.random() * 100
+		return (
+			<div className="w-32 space-y-1">
+				<div className="flex justify-between text-xs">
+					<span className="text-muted-foreground">Loading</span>
+					<span>{Math.floor(value)}%</span>
+				</div>
+				<Progress value={value} className="h-2" />
+			</div>
+		)
+	}
+
+	// Default random behavior
 	const inputTypes = [
 		"input",
 		"avatar",
@@ -707,7 +1224,221 @@ const createInputComponent = () => {
 	}
 }
 
-const createComplexComponent = () => {
+const createComplexComponent = (subcategory?: string) => {
+	// Handle specific subcategories
+	if (subcategory === "tabs") {
+		return (
+			<Tabs defaultValue="tab1" className="w-48">
+				<TabsList className="grid w-full grid-cols-2 h-8">
+					<TabsTrigger value="tab1" className="text-xs">
+						Tab 1
+					</TabsTrigger>
+					<TabsTrigger value="tab2" className="text-xs">
+						Tab 2
+					</TabsTrigger>
+				</TabsList>
+				<TabsContent value="tab1" className="p-2">
+					<p className="text-xs">Content 1</p>
+				</TabsContent>
+				<TabsContent value="tab2" className="p-2">
+					<p className="text-xs">Content 2</p>
+				</TabsContent>
+			</Tabs>
+		)
+	} else if (subcategory === "alert") {
+		const alertVariants = ["default", "destructive"] as const
+		const variant = getRandom(alertVariants)
+		const IconComponent = variant === "destructive" ? AlertCircle : Info
+		return (
+			<Alert variant={variant} className="w-56 p-3">
+				<IconComponent className="h-4 w-4" />
+				<AlertTitle className="text-sm">Alert!</AlertTitle>
+				<AlertDescription className="text-xs">
+					This is a physics-enabled alert.
+				</AlertDescription>
+			</Alert>
+		)
+	} else if (subcategory === "skeleton") {
+		const skeletonTypes = ["line", "circle", "card"] as const
+		const skelType = getRandom(skeletonTypes)
+		if (skelType === "line") {
+			return <Skeleton className="h-4 w-32" />
+		} else if (skelType === "circle") {
+			return <Skeleton className="h-12 w-12 rounded-full" />
+		} else {
+			return (
+				<div className="space-y-2">
+					<Skeleton className="h-4 w-32" />
+					<Skeleton className="h-4 w-24" />
+				</div>
+			)
+		}
+	} else if (subcategory === "separator") {
+		const orientations = ["horizontal", "vertical"] as const
+		const orientation = getRandom(orientations)
+		return (
+			<Separator
+				orientation={orientation}
+				className={orientation === "horizontal" ? "w-20" : "h-20"}
+			/>
+		)
+	} else if (subcategory === "accordion") {
+		return (
+			<Accordion type="single" collapsible className="w-48">
+				<AccordionItem value="item-1" className="border-b-0">
+					<AccordionTrigger className="text-xs py-2">
+						Question?
+					</AccordionTrigger>
+					<AccordionContent className="text-xs pb-2">
+						Answer here!
+					</AccordionContent>
+				</AccordionItem>
+			</Accordion>
+		)
+	} else if (subcategory === "breadcrumb") {
+		return (
+			<Breadcrumb>
+				<BreadcrumbList className="text-xs">
+					<BreadcrumbItem>
+						<BreadcrumbLink>Home</BreadcrumbLink>
+					</BreadcrumbItem>
+					<BreadcrumbSeparator />
+					<BreadcrumbItem>
+						<BreadcrumbPage>Page</BreadcrumbPage>
+					</BreadcrumbItem>
+				</BreadcrumbList>
+			</Breadcrumb>
+		)
+	} else if (subcategory === "tooltip") {
+		const tooltipTexts = [
+			"Helpful tip!",
+			"Click me!",
+			"More info",
+			"Hover for details",
+		]
+		return (
+			<TooltipProvider>
+				<Tooltip>
+					<TooltipTrigger asChild>
+						<Button variant="outline" size="sm">
+							<Info className="h-3 w-3 mr-1" />
+							Hover
+						</Button>
+					</TooltipTrigger>
+					<TooltipContent>
+						<p className="text-xs">{getRandom(tooltipTexts)}</p>
+					</TooltipContent>
+				</Tooltip>
+			</TooltipProvider>
+		)
+	} else if (subcategory === "compound-card") {
+		const cardTypes = ["stats", "user", "action", "feature"] as const
+		const cardType = getRandom(cardTypes)
+
+		if (cardType === "stats") {
+			const stats = [
+				{ label: "Users", value: "2.4k", change: "+12%" },
+				{ label: "Revenue", value: "$45k", change: "+8%" },
+				{ label: "Orders", value: "89", change: "-3%" },
+			]
+			const stat = getRandom(stats)
+			return (
+				<Card className="w-48">
+					<CardContent className="p-3">
+						<div className="flex items-center justify-between">
+							<div>
+								<p className="text-xs text-muted-foreground">{stat.label}</p>
+								<p className="text-lg font-semibold">{stat.value}</p>
+							</div>
+							<Badge
+								variant={
+									stat.change.startsWith("+") ? "default" : "destructive"
+								}
+								className="text-xs"
+							>
+								{stat.change}
+							</Badge>
+						</div>
+					</CardContent>
+				</Card>
+			)
+		} else if (cardType === "user") {
+			const users = [
+				{ name: "Alex Chen", role: "Designer", status: "online" },
+				{ name: "Sam Taylor", role: "Developer", status: "away" },
+				{ name: "Jordan Lee", role: "Manager", status: "offline" },
+			]
+			const user = getRandom(users)
+			return (
+				<Card className="w-56">
+					<CardContent className="p-3">
+						<div className="flex items-center space-x-3">
+							<Avatar className="h-10 w-10">
+								<AvatarFallback>
+									{user.name
+										.split(" ")
+										.map(n => n[0])
+										.join("")}
+								</AvatarFallback>
+							</Avatar>
+							<div className="flex-1">
+								<p className="text-sm font-medium">{user.name}</p>
+								<p className="text-xs text-muted-foreground">{user.role}</p>
+							</div>
+							<div
+								className={`h-2 w-2 rounded-full ${
+									user.status === "online"
+										? "bg-green-500"
+										: user.status === "away"
+										? "bg-yellow-500"
+										: "bg-gray-300"
+								}`}
+							/>
+						</div>
+					</CardContent>
+				</Card>
+			)
+		} else if (cardType === "action") {
+			const actions = [
+				{ icon: Download, label: "Download", desc: "Get the file" },
+				{ icon: Upload, label: "Upload", desc: "Add new file" },
+				{ icon: Share, label: "Share", desc: "Send to team" },
+			]
+			const action = getRandom(actions)
+			const ActionIcon = action.icon
+			return (
+				<Card className="w-48 hover:shadow-md transition-shadow cursor-pointer">
+					<CardContent className="p-4 text-center">
+						<ActionIcon className="h-8 w-8 mx-auto mb-2 text-primary" />
+						<p className="text-sm font-medium">{action.label}</p>
+						<p className="text-xs text-muted-foreground">{action.desc}</p>
+					</CardContent>
+				</Card>
+			)
+		} else {
+			const IconCard = getRandom([User, Settings, Mail, Calendar])
+			return (
+				<Card className="w-48">
+					<CardHeader className="p-3 pb-2">
+						<div className="flex items-center justify-between">
+							<CardTitle className="text-sm">Feature</CardTitle>
+							<IconCard className="h-4 w-4 text-muted-foreground" />
+						</div>
+					</CardHeader>
+					<CardContent className="p-3 pt-0">
+						<div className="flex items-center gap-2">
+							<Badge variant="secondary" className="text-xs">
+								New
+							</Badge>
+							<Progress value={66} className="flex-1 h-1" />
+						</div>
+					</CardContent>
+				</Card>
+			)
+		}
+	}
+
+	// Default random behavior
 	const complexTypes = [
 		"tabs",
 		"alert",
@@ -941,6 +1672,358 @@ const createComplexComponent = () => {
 	}
 }
 
+const createUpsellComponent = (subcategory?: string) => {
+	// Handle specific subcategories
+	if (subcategory === "premium-popup") {
+		return (
+			<Card className="w-64 border-2 border-yellow-500 shadow-2xl">
+				<CardHeader className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white p-3">
+					<CardTitle className="text-lg flex items-center gap-2">
+						<Zap className="h-5 w-5" />
+						GO PREMIUM NOW!
+					</CardTitle>
+				</CardHeader>
+				<CardContent className="p-4">
+					<p className="text-sm font-bold mb-2">LIMITED TIME OFFER!</p>
+					<p className="text-xs text-muted-foreground mb-3">
+						Unlock 1000+ features you'll never use!
+					</p>
+					<div className="space-y-2">
+						<Button className="w-full bg-gradient-to-r from-yellow-400 to-orange-500">
+							UPGRADE NOW - 90% OFF
+						</Button>
+						<Button variant="ghost" size="sm" className="w-full text-xs">
+							Maybe later (we'll ask again in 5 seconds)
+						</Button>
+					</div>
+				</CardContent>
+			</Card>
+		)
+	} else if (subcategory === "countdown-timer") {
+		const minutes = Math.floor(Math.random() * 5) + 1
+		const seconds = Math.floor(Math.random() * 60)
+		return (
+			<Alert className="w-56 border-red-500 bg-red-50 dark:bg-red-950">
+				<AlertCircle className="h-4 w-4 text-red-600" />
+				<AlertTitle className="text-red-700 dark:text-red-400">
+					OFFER EXPIRES IN:
+				</AlertTitle>
+				<AlertDescription className="text-2xl font-bold text-red-600 dark:text-red-500">
+					{String(minutes).padStart(2, "0")}:{String(seconds).padStart(2, "0")}
+				</AlertDescription>
+			</Alert>
+		)
+	} else if (subcategory === "exit-intent") {
+		return (
+			<Card className="w-64 border-2 border-purple-500">
+				<CardHeader className="p-3">
+					<CardTitle className="text-lg">WAIT! DON'T GO!</CardTitle>
+				</CardHeader>
+				<CardContent className="p-3 pt-0">
+					<p className="text-sm mb-3">
+						Here's a special offer just for you! 🎁
+					</p>
+					<Badge className="mb-3">EXCLUSIVE 50% OFF</Badge>
+					<Button className="w-full" variant="destructive">
+						I CHANGED MY MIND
+					</Button>
+				</CardContent>
+			</Card>
+		)
+	} else if (subcategory === "fake-discount") {
+		const originalPrice = Math.floor(Math.random() * 200) + 100
+		const fakePrice = Math.floor(originalPrice * 0.3)
+		return (
+			<Card className="w-48">
+				<CardContent className="p-3">
+					<div className="text-center">
+						<p className="text-xs text-muted-foreground line-through">
+							Was ${originalPrice}
+						</p>
+						<p className="text-2xl font-bold text-green-600">
+							NOW ${fakePrice}
+						</p>
+						<Badge variant="destructive" className="mt-2">
+							SAVE {Math.floor((1 - fakePrice / originalPrice) * 100)}%
+						</Badge>
+					</div>
+				</CardContent>
+			</Card>
+		)
+	} else if (subcategory === "social-proof") {
+		const names = ["John", "Sarah", "Mike", "Emma", "David", "Lisa"]
+		const actions = ["just purchased", "is viewing", "added to cart", "saved"]
+		const products = [
+			"Premium Plan",
+			"Pro License",
+			"Ultimate Bundle",
+			"VIP Access",
+		]
+		const locations = ["New York", "London", "Tokyo", "Paris", "Sydney"]
+
+		return (
+			<Alert className="w-64">
+				<Users className="h-4 w-4" />
+				<AlertTitle className="text-sm">
+					{getRandom(names)} from {getRandom(locations)}
+				</AlertTitle>
+				<AlertDescription className="text-xs">
+					{getRandom(actions)} {getRandom(products)} •{" "}
+					{Math.floor(Math.random() * 10) + 1} mins ago
+				</AlertDescription>
+			</Alert>
+		)
+	} else if (subcategory === "limited-spots") {
+		const spots = Math.floor(Math.random() * 5) + 1
+		return (
+			<Card className="w-56 border-orange-500 bg-orange-50 dark:bg-orange-950">
+				<CardContent className="p-3">
+					<div className="flex items-center gap-2 mb-2">
+						<AlertCircle className="h-5 w-5 text-orange-600" />
+						<p className="font-bold text-orange-700 dark:text-orange-400">
+							ALMOST GONE!
+						</p>
+					</div>
+					<p className="text-sm mb-2">Only {spots} spots remaining!</p>
+					<Progress value={95} className="h-2 mb-2" />
+					<p className="text-xs text-muted-foreground">
+						{287 - spots} people have claimed this offer
+					</p>
+				</CardContent>
+			</Card>
+		)
+	} else if (subcategory === "cookie-monster") {
+		return (
+			<Card className="w-72">
+				<CardHeader className="p-3">
+					<CardTitle className="text-sm">🍪 We use cookies!</CardTitle>
+				</CardHeader>
+				<CardContent className="p-3 pt-0">
+					<p className="text-xs text-muted-foreground mb-3">
+						We use cookies to track everything you do, sell your data, and make
+						your experience "better".
+					</p>
+					<div className="flex gap-2">
+						<Button size="sm" className="flex-1">
+							Accept All
+						</Button>
+						<Button size="sm" variant="ghost" className="text-xs px-2">
+							Manage (good luck)
+						</Button>
+					</div>
+				</CardContent>
+			</Card>
+		)
+	} else if (subcategory === "newsletter-trap") {
+		return (
+			<Card className="w-64 border-2 border-blue-500">
+				<CardHeader className="bg-blue-500 text-white p-3">
+					<CardTitle className="text-lg flex items-center gap-2">
+						<Mail className="h-5 w-5" />
+						DON'T MISS OUT!
+					</CardTitle>
+				</CardHeader>
+				<CardContent className="p-4">
+					<p className="text-sm mb-3">Get spam... I mean, exclusive updates!</p>
+					<Input
+						placeholder="your@email.com"
+						className="mb-2"
+						defaultValue=""
+					/>
+					<Button className="w-full mb-2">SUBSCRIBE & GET 10% OFF*</Button>
+					<p className="text-xs text-muted-foreground text-center">
+						*On orders over $1000. Unsubscribe link hidden in footer.
+					</p>
+				</CardContent>
+			</Card>
+		)
+	} else if (subcategory === "survey-blocker") {
+		return (
+			<Card className="w-72 border-2 border-indigo-500">
+				<CardHeader className="p-3">
+					<CardTitle className="text-lg">Quick Survey! 🎯</CardTitle>
+				</CardHeader>
+				<CardContent className="p-3 pt-0">
+					<p className="text-sm mb-3">
+						Help us improve! (And unlock the content you actually want)
+					</p>
+					<div className="space-y-2">
+						<Button className="w-full" variant="outline" size="sm">
+							Take 30 second survey
+						</Button>
+						<p className="text-xs text-center text-muted-foreground">
+							"30 seconds" = 15 minutes minimum
+						</p>
+					</div>
+				</CardContent>
+			</Card>
+		)
+	} else if (subcategory === "fake-loading") {
+		return (
+			<Card className="w-56">
+				<CardContent className="p-4">
+					<div className="space-y-3">
+						<div className="flex items-center justify-center">
+							<div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+						</div>
+						<p className="text-sm text-center">Optimizing your experience...</p>
+						<Progress value={33} className="h-2" />
+						<p className="text-xs text-center text-muted-foreground">
+							(Actually just wasting your time)
+						</p>
+					</div>
+				</CardContent>
+			</Card>
+		)
+	} else if (subcategory === "notification-spam") {
+		const notifications = [
+			"🔔 Turn on notifications!",
+			"🔔 Never miss an update!",
+			"🔔 Get instant alerts!",
+			"🔔 Enable push notifications!",
+		]
+		return (
+			<Alert className="w-64 border-yellow-500">
+				<Bell className="h-4 w-4 animate-pulse" />
+				<AlertTitle className="text-sm">{getRandom(notifications)}</AlertTitle>
+				<AlertDescription className="text-xs">
+					<div className="flex gap-2 mt-2">
+						<Button size="sm" className="h-6 text-xs">
+							Allow
+						</Button>
+						<Button size="sm" variant="ghost" className="h-6 text-xs">
+							Ask me 47 more times
+						</Button>
+					</div>
+				</AlertDescription>
+			</Alert>
+		)
+	} else if (subcategory === "paywall-tease") {
+		return (
+			<Card className="w-64 relative overflow-hidden">
+				<div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent z-10 pointer-events-none" />
+				<CardContent className="p-4">
+					<p className="text-sm mb-2">Premium Content Preview:</p>
+					<p className="text-xs text-muted-foreground blur-[2px]">
+						This amazing content could be yours! Just imagine all the incredible
+						insights you're missing...
+					</p>
+					<Button className="w-full mt-4 relative z-20" size="sm">
+						Unlock Full Article - $9.99/mo
+					</Button>
+				</CardContent>
+			</Card>
+		)
+	} else if (subcategory === "guilt-trip") {
+		return (
+			<Card className="w-64 border-2 border-pink-500">
+				<CardHeader className="p-3">
+					<CardTitle className="text-lg">💔 Leaving so soon?</CardTitle>
+				</CardHeader>
+				<CardContent className="p-3 pt-0">
+					<p className="text-sm mb-3">
+						Our developers worked really hard on this...
+					</p>
+					<div className="space-y-2">
+						<Button className="w-full" variant="default">
+							Fine, I'll stay
+						</Button>
+						<Button className="w-full" variant="ghost" size="sm">
+							I'm a heartless monster
+						</Button>
+					</div>
+				</CardContent>
+			</Card>
+		)
+	} else if (subcategory === "fake-chat") {
+		const agents = ["Sarah", "Mike", "Jessica", "Tom"]
+		const agent = getRandom(agents)
+		return (
+			<Card className="w-72 border-2 border-green-500">
+				<CardHeader className="p-3 bg-green-50 dark:bg-green-950">
+					<div className="flex items-center gap-2">
+						<div className="h-2 w-2 bg-green-500 rounded-full animate-pulse" />
+						<CardTitle className="text-sm">{agent} is typing...</CardTitle>
+					</div>
+				</CardHeader>
+				<CardContent className="p-3">
+					<p className="text-sm mb-2">
+						Hi! I noticed you're browsing. Can I offer you an exclusive deal?
+					</p>
+					<p className="text-xs text-muted-foreground mb-3">
+						(This is a bot, {agent} doesn't exist)
+					</p>
+					<Button size="sm" className="w-full">
+						Chat with "{agent}"
+					</Button>
+				</CardContent>
+			</Card>
+		)
+	} else if (subcategory === "bait-switch") {
+		return (
+			<Card className="w-56">
+				<CardContent className="p-4">
+					<div className="text-center space-y-3">
+						<Gift className="h-12 w-12 mx-auto text-primary" />
+						<p className="text-lg font-bold">FREE GIFT!</p>
+						<p className="text-xs text-muted-foreground">
+							*With purchase of $99 or more
+						</p>
+						<Button className="w-full">Claim Free* Gift</Button>
+						<p className="text-xs text-muted-foreground">*Not actually free</p>
+					</div>
+				</CardContent>
+			</Card>
+		)
+	} else if (subcategory === "dark-confirm") {
+		return (
+			<Card className="w-64">
+				<CardHeader className="p-3">
+					<CardTitle className="text-sm">Cancel Subscription?</CardTitle>
+				</CardHeader>
+				<CardContent className="p-3 pt-0">
+					<p className="text-xs text-muted-foreground mb-3">
+						Are you sure you want to lose all your benefits?
+					</p>
+					<div className="flex gap-2">
+						<Button size="sm" variant="ghost" className="flex-1 text-xs">
+							Yes, cancel
+						</Button>
+						<Button
+							size="sm"
+							className="flex-1 bg-green-600 hover:bg-green-700"
+						>
+							NO, KEEP IT!
+						</Button>
+					</div>
+				</CardContent>
+			</Card>
+		)
+	}
+
+	// Default random upsell
+	const upsellTypes = [
+		"premium-popup",
+		"countdown-timer",
+		"exit-intent",
+		"fake-discount",
+		"social-proof",
+		"limited-spots",
+		"cookie-monster",
+		"newsletter-trap",
+		"survey-blocker",
+		"fake-loading",
+		"notification-spam",
+		"paywall-tease",
+		"guilt-trip",
+		"fake-chat",
+		"bait-switch",
+		"dark-confirm",
+	] as const
+
+	return createUpsellComponent(getRandom(upsellTypes))
+}
+
 export function PhysicsPlayground() {
 	const sceneRef = useRef<HTMLDivElement>(null)
 	const engineRef = useRef<Matter.Engine | undefined>(undefined)
@@ -949,10 +2032,45 @@ export function PhysicsPlayground() {
 
 	const [selectedCategory, setSelectedCategory] =
 		useState<ComponentCategory>("random")
+	const [selectedSubcategory, setSelectedSubcategory] = useState<
+		ComponentSubcategory | undefined
+	>(undefined)
 	const [gravity, setGravity] = useState(1)
 	const [bounce, setBounce] = useState(0.8)
 	const [isPaused, setIsPaused] = useState(false)
 	const [componentCount, setComponentCount] = useState(0)
+
+	// Keyboard shortcuts
+	useEffect(() => {
+		const handleKeyPress = (e: KeyboardEvent) => {
+			// Check if user is typing in an input
+			if (
+				e.target instanceof HTMLInputElement ||
+				e.target instanceof HTMLTextAreaElement
+			) {
+				return
+			}
+
+			// Space key to spawn
+			if (e.key === " ") {
+				e.preventDefault()
+				spawnComponent()
+			}
+			// 'c' key to clear
+			else if (e.key === "c" || e.key === "C") {
+				e.preventDefault()
+				clearAll()
+			}
+			// 'p' key to pause/unpause
+			else if (e.key === "p" || e.key === "P") {
+				e.preventDefault()
+				setIsPaused(prev => !prev)
+			}
+		}
+
+		window.addEventListener("keydown", handleKeyPress)
+		return () => window.removeEventListener("keydown", handleKeyPress)
+	}, [selectedCategory, selectedSubcategory])
 
 	// Initialize Matter.js
 	useEffect(() => {
@@ -1121,7 +2239,10 @@ export function PhysicsPlayground() {
 	}, [isPaused])
 
 	// Create a shadcn component element
-	const createComponentElement = (category: ComponentCategory) => {
+	const createComponentElement = (
+		category: ComponentCategory,
+		subcategory?: ComponentSubcategory,
+	) => {
 		const element = document.createElement("div")
 		element.className = "absolute"
 		element.style.transformOrigin = "center"
@@ -1143,6 +2264,7 @@ export function PhysicsPlayground() {
 				"toggles",
 				"inputs",
 				"complex",
+				// Note: upsells are excluded from random selection
 			]
 			const weights = [0.2, 0.2, 0.15, 0.2, 0.15, 0.15, 0.15] // Weighted distribution
 			const random = Math.random()
@@ -1187,25 +2309,28 @@ export function PhysicsPlayground() {
 			// Create specific component type
 			switch (category) {
 				case "buttons":
-					component = createButtonComponent()
+					component = createButtonComponent(subcategory)
 					break
 				case "badges":
-					component = createBadgeComponent()
+					component = createBadgeComponent(subcategory)
 					break
 				case "cards":
-					component = createCardComponent()
+					component = createCardComponent(subcategory)
 					break
 				case "icons":
-					component = createIconComponent()
+					component = createIconComponent(subcategory)
 					break
 				case "toggles":
-					component = createToggleComponent()
+					component = createToggleComponent(subcategory)
 					break
 				case "inputs":
-					component = createInputComponent()
+					component = createInputComponent(subcategory)
 					break
 				case "complex":
-					component = createComplexComponent()
+					component = createComplexComponent(subcategory)
+					break
+				case "upsells":
+					component = createUpsellComponent(subcategory)
 					break
 				default: {
 					// Fallback - icon button
@@ -1229,11 +2354,15 @@ export function PhysicsPlayground() {
 	}
 
 	// Spawn a component
-	const spawnComponent = (componentType?: ComponentCategory) => {
+	const spawnComponent = (
+		componentType?: ComponentCategory,
+		subcategory?: ComponentSubcategory,
+	) => {
 		if (!sceneRef.current || !engineRef.current) return
 
 		const type = componentType || selectedCategory
-		const element = createComponentElement(type)
+		const subtype = subcategory || selectedSubcategory
+		const element = createComponentElement(type, subtype)
 
 		// Append to scene first
 		sceneRef.current.appendChild(element)
@@ -1322,11 +2451,46 @@ export function PhysicsPlayground() {
 			{/* Controls */}
 			<div className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 p-4">
 				<div className="flex flex-wrap gap-4 items-center">
+					{/* Action buttons first */}
+					<div className="flex gap-2">
+						<TooltipProvider>
+							<Tooltip>
+								<TooltipTrigger asChild>
+									<Button onClick={() => spawnComponent()} size="sm">
+										Spawn
+									</Button>
+								</TooltipTrigger>
+								<TooltipContent>
+									<p className="text-xs">Press Space to spawn</p>
+								</TooltipContent>
+							</Tooltip>
+						</TooltipProvider>
+
+						<TooltipProvider>
+							<Tooltip>
+								<TooltipTrigger asChild>
+									<Button onClick={clearAll} variant="destructive" size="sm">
+										Clear
+									</Button>
+								</TooltipTrigger>
+								<TooltipContent>
+									<p className="text-xs">Press 'C' to clear</p>
+								</TooltipContent>
+							</Tooltip>
+						</TooltipProvider>
+					</div>
+
+					<Separator orientation="vertical" className="h-8" />
+
+					{/* Component selection */}
 					<Select
 						value={selectedCategory}
-						onValueChange={v => setSelectedCategory(v as ComponentCategory)}
+						onValueChange={value => {
+							setSelectedCategory(value as ComponentCategory)
+							setSelectedSubcategory(undefined) // Reset subcategory when category changes
+						}}
 					>
-						<SelectTrigger className="w-[180px]">
+						<SelectTrigger className="w-[140px]">
 							<SelectValue />
 						</SelectTrigger>
 						<SelectContent>
@@ -1341,15 +2505,38 @@ export function PhysicsPlayground() {
 						</SelectContent>
 					</Select>
 
-					<div className="flex gap-2">
-						<Button onClick={() => spawnComponent()} size="sm">
-							Spawn
-						</Button>
-						<Button onClick={clearAll} variant="destructive" size="sm">
-							Clear
-						</Button>
-					</div>
+					{/* Subcategory dropdown */}
+					{selectedCategory !== "random" && (
+						<Select
+							value={selectedSubcategory || "random"}
+							onValueChange={value => {
+								setSelectedSubcategory(
+									value === "random"
+										? undefined
+										: (value as ComponentSubcategory),
+								)
+							}}
+						>
+							<SelectTrigger className="w-[160px]">
+								<SelectValue />
+							</SelectTrigger>
+							<SelectContent>
+								<SelectItem value="random">Random</SelectItem>
+								<Separator className="my-1" />
+								{COMPONENT_CATEGORIES.find(
+									cat => cat.id === selectedCategory,
+								)?.subcategories.map(sub => (
+									<SelectItem key={sub.id} value={sub.id}>
+										{sub.name}
+									</SelectItem>
+								))}
+							</SelectContent>
+						</Select>
+					)}
 
+					<Separator orientation="vertical" className="h-8" />
+
+					{/* Physics controls */}
 					<div className="flex items-center gap-2">
 						<Label htmlFor="gravity">Gravity</Label>
 						<Slider
@@ -1377,15 +2564,28 @@ export function PhysicsPlayground() {
 					</div>
 
 					<div className="flex items-center gap-2">
-						<Switch
-							id="pause"
-							checked={isPaused}
-							onCheckedChange={setIsPaused}
-						/>
-						<Label htmlFor="pause">Pause</Label>
+						<TooltipProvider>
+							<Tooltip>
+								<TooltipTrigger asChild>
+									<div className="flex items-center gap-2">
+										<Switch
+											id="pause"
+											checked={isPaused}
+											onCheckedChange={setIsPaused}
+										/>
+										<Label htmlFor="pause">Pause</Label>
+									</div>
+								</TooltipTrigger>
+								<TooltipContent>
+									<p className="text-xs">Press 'P' to toggle</p>
+								</TooltipContent>
+							</Tooltip>
+						</TooltipProvider>
 					</div>
 
-					<Badge variant="secondary">Components: {componentCount}</Badge>
+					<div className="ml-auto">
+						<Badge variant="secondary">Components: {componentCount}</Badge>
+					</div>
 				</div>
 			</div>
 
@@ -1422,6 +2622,15 @@ export function PhysicsPlayground() {
 				</div>
 
 				{/* Components will be rendered here */}
+
+				{/* Placeholder text when no components */}
+				{componentCount === 0 && (
+					<div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+						<p className="text-2xl text-muted-foreground/30 select-none">
+							Press space to spawn components
+						</p>
+					</div>
+				)}
 			</div>
 		</div>
 	)
