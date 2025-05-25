@@ -339,6 +339,14 @@ const createButtonComponent = (subcategory?: string) => {
 		"Sign up",
 		"Log in",
 		"Explore",
+		"View Details",
+		"Contact Us",
+		"Subscribe",
+		"Buy Now",
+		"Add to Cart",
+		"Checkout",
+		"Confirm",
+		"Dismiss",
 	]
 
 	// Handle specific subcategories
@@ -360,7 +368,27 @@ const createButtonComponent = (subcategory?: string) => {
 			Search,
 			Bell,
 			User,
+			Save,
+			Filter,
+			Grid3x3,
+			Calendar,
+			Clock,
+			Camera,
+			Zap,
+			Shield,
 		])
+		// Sometimes add interesting styles
+		if (Math.random() > 0.7) {
+			const styles = [
+				"shadow-lg hover:shadow-xl transition-all",
+				"rounded-full",
+				"bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white border-0",
+			]
+			return (
+					<ButtonIcon className="h-4 w-4" />
+				</Button>
+			)
+		}
 		return (
 			<Button variant={variant} size="icon">
 				<ButtonIcon className="h-4 w-4" />
@@ -368,14 +396,28 @@ const createButtonComponent = (subcategory?: string) => {
 		)
 	} else if (subcategory === "text") {
 		// Sometimes add gradient or custom styling
-		if (Math.random() > 0.8) {
+		if (Math.random() > 0.7) {
 			const gradients = [
 				"bg-gradient-to-r from-pink-500 to-violet-500 hover:from-pink-600 hover:to-violet-600",
 				"bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600",
 				"bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600",
+				"bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600",
+				"bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600",
 			]
 			return (
 				<Button className={getRandom(gradients)} size={size}>
+					{getRandom(texts)}
+				</Button>
+			)
+		}
+		// Sometimes add shadow effects
+		if (Math.random() > 0.8) {
+			return (
+				<Button
+					variant={variant}
+					size={size}
+					className="shadow-lg hover:shadow-xl transition-all"
+				>
 					{getRandom(texts)}
 				</Button>
 			)
@@ -402,8 +444,48 @@ const createButtonComponent = (subcategory?: string) => {
 			Share,
 			Zap,
 			Rocket,
+			Play,
+			Pause,
+			Heart,
+			Star,
+			Bell,
+			Shield,
+			TrendingUp,
+			Coffee,
+			Sparkles,
 		])
 		const iconPosition = getRandom(["left", "right"])
+		// Sometimes use more creative button styles
+		if (Math.random() > 0.7) {
+			const creativeStyles = [
+				"group",
+				"rounded-full",
+				"shadow-md hover:shadow-lg transition-all",
+			]
+			if (iconPosition === "left") {
+				return (
+					<Button
+						variant={variant}
+						size={size}
+						className={getRandom(creativeStyles)}
+					>
+						<ButtonIcon className="mr-2 h-4 w-4 group-hover:rotate-12 transition-transform" />
+						{getRandom(texts)}
+					</Button>
+				)
+			} else {
+				return (
+					<Button
+						variant={variant}
+						size={size}
+						className={getRandom(creativeStyles)}
+					>
+						{getRandom(texts)}
+						<ButtonIcon className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+					</Button>
+				)
+			}
+		}
 		if (iconPosition === "left") {
 			return (
 				<Button variant={variant} size={size}>
@@ -430,6 +512,9 @@ const createButtonComponent = (subcategory?: string) => {
 					"Privacy Policy",
 					"Terms of Service",
 					"Contact us",
+					"See all features",
+					"Browse gallery",
+					"API Reference",
 				])}
 			</Button>
 		)
@@ -443,6 +528,8 @@ const createButtonComponent = (subcategory?: string) => {
 		"gradient",
 		"rounded",
 		"shadow",
+		"group-hover",
+		"loading",
 	])
 
 	switch (buttonType) {
@@ -467,6 +554,9 @@ const createButtonComponent = (subcategory?: string) => {
 				Plus,
 				Save,
 				Share,
+				Sparkles,
+				Zap,
+				Play,
 			])
 			const iconPosition = getRandom(["left", "right"])
 			if (iconPosition === "left") {
@@ -503,6 +593,10 @@ const createButtonComponent = (subcategory?: string) => {
 				Search,
 				Bell,
 				User,
+				MoreHorizontal,
+				Grid3x3,
+				Filter,
+				Save,
 			])
 			return (
 				<Button variant={variant} size="icon">
@@ -516,6 +610,7 @@ const createButtonComponent = (subcategory?: string) => {
 				"bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600",
 				"bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600",
 				"bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600",
+				"bg-gradient-to-br from-purple-600 to-blue-500 hover:from-purple-700 hover:to-blue-600",
 			]
 			return (
 				<Button className={getRandom(gradients)} size={size}>
@@ -534,9 +629,25 @@ const createButtonComponent = (subcategory?: string) => {
 				<Button
 					variant={variant}
 					size={size}
-					className="shadow-lg shadow-primary/25"
+					className="shadow-lg shadow-primary/25 hover:shadow-xl transition-all"
 				>
 					{getRandom(texts)}
+				</Button>
+			)
+		case "group-hover": {
+			const ButtonIcon = getRandom([ArrowRight, ChevronRight, Sparkles, Zap])
+			return (
+				<Button variant={variant} size={size} className="group">
+					{getRandom(texts)}
+					<ButtonIcon className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+				</Button>
+			)
+		}
+		case "loading":
+			return (
+				<Button variant={variant} size={size} disabled>
+					<div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+					Loading...
 				</Button>
 			)
 		default:
@@ -569,6 +680,15 @@ const createBadgeComponent = (subcategory?: string) => {
 		"Updated",
 		"AI",
 		"Early Access",
+		"Alpha",
+		"Preview",
+		"Experimental",
+		"Latest",
+		"Special",
+		"VIP",
+		"Plus",
+		"Elite",
+		"2024",
 	]
 	const text = getRandom(texts)
 
@@ -576,9 +696,21 @@ const createBadgeComponent = (subcategory?: string) => {
 	if (subcategory === "simple") {
 		// Sometimes use different sizes
 		if (Math.random() > 0.7) {
-			const sizes = ["px-1.5 py-0.5 text-[0.65rem]", "px-3 py-1 text-sm"]
+			const sizes = [
+				"px-1.5 py-0.5 text-[0.65rem]",
+				"px-3 py-1 text-sm",
+				"px-2 py-0.5 text-xs",
+			]
 			return (
 				<Badge variant={variant} className={getRandom(sizes)}>
+					{text}
+				</Badge>
+			)
+		}
+		// Sometimes add subtle animations
+		if (Math.random() > 0.8) {
+			return (
+				<Badge variant={variant} className="animate-pulse">
 					{text}
 				</Badge>
 			)
@@ -598,7 +730,24 @@ const createBadgeComponent = (subcategory?: string) => {
 			CheckCircle,
 			Info,
 			AlertCircle,
+			Shield,
+			Clock,
+			Bell,
+			Lightbulb,
+			Coffee,
+			Music,
+			Camera,
+			Gamepad2,
 		])
+		// Sometimes put icon on the right
+		if (Math.random() > 0.5) {
+			return (
+				<Badge variant={variant}>
+					{text}
+					<BadgeIcon className="ml-1 h-3 w-3" />
+				</Badge>
+			)
+		}
 		return (
 			<Badge variant={variant}>
 				<BadgeIcon className="mr-1 h-3 w-3" />
@@ -607,23 +756,24 @@ const createBadgeComponent = (subcategory?: string) => {
 		)
 	} else if (subcategory === "colored") {
 		const colorClasses = [
-			"bg-blue-500 hover:bg-blue-600",
-			"bg-green-500 hover:bg-green-600",
-			"bg-purple-500 hover:bg-purple-600",
-			"bg-amber-500 hover:bg-amber-600",
-			"bg-rose-500 hover:bg-rose-600",
-			"bg-red-500 hover:bg-red-600",
-			"bg-orange-500 hover:bg-orange-600",
-			"bg-yellow-500 hover:bg-yellow-600",
-			"bg-lime-500 hover:bg-lime-600",
-			"bg-teal-500 hover:bg-teal-600",
-			"bg-indigo-500 hover:bg-indigo-600",
-			"bg-violet-500 hover:bg-violet-600",
-			"bg-gradient-to-r from-pink-500 to-violet-500",
-			"bg-gradient-to-r from-cyan-500 to-blue-500",
-			"bg-gradient-to-r from-amber-500 to-orange-500",
-			"bg-gradient-to-r from-green-500 to-emerald-500",
-			"bg-gradient-to-r from-red-500 to-orange-500",
+			"bg-blue-500 hover:bg-blue-600 text-white border-blue-600",
+			"bg-green-500 hover:bg-green-600 text-white border-green-600",
+			"bg-purple-500 hover:bg-purple-600 text-white border-purple-600",
+			"bg-amber-500 hover:bg-amber-600 text-white border-amber-600",
+			"bg-rose-500 hover:bg-rose-600 text-white border-rose-600",
+			"bg-red-500 hover:bg-red-600 text-white border-red-600",
+			"bg-orange-500 hover:bg-orange-600 text-white border-orange-600",
+			"bg-yellow-500 hover:bg-yellow-600 text-white border-yellow-600",
+			"bg-lime-500 hover:bg-lime-600 text-white border-lime-600",
+			"bg-teal-500 hover:bg-teal-600 text-white border-teal-600",
+			"bg-indigo-500 hover:bg-indigo-600 text-white border-indigo-600",
+			"bg-violet-500 hover:bg-violet-600 text-white border-violet-600",
+			"bg-gradient-to-r from-pink-500 to-violet-500 text-white",
+			"bg-gradient-to-r from-cyan-500 to-blue-500 text-white",
+			"bg-gradient-to-r from-amber-500 to-orange-500 text-white",
+			"bg-gradient-to-r from-green-500 to-emerald-500 text-white",
+			"bg-gradient-to-r from-red-500 to-orange-500 text-white",
+			"bg-gradient-to-r from-purple-500 to-pink-500 text-white",
 		]
 		return <Badge className={getRandom(colorClasses)}>{text}</Badge>
 	}
@@ -787,13 +937,87 @@ const createCardComponent = (subcategory?: string) => {
 		)
 	} else if (subcategory === "stats") {
 		const stats = [
-			{ label: "Users", value: "2.4k", change: "+12%", positive: true },
-			{ label: "Revenue", value: "$45k", change: "+8%", positive: true },
-			{ label: "Orders", value: "89", change: "-3%", positive: false },
-			{ label: "Views", value: "12.5k", change: "+24%", positive: true },
-			{ label: "Clicks", value: "3.2k", change: "+5%", positive: true },
+			{
+				label: "Users",
+				value: "2.4k",
+				change: "+12%",
+				positive: true,
+				icon: Users,
+			},
+			{
+				label: "Revenue",
+				value: "$45k",
+				change: "+8%",
+				positive: true,
+				icon: TrendingUp,
+			},
+			{
+				label: "Orders",
+				value: "89",
+				change: "-3%",
+				positive: false,
+				icon: ShoppingCart,
+			},
+			{
+				label: "Views",
+				value: "12.5k",
+				change: "+24%",
+				positive: true,
+				icon: FileText,
+			},
+			{
+				label: "Clicks",
+				value: "3.2k",
+				change: "+5%",
+				positive: true,
+				icon: Zap,
+			},
+			{
+				label: "Sales",
+				value: "$12.5k",
+				change: "+18%",
+				positive: true,
+				icon: CreditCard,
+			},
+			{
+				label: "Active",
+				value: "573",
+				change: "+7%",
+				positive: true,
+				icon: Users,
+			},
+			{
+				label: "Downloads",
+				value: "8.9k",
+				change: "-2%",
+				positive: false,
+				icon: Download,
+			},
 		]
 		const stat = getRandom(stats)
+		const StatIcon = stat.icon
+		// Sometimes show with icon
+		if (Math.random() > 0.5) {
+			return (
+				<Card className="w-56">
+					<CardContent className="p-4">
+						<div className="flex items-center justify-between mb-2">
+							<StatIcon className="h-8 w-8 text-muted-foreground" />
+							<Badge
+								variant={stat.positive ? "default" : "destructive"}
+								className="text-xs"
+							>
+								{stat.change}
+							</Badge>
+						</div>
+						<p className="text-2xl font-bold">{stat.value}</p>
+						<p className="text-xs text-muted-foreground">{stat.label}</p>
+						<Progress value={Math.random() * 100} className="mt-2 h-1" />
+					</CardContent>
+				</Card>
+			)
+		}
+		// Classic stats card
 		return (
 			<Card className="w-56">
 				<CardContent className="p-4">
@@ -936,8 +1160,8 @@ const createCardComponent = (subcategory?: string) => {
 		const notif = getRandom(notifications)
 		const NotifIcon = notif.icon
 		return (
-			<Card className="w-64">
-				<CardContent className="p-3">
+			<Card className="w-72 py-3">
+				<CardContent className="px-3">
 					<div className="flex items-start gap-3">
 						<NotifIcon className="h-5 w-5 text-muted-foreground mt-0.5" />
 						<div className="flex-1">
@@ -3070,23 +3294,30 @@ const createUpsellComponent = (subcategory?: string) => {
 	// Handle specific subcategories
 	if (subcategory === "premium-popup") {
 		return (
-			<Card className="w-64 border-2 border-yellow-500 shadow-2xl">
+			<Card className="w-64 border-2 border-yellow-500 shadow-2xl relative overflow-hidden">
+				<div className="absolute top-0 right-0 bg-red-500 text-white text-xs px-2 py-1 rounded-bl-lg font-bold">
+					LIMITED TIME
+				</div>
 				<CardHeader className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white p-3">
 					<CardTitle className="text-lg flex items-center gap-2">
-						<Zap className="h-5 w-5" />
+						<Zap className="h-5 w-5 animate-pulse" />
 						GO PREMIUM NOW!
 					</CardTitle>
 				</CardHeader>
 				<CardContent className="p-4">
-					<p className="text-sm font-bold mb-2">LIMITED TIME OFFER!</p>
+					<p className="text-sm font-bold mb-2">🔥 FLASH SALE ENDING SOON!</p>
 					<p className="text-xs text-muted-foreground mb-3">
 						Unlock 1000+ features you'll never use!
 					</p>
 					<div className="space-y-2">
-						<Button className="w-full bg-gradient-to-r from-yellow-400 to-orange-500">
+						<Button className="w-full bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 shadow-lg animate-pulse">
 							UPGRADE NOW - 90% OFF
 						</Button>
-						<Button variant="ghost" size="sm" className="w-full text-xs">
+						<Button
+							variant="ghost"
+							size="sm"
+							className="w-full text-xs opacity-70"
+						>
 							Maybe later (we'll ask again in 5 seconds)
 						</Button>
 					</div>
