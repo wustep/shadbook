@@ -179,7 +179,7 @@ export function PhysicsPlayground() {
 
 		// Create engine with improved settings
 		const engine = Matter.Engine.create({
-			enableSleeping: true,
+			enableSleeping: false, // Disable sleeping to prevent components from getting stuck
 			gravity: {
 				x: 0,
 				y: gravity * 0.001, // Scale the initial gravity
@@ -283,7 +283,7 @@ export function PhysicsPlayground() {
 					isStatic: true,
 					label: "ceiling",
 					friction: 0.1,
-					restitution: 0.4,
+					restitution: 0.3, // Match other walls for consistent physics
 				}),
 			]
 
@@ -485,17 +485,28 @@ export function PhysicsPlayground() {
 			const availableWidth = sceneRect.width - margin * 2 - rect.width
 			const x =
 				Math.random() * Math.max(availableWidth, 0) + margin + rect.width / 2
-			const y = margin + rect.height / 2 // Start below ceiling with proper margin
 
-			// More natural random rotation - less biased for better physics feel
-			const initialAngle = (Math.random() - 0.5) * Math.PI * 0.5 // Random angle within ±45 degrees
+			// Reduce initial angle to prevent getting stuck - smaller angles are safer
+			const initialAngle = (Math.random() - 0.5) * Math.PI * 0.25 // Random angle within ±22.5 degrees (reduced from ±45)
+
+			// Calculate safe Y position accounting for rotation
+			// When rotated, the component takes up more vertical space
+			const rotatedHeight =
+				Math.abs(rect.width * Math.sin(initialAngle)) +
+				Math.abs(rect.height * Math.cos(initialAngle))
+			const safeMargin = Math.max(margin, rotatedHeight / 2 + 20) // Increased buffer from 10px to 20px
+			const y = safeMargin + rect.height / 2
+
+			// Ensure minimum distance from ceiling (extra safety check)
+			const minYFromCeiling = 80 // Minimum 80px from top
+			const finalY = Math.max(y, minYFromCeiling)
 
 			// Create physics body with improved settings
-			const body = Matter.Bodies.rectangle(x, y, rect.width, rect.height, {
+			const body = Matter.Bodies.rectangle(x, finalY, rect.width, rect.height, {
 				restitution: bounce,
 				friction: 0.1, // Reduced friction for better movement
-				frictionAir: 0.0001, // Reduced air friction for less damping
-				density: 0.001,
+				frictionAir: 0.001, // Increased air friction to prevent floating/sticking (was 0.0001)
+				density: 0.01, // Increased density for more stable physics (was 0.001)
 				angle: initialAngle,
 				angularVelocity: (Math.random() - 0.5) * 0.1, // Restored initial spin
 				// Removed inertia: Infinity to allow natural rotation
@@ -505,11 +516,17 @@ export function PhysicsPlayground() {
 			Matter.World.add(engineRef.current!.world, body)
 			bodiesRef.current.set(body.id, element)
 
+			// Give a small downward velocity to help prevent getting stuck
+			Matter.Body.setVelocity(body, {
+				x: (Math.random() - 0.5) * 0.5, // Small random horizontal velocity
+				y: Math.random() * 0.5 + 0.2, // Small downward velocity (0.2 to 0.7)
+			})
+
 			// Set initial position
 			element.style.left = "0px"
 			element.style.top = "0px"
 			element.style.transform = `translate(${x - rect.width / 2}px, ${
-				y - rect.height / 2
+				finalY - rect.height / 2
 			}px) rotate(${initialAngle}rad)`
 
 			// Make element draggable with mobile-friendly styling
@@ -758,6 +775,30 @@ export function PhysicsPlayground() {
 								</Select>
 							)}
 
+							{/* Play/Pause button next to dropdowns */}
+							<div className="flex items-center gap-2 pl-1">
+								<TooltipProvider>
+									<Tooltip>
+										<TooltipTrigger asChild>
+											<Button
+												size="icon"
+												variant="outline"
+												onClick={() => setIsPaused(prev => !prev)}
+											>
+												{isPaused ? (
+													<Play className="h-4 w-4" />
+												) : (
+													<Pause className="h-4 w-4" />
+												)}
+											</Button>
+										</TooltipTrigger>
+										<TooltipContent>
+											<p className="text-sm">Press 'P' to toggle</p>
+										</TooltipContent>
+									</Tooltip>
+								</TooltipProvider>
+							</div>
+
 							<Separator orientation="vertical" className="h-8" />
 
 							{/* Physics controls */}
@@ -787,31 +828,7 @@ export function PhysicsPlayground() {
 								/>
 							</div>
 
-							<div className="flex items-center gap-2">
-								<TooltipProvider>
-									<Tooltip>
-										<TooltipTrigger asChild>
-											<Button
-												size="icon"
-												variant="outline"
-												onClick={() => setIsPaused(prev => !prev)}
-												className="h-8 w-8"
-											>
-												{isPaused ? (
-													<Play className="h-4 w-4" />
-												) : (
-													<Pause className="h-4 w-4" />
-												)}
-											</Button>
-										</TooltipTrigger>
-										<TooltipContent>
-											<p className="text-xs">Press 'P' to toggle</p>
-										</TooltipContent>
-									</Tooltip>
-								</TooltipProvider>
-							</div>
-
-							<div className="ml-auto">
+							<div className="ml-auto max-[1024px]:hidden">
 								<Badge variant="secondary">Components: {componentCount}</Badge>
 							</div>
 						</div>
@@ -858,7 +875,7 @@ export function PhysicsPlayground() {
 				{/* Placeholder text when no components */}
 				{componentCount === 0 && (
 					<div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-						<p className="text-2xl text-muted-foreground/30 select-none">
+						<p className="text-2xl text-muted-foreground/30 select-none max-[1024px]:hidden">
 							Press space to spawn components
 						</p>
 					</div>
