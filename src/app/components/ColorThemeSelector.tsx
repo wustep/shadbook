@@ -8,12 +8,15 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { useSidebar } from "@/components/ui/sidebar"
 
 // Available theme colors
 type ThemeColor = "neutral" | "gray" | "slate" | "stone" | "zinc"
 
 export function ColorThemeSelector() {
 	const [color, setColor] = useState<ThemeColor>("neutral")
+	const { state } = useSidebar()
+	const isCollapsed = state === "collapsed"
 
 	// Update the document's HTML class when color changes
 	useEffect(() => {
@@ -46,11 +49,11 @@ export function ColorThemeSelector() {
 			<DropdownMenuTrigger asChild>
 				<Button
 					variant="outline"
-					size="sm"
-					className="w-full justify-start gap-2"
+					size={isCollapsed ? "icon" : "sm"}
+					className={isCollapsed ? "size-8" : "w-full justify-start gap-2"}
 				>
 					<Paintbrush className="size-4" />
-					<span className="capitalize">{color} Theme</span>
+					{!isCollapsed && <span className="capitalize">{color} Theme</span>}
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent align="end" className="w-56">

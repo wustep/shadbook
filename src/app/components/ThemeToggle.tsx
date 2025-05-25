@@ -17,7 +17,9 @@ export function ThemeToggle() {
 			) : (
 				<Sun className="size-4" />
 			)}
-			<span>{theme === "dark" ? "Dark" : "Light"} Mode</span>
+			<span className="text-sm">
+				{theme === "dark" ? "Dark" : "Light"} Mode
+			</span>
 		</SidebarMenuButton>
 	)
 }
