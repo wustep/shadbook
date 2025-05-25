@@ -3899,31 +3899,33 @@ export function PhysicsPlayground() {
 				y - rect.height / 2
 			}px) rotate(${initialAngle}rad)`
 
-			// Make element draggable
+			// Make element draggable with mobile-friendly styling
 			element.style.cursor = "grab"
+			element.style.touchAction = "none" // Prevent default touch behaviors
+			element.style.userSelect = "none" // Prevent text selection on drag
 
-			// Add mouse interaction
-			element.addEventListener("mousedown", e => {
-				e.preventDefault()
+			// Add mouse and touch interaction
+			const handlePointerStart = (clientX: number, clientY: number) => {
 				element.style.cursor = "grabbing"
-				const startX = e.clientX
-				const startY = e.clientY
+				element.style.transform = element.style.transform + " scale(1.05)" // Slight scale feedback
+				const startX = clientX
+				const startY = clientY
 				const startBodyX = body.position.x
 				const startBodyY = body.position.y
 				let lastX = startX
 				let lastY = startY
 				let lastTime = Date.now()
 
-				const handleMouseMove = (e: MouseEvent) => {
+				const handlePointerMove = (currentX: number, currentY: number) => {
 					const currentTime = Date.now()
 					const dt = Math.max(currentTime - lastTime, 1) // Prevent division by zero
 
-					const dx = e.clientX - startX
-					const dy = e.clientY - startY
+					const dx = currentX - startX
+					const dy = currentY - startY
 
-					// Calculate velocity based on mouse movement
-					const velocityX = ((e.clientX - lastX) / dt) * 50 // Scale factor for responsiveness
-					const velocityY = ((e.clientY - lastY) / dt) * 50
+					// Calculate velocity based on pointer movement
+					const velocityX = ((currentX - lastX) / dt) * 50 // Scale factor for responsiveness
+					const velocityY = ((currentY - lastY) / dt) * 50
 
 					// Set position and apply velocity for smooth throwing
 					Matter.Body.setPosition(body, {
@@ -3932,20 +3934,69 @@ export function PhysicsPlayground() {
 					})
 					Matter.Body.setVelocity(body, { x: velocityX, y: velocityY })
 
-					lastX = e.clientX
-					lastY = e.clientY
+					lastX = currentX
+					lastY = currentY
 					lastTime = currentTime
 				}
 
-				const handleMouseUp = () => {
-					element.style.cursor = "grab"
-					document.removeEventListener("mousemove", handleMouseMove)
-					document.removeEventListener("mouseup", handleMouseUp)
+				const handleMouseMove = (e: MouseEvent) => {
+					e.preventDefault()
+					handlePointerMove(e.clientX, e.clientY)
 				}
 
-				document.addEventListener("mousemove", handleMouseMove)
-				document.addEventListener("mouseup", handleMouseUp)
+				const handleTouchMove = (e: TouchEvent) => {
+					e.preventDefault()
+					if (e.touches.length > 0) {
+						handlePointerMove(e.touches[0].clientX, e.touches[0].clientY)
+					}
+				}
+
+				const handlePointerEnd = () => {
+					element.style.cursor = "grab"
+					// Remove scale feedback by recalculating transform without scale
+					const x = body.position.x
+					const y = body.position.y
+					const angle = body.angle
+					element.style.transform = `translate(${
+						x - element.offsetWidth / 2
+					}px, ${y - element.offsetHeight / 2}px) rotate(${angle}rad)`
+					document.removeEventListener("mousemove", handleMouseMove)
+					document.removeEventListener("mouseup", handlePointerEnd)
+					document.removeEventListener("touchmove", handleTouchMove)
+					document.removeEventListener("touchend", handlePointerEnd)
+					document.removeEventListener("touchcancel", handlePointerEnd)
+				}
+
+				document.addEventListener("mousemove", handleMouseMove, {
+					passive: false,
+				})
+				document.addEventListener("mouseup", handlePointerEnd)
+				document.addEventListener("touchmove", handleTouchMove, {
+					passive: false,
+				})
+				document.addEventListener("touchend", handlePointerEnd)
+				document.addEventListener("touchcancel", handlePointerEnd)
+
+				return handlePointerEnd
+			}
+
+			// Mouse events
+			element.addEventListener("mousedown", e => {
+				e.preventDefault()
+				handlePointerStart(e.clientX, e.clientY)
 			})
+
+			// Touch events
+			element.addEventListener(
+				"touchstart",
+				e => {
+					e.preventDefault()
+					if (e.touches.length > 0) {
+						handlePointerStart(e.touches[0].clientX, e.touches[0].clientY)
+					}
+				},
+				{ passive: false },
+			)
 		})
 
 		setComponentCount(prev => prev + 1)
@@ -4167,6 +4218,8 @@ export function PhysicsPlayground() {
 					backgroundSize: "20px 20px",
 					minHeight: "400px",
 					position: "relative",
+					touchAction: "none", // Prevent scrolling/zooming on touch
+					userSelect: "none", // Prevent text selection
 				}}
 			>
 				{/* Visual walls */}
