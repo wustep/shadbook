@@ -5,8 +5,6 @@ import {
 	GalleryVerticalEnd,
 	Gamepad2,
 	Search,
-	Sparkles,
-	Zap,
 } from "lucide-react"
 import * as React from "react"
 
@@ -155,11 +153,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 								const isActive = currentPath === experiment.path
 								return (
 									<SidebarMenuItem key={experiment.id}>
-										<SidebarMenuButton
-											asChild
-											disabled={experiment.disabled}
-											isActive={isActive}
-										>
+										<SidebarMenuButton asChild isActive={isActive}>
 											<Link to={experiment.path}>
 												<IconComponent className="size-4" />
 												<span>{experiment.name}</span>

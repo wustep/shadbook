@@ -1207,7 +1207,7 @@ export function PhysicsPlayground() {
 				case "complex":
 					component = createComplexComponent()
 					break
-				default:
+				default: {
 					// Fallback - icon button
 					const IconBtn = getRandom(ICON_COMPONENTS)
 					component = (
@@ -1215,6 +1215,7 @@ export function PhysicsPlayground() {
 							<IconBtn className="h-4 w-4" />
 						</Button>
 					)
+				}
 			}
 		}
 
