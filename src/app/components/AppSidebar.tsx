@@ -79,7 +79,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 		<Sidebar collapsible="icon" variant="inset" {...props}>
 			<SidebarHeader>
 				<TeamSwitcher teams={data.teams} />
-				<SidebarGroup className="py-0 group-data-[collapsible=icon]:hidden">
+				<SidebarGroup className="py-0 px-0 group-data-[collapsible=icon]:hidden">
 					<SidebarGroupContent>
 						<form className="relative">
 							<Label htmlFor="search" className="sr-only">
