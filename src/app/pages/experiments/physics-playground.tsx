@@ -2377,12 +2377,30 @@ export function PhysicsPlayground() {
 			const x = Math.random() * (sceneRect.width - rect.width) + rect.width / 2
 			const y = 50
 
+			// Smooth bias towards upright orientation
+			// Using a power function to bias the distribution
+
+			// Generate a random value between 0 and 1
+			const randomValue = Math.random()
+
+			// Apply a power function to bias towards 0 (upright)
+			// Higher power = stronger bias towards upright
+			// Using power of 3 gives a nice distribution
+			const biasedValue = Math.pow(randomValue, 3)
+
+			// Convert to angle: biased value determines how far from upright
+			// Maximum deviation is π (180 degrees) in either direction
+			const deviation = biasedValue * Math.PI
+
+			// Randomly choose left or right deviation
+			const initialAngle = Math.random() < 0.5 ? deviation : -deviation
+
 			// Create physics body
 			const body = Matter.Bodies.rectangle(x, y, rect.width, rect.height, {
 				restitution: bounce,
 				friction: 0.3,
 				density: 0.001,
-				angle: Math.random() * Math.PI * 2,
+				angle: initialAngle,
 				angularVelocity: (Math.random() - 0.5) * 0.1,
 			})
 
@@ -2395,7 +2413,7 @@ export function PhysicsPlayground() {
 			element.style.top = "0px"
 			element.style.transform = `translate(${x - rect.width / 2}px, ${
 				y - rect.height / 2
-			}px)`
+			}px) rotate(${initialAngle}rad)`
 
 			// Make element draggable
 			element.style.cursor = "grab"
@@ -2450,7 +2468,7 @@ export function PhysicsPlayground() {
 		<div className="h-[calc(100vh-var(--header-height))] flex flex-col">
 			{/* Controls */}
 			<div className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 p-4">
-				<div className="flex flex-wrap gap-4 items-center">
+				<div className="flex flex-wrap gap-1 items-center">
 					{/* Action buttons first */}
 					<div className="flex gap-2">
 						<TooltipProvider>
