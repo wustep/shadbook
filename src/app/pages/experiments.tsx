@@ -1,7 +1,6 @@
 import { Link } from "@tanstack/react-router"
-import { Gamepad2, Sparkles, Zap } from "lucide-react"
+import { Gamepad2 } from "lucide-react"
 
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
 	Card,

@@ -72,22 +72,6 @@ const data = {
 			icon: Gamepad2,
 			path: "/experiments/physics-playground",
 		},
-		{
-			id: "animated-cards",
-			name: "Animated Cards",
-			description: "Cards with hover animations and micro-interactions",
-			icon: Sparkles,
-			path: "/experiments/animated-cards",
-			disabled: true,
-		},
-		{
-			id: "advanced-forms",
-			name: "Advanced Forms",
-			description: "Multi-step forms with validation",
-			icon: Zap,
-			path: "/experiments/advanced-forms",
-			disabled: true,
-		},
 	],
 }
 
