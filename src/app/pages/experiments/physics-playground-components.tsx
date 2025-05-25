@@ -1974,12 +1974,55 @@ export const createUpsellComponent = (
 ): React.ReactElement => {
 	// Handle specific subcategories
 	if (subcategory === "premium-popup") {
+		const colorSchemes = [
+			{
+				border: "border-yellow-500",
+				bg: "bg-gradient-to-r from-yellow-400 to-orange-500",
+				hover: "hover:from-yellow-500 hover:to-orange-600",
+				accent: "bg-red-500",
+				text: "text-white",
+			},
+			{
+				border: "border-purple-500",
+				bg: "bg-gradient-to-r from-purple-500 to-pink-500",
+				hover: "hover:from-purple-600 hover:to-pink-600",
+				accent: "bg-blue-500",
+				text: "text-white",
+			},
+			{
+				border: "border-blue-500",
+				bg: "bg-gradient-to-r from-blue-500 to-cyan-500",
+				hover: "hover:from-blue-600 hover:to-cyan-600",
+				accent: "bg-green-500",
+				text: "text-white",
+			},
+			{
+				border: "border-green-500",
+				bg: "bg-gradient-to-r from-green-500 to-emerald-500",
+				hover: "hover:from-green-600 hover:to-emerald-600",
+				accent: "bg-orange-500",
+				text: "text-white",
+			},
+			{
+				border: "border-rose-500",
+				bg: "bg-gradient-to-r from-rose-500 to-red-500",
+				hover: "hover:from-rose-600 hover:to-red-600",
+				accent: "bg-yellow-500",
+				text: "text-white",
+			},
+		]
+		const scheme = getRandom(colorSchemes)
+
 		return (
-			<Card className="w-64 border-2 border-yellow-500 shadow-2xl relative overflow-hidden">
-				<div className="absolute top-0 right-0 bg-red-500 text-white text-xs px-2 py-1 rounded-bl-lg font-bold">
+			<Card
+				className={`w-64 border-2 ${scheme.border} shadow-2xl relative overflow-hidden`}
+			>
+				<div
+					className={`absolute top-0 right-0 ${scheme.accent} text-white text-xs px-2 py-1 rounded-bl-lg font-bold`}
+				>
 					LIMITED TIME
 				</div>
-				<CardHeader className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white p-3">
+				<CardHeader className={`${scheme.bg} ${scheme.text} p-3`}>
 					<CardTitle className="text-lg flex items-center gap-2">
 						<Zap className="h-5 w-5 animate-pulse" />
 						GO PREMIUM NOW!
@@ -1991,7 +2034,9 @@ export const createUpsellComponent = (
 						Unlock 1000+ features you'll never use!
 					</p>
 					<div className="space-y-2">
-						<Button className="w-full bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 shadow-lg animate-pulse">
+						<Button
+							className={`w-full p-6 ${scheme.bg} ${scheme.hover} shadow-lg animate-pulse`}
+						>
 							UPGRADE NOW - 90% OFF
 						</Button>
 						<Button
@@ -1999,7 +2044,7 @@ export const createUpsellComponent = (
 							size="sm"
 							className="w-full text-xs opacity-70"
 						>
-							Maybe later (we'll ask again in 5 seconds)
+							Maybe later
 						</Button>
 					</div>
 				</CardContent>
@@ -2008,20 +2053,86 @@ export const createUpsellComponent = (
 	} else if (subcategory === "countdown-timer") {
 		const minutes = Math.floor(Math.random() * 5) + 1
 		const seconds = Math.floor(Math.random() * 60)
+		const colorVariants = [
+			{
+				border: "border-red-500",
+				bg: "bg-red-50 dark:bg-red-950",
+				icon: "text-red-600",
+				title: "text-red-700 dark:text-red-400",
+				timer: "text-red-600 dark:text-red-500",
+			},
+			{
+				border: "border-orange-500",
+				bg: "bg-orange-50 dark:bg-orange-950",
+				icon: "text-orange-600",
+				title: "text-orange-700 dark:text-orange-400",
+				timer: "text-orange-600 dark:text-orange-500",
+			},
+			{
+				border: "border-purple-500",
+				bg: "bg-purple-50 dark:bg-purple-950",
+				icon: "text-purple-600",
+				title: "text-purple-700 dark:text-purple-400",
+				timer: "text-purple-600 dark:text-purple-500",
+			},
+			{
+				border: "border-blue-500",
+				bg: "bg-blue-50 dark:bg-blue-950",
+				icon: "text-blue-600",
+				title: "text-blue-700 dark:text-blue-400",
+				timer: "text-blue-600 dark:text-blue-500",
+			},
+			{
+				border: "border-pink-500",
+				bg: "bg-pink-50 dark:bg-pink-950",
+				icon: "text-pink-600",
+				title: "text-pink-700 dark:text-pink-400",
+				timer: "text-pink-600 dark:text-pink-500",
+			},
+		]
+		const variant = getRandom(colorVariants)
+
 		return (
-			<Alert className="w-56 border-red-500 bg-red-50 dark:bg-red-950">
-				<AlertCircle className="h-4 w-4 text-red-600" />
-				<AlertTitle className="text-red-700 dark:text-red-400">
-					OFFER EXPIRES IN:
-				</AlertTitle>
-				<AlertDescription className="text-2xl font-bold text-red-600 dark:text-red-500">
+			<Alert className={`w-56 ${variant.border} ${variant.bg}`}>
+				<AlertCircle className={`h-4 w-4 ${variant.icon}`} />
+				<AlertTitle className={variant.title}>OFFER EXPIRES IN:</AlertTitle>
+				<AlertDescription className={`text-2xl font-bold ${variant.timer}`}>
 					{String(minutes).padStart(2, "0")}:{String(seconds).padStart(2, "0")}
 				</AlertDescription>
 			</Alert>
 		)
 	} else if (subcategory === "exit-intent") {
+		const exitVariants = [
+			{
+				border: "border-purple-500",
+				badge: "bg-purple-500 text-white",
+				button: "bg-purple-600 hover:bg-purple-700 text-white",
+			},
+			{
+				border: "border-blue-500",
+				badge: "bg-blue-500 text-white",
+				button: "bg-blue-600 hover:bg-blue-700 text-white",
+			},
+			{
+				border: "border-green-500",
+				badge: "bg-green-500 text-white",
+				button: "bg-green-600 hover:bg-green-700 text-white",
+			},
+			{
+				border: "border-orange-500",
+				badge: "bg-orange-500 text-white",
+				button: "bg-orange-600 hover:bg-orange-700 text-white",
+			},
+			{
+				border: "border-pink-500",
+				badge: "bg-pink-500 text-white",
+				button: "bg-pink-600 hover:bg-pink-700 text-white",
+			},
+		]
+		const variant = getRandom(exitVariants)
+
 		return (
-			<Card className="w-64 border-2 border-purple-500">
+			<Card className={`w-64 border-2 ${variant.border}`}>
 				<CardHeader className="p-3">
 					<CardTitle className="text-lg">WAIT! DON'T GO!</CardTitle>
 				</CardHeader>
@@ -2029,8 +2140,8 @@ export const createUpsellComponent = (
 					<p className="text-sm mb-3">
 						Here's a special offer just for you! 🎁
 					</p>
-					<Badge className="mb-3">EXCLUSIVE 50% OFF</Badge>
-					<Button className="w-full" variant="destructive">
+					<Badge className={`mb-3 ${variant.badge}`}>EXCLUSIVE 50% OFF</Badge>
+					<Button className={`w-full ${variant.button}`}>
 						I CHANGED MY MIND
 					</Button>
 				</CardContent>
@@ -2039,17 +2150,46 @@ export const createUpsellComponent = (
 	} else if (subcategory === "fake-discount") {
 		const originalPrice = Math.floor(Math.random() * 200) + 100
 		const fakePrice = Math.floor(originalPrice * 0.3)
+		const discountVariants = [
+			{
+				price: "text-green-600",
+				badge: "bg-green-500 text-white",
+				border: "border-green-200",
+			},
+			{
+				price: "text-blue-600",
+				badge: "bg-blue-500 text-white",
+				border: "border-blue-200",
+			},
+			{
+				price: "text-purple-600",
+				badge: "bg-purple-500 text-white",
+				border: "border-purple-200",
+			},
+			{
+				price: "text-orange-600",
+				badge: "bg-orange-500 text-white",
+				border: "border-orange-200",
+			},
+			{
+				price: "text-red-600",
+				badge: "bg-red-500 text-white",
+				border: "border-red-200",
+			},
+		]
+		const variant = getRandom(discountVariants)
+
 		return (
-			<Card className="w-48">
+			<Card className={`w-48 ${variant.border}`}>
 				<CardContent className="p-3">
 					<div className="text-center">
 						<p className="text-xs text-muted-foreground line-through">
 							Was ${originalPrice}
 						</p>
-						<p className="text-2xl font-bold text-green-600">
+						<p className={`text-2xl font-bold ${variant.price}`}>
 							NOW ${fakePrice}
 						</p>
-						<Badge variant="destructive" className="mt-2">
+						<Badge className={`mt-2 ${variant.badge}`}>
 							SAVE {Math.floor((1 - fakePrice / originalPrice) * 100)}%
 						</Badge>
 					</div>
@@ -2067,9 +2207,38 @@ export const createUpsellComponent = (
 		]
 		const locations = ["New York", "London", "Tokyo", "Paris", "Sydney"]
 
+		const proofVariants = [
+			{
+				bg: "bg-green-50 dark:bg-green-950",
+				border: "border-green-200 dark:border-green-800",
+				icon: "text-green-600",
+			},
+			{
+				bg: "bg-blue-50 dark:bg-blue-950",
+				border: "border-blue-200 dark:border-blue-800",
+				icon: "text-blue-600",
+			},
+			{
+				bg: "bg-purple-50 dark:bg-purple-950",
+				border: "border-purple-200 dark:border-purple-800",
+				icon: "text-purple-600",
+			},
+			{
+				bg: "bg-orange-50 dark:bg-orange-950",
+				border: "border-orange-200 dark:border-orange-800",
+				icon: "text-orange-600",
+			},
+			{
+				bg: "bg-background",
+				border: "border-border",
+				icon: "text-muted-foreground",
+			},
+		]
+		const variant = getRandom(proofVariants)
+
 		return (
-			<Alert className="w-64">
-				<Users className="h-4 w-4" />
+			<Alert className={`w-64 ${variant.bg} ${variant.border}`}>
+				<Users className={`h-4 w-4 ${variant.icon}`} />
 				<AlertTitle className="text-sm">
 					{getRandom(names)} from {getRandom(locations)}
 				</AlertTitle>
@@ -2081,17 +2250,54 @@ export const createUpsellComponent = (
 		)
 	} else if (subcategory === "limited-spots") {
 		const spots = Math.floor(Math.random() * 5) + 1
+		const limitedVariants = [
+			{
+				border: "border-orange-500",
+				bg: "bg-orange-50 dark:bg-orange-950",
+				icon: "text-orange-600",
+				text: "text-orange-700 dark:text-orange-400",
+				progress: "[&>div]:bg-orange-500",
+			},
+			{
+				border: "border-red-500",
+				bg: "bg-red-50 dark:bg-red-950",
+				icon: "text-red-600",
+				text: "text-red-700 dark:text-red-400",
+				progress: "[&>div]:bg-red-500",
+			},
+			{
+				border: "border-yellow-500",
+				bg: "bg-yellow-50 dark:bg-yellow-950",
+				icon: "text-yellow-600",
+				text: "text-yellow-700 dark:text-yellow-400",
+				progress: "[&>div]:bg-yellow-500",
+			},
+			{
+				border: "border-purple-500",
+				bg: "bg-purple-50 dark:bg-purple-950",
+				icon: "text-purple-600",
+				text: "text-purple-700 dark:text-purple-400",
+				progress: "[&>div]:bg-purple-500",
+			},
+			{
+				border: "border-pink-500",
+				bg: "bg-pink-50 dark:bg-pink-950",
+				icon: "text-pink-600",
+				text: "text-pink-700 dark:text-pink-400",
+				progress: "[&>div]:bg-pink-500",
+			},
+		]
+		const variant = getRandom(limitedVariants)
+
 		return (
-			<Card className="w-56 border-orange-500 bg-orange-50 dark:bg-orange-950">
+			<Card className={`w-56 ${variant.border} ${variant.bg}`}>
 				<CardContent className="p-3">
 					<div className="flex items-center gap-2 mb-2">
-						<AlertCircle className="h-5 w-5 text-orange-600" />
-						<p className="font-bold text-orange-700 dark:text-orange-400">
-							ALMOST GONE!
-						</p>
+						<AlertCircle className={`h-5 w-5 ${variant.icon}`} />
+						<p className={`font-bold ${variant.text}`}>ALMOST GONE!</p>
 					</div>
 					<p className="text-sm mb-2">Only {spots} spots remaining!</p>
-					<Progress value={95} className="h-2 mb-2" />
+					<Progress value={95} className={`h-2 mb-2 ${variant.progress}`} />
 					<p className="text-xs text-muted-foreground">
 						{287 - spots} people have claimed this offer
 					</p>
@@ -2099,8 +2305,37 @@ export const createUpsellComponent = (
 			</Card>
 		)
 	} else if (subcategory === "cookie-monster") {
+		const cookieVariants = [
+			{
+				bg: "bg-background",
+				border: "border-border",
+				button: "bg-primary hover:bg-primary/90 text-primary-foreground",
+			},
+			{
+				bg: "bg-blue-50 dark:bg-blue-950",
+				border: "border-blue-200 dark:border-blue-800",
+				button: "bg-blue-600 hover:bg-blue-700 text-white",
+			},
+			{
+				bg: "bg-green-50 dark:bg-green-950",
+				border: "border-green-200 dark:border-green-800",
+				button: "bg-green-600 hover:bg-green-700 text-white",
+			},
+			{
+				bg: "bg-purple-50 dark:bg-purple-950",
+				border: "border-purple-200 dark:border-purple-800",
+				button: "bg-purple-600 hover:bg-purple-700 text-white",
+			},
+			{
+				bg: "bg-orange-50 dark:bg-orange-950",
+				border: "border-orange-200 dark:border-orange-800",
+				button: "bg-orange-600 hover:bg-orange-700 text-white",
+			},
+		]
+		const variant = getRandom(cookieVariants)
+
 		return (
-			<Card className="w-72">
+			<Card className={`w-72 ${variant.bg} ${variant.border}`}>
 				<CardHeader className="p-3">
 					<CardTitle className="text-sm">🍪 We use cookies!</CardTitle>
 				</CardHeader>
@@ -2110,11 +2345,443 @@ export const createUpsellComponent = (
 						your experience "better".
 					</p>
 					<div className="flex gap-2">
-						<Button size="sm" className="flex-1">
+						<Button size="sm" className={`flex-1 ${variant.button}`}>
 							Accept All
 						</Button>
-						<Button size="sm" variant="ghost" className="text-xs px-2">
-							Manage (good luck)
+						<Button size="sm" variant="ghost" className="text-xs px-2 width-20">
+							Manage
+						</Button>
+					</div>
+				</CardContent>
+			</Card>
+		)
+	} else if (subcategory === "newsletter-trap") {
+		const newsletterVariants = [
+			{
+				bg: "bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-950 dark:to-indigo-950",
+				border: "border-blue-300 dark:border-blue-700",
+				button: "bg-blue-600 hover:bg-blue-700 text-white",
+				accent: "text-blue-600",
+			},
+			{
+				bg: "bg-gradient-to-br from-purple-50 to-pink-100 dark:from-purple-950 dark:to-pink-950",
+				border: "border-purple-300 dark:border-purple-700",
+				button: "bg-purple-600 hover:bg-purple-700 text-white",
+				accent: "text-purple-600",
+			},
+			{
+				bg: "bg-gradient-to-br from-green-50 to-emerald-100 dark:from-green-950 dark:to-emerald-950",
+				border: "border-green-300 dark:border-green-700",
+				button: "bg-green-600 hover:bg-green-700 text-white",
+				accent: "text-green-600",
+			},
+		]
+		const variant = getRandom(newsletterVariants)
+
+		return (
+			<Card className={`w-80 ${variant.bg} ${variant.border} shadow-xl`}>
+				<CardHeader className="p-4 text-center">
+					<div
+						className={`mx-auto mb-2 h-12 w-12 rounded-full bg-white shadow-md flex items-center justify-center`}
+					>
+						<Mail className={`h-6 w-6 ${variant.accent}`} />
+					</div>
+					<CardTitle className="text-lg">Get Exclusive Updates! 📧</CardTitle>
+					<p className="text-sm text-muted-foreground">
+						Join 50,000+ subscribers for insider tips!
+					</p>
+				</CardHeader>
+				<CardContent className="p-4 pt-0">
+					<div className="space-y-3">
+						<Input placeholder="Enter your email..." className="h-10" />
+						<Button className={`w-full h-10 ${variant.button}`}>
+							Subscribe Now - It's Free!
+						</Button>
+						<p className="text-xs text-center text-muted-foreground">
+							No spam, unsubscribe anytime*
+						</p>
+					</div>
+				</CardContent>
+			</Card>
+		)
+	} else if (subcategory === "survey-blocker") {
+		const surveyVariants = [
+			{
+				bg: "bg-yellow-50 dark:bg-yellow-950",
+				border: "border-yellow-300 dark:border-yellow-700",
+				button: "bg-yellow-600 hover:bg-yellow-700 text-white",
+			},
+			{
+				bg: "bg-orange-50 dark:bg-orange-950",
+				border: "border-orange-300 dark:border-orange-700",
+				button: "bg-orange-600 hover:bg-orange-700 text-white",
+			},
+			{
+				bg: "bg-red-50 dark:bg-red-950",
+				border: "border-red-300 dark:border-red-700",
+				button: "bg-red-600 hover:bg-red-700 text-white",
+			},
+		]
+		const variant = getRandom(surveyVariants)
+
+		return (
+			<Card className={`w-72 ${variant.bg} ${variant.border}`}>
+				<CardHeader className="p-3">
+					<CardTitle className="text-sm flex items-center gap-2">
+						<HelpCircle className="h-4 w-4" />
+						Quick Survey (30 seconds)
+					</CardTitle>
+				</CardHeader>
+				<CardContent className="p-3 pt-0">
+					<p className="text-xs mb-3">Help us improve! Answer 1 question:</p>
+					<p className="text-sm font-medium mb-3">How awesome are we?</p>
+					<RadioGroup defaultValue="amazing" className="space-y-1 mb-3">
+						<div className="flex items-center space-x-2">
+							<RadioGroupItem value="amazing" id="r1" />
+							<Label htmlFor="r1" className="text-xs">
+								Amazing
+							</Label>
+						</div>
+						<div className="flex items-center space-x-2">
+							<RadioGroupItem value="incredible" id="r2" />
+							<Label htmlFor="r2" className="text-xs">
+								Incredible
+							</Label>
+						</div>
+					</RadioGroup>
+					<Button className={`w-full ${variant.button}`} size="sm">
+						Submit & Continue
+					</Button>
+				</CardContent>
+			</Card>
+		)
+	} else if (subcategory === "fake-loading") {
+		const loadingVariants = [
+			{
+				bg: "bg-blue-50 dark:bg-blue-950",
+				progress: "[&>div]:bg-blue-500",
+				text: "text-blue-600",
+			},
+			{
+				bg: "bg-green-50 dark:bg-green-950",
+				progress: "[&>div]:bg-green-500",
+				text: "text-green-600",
+			},
+			{
+				bg: "bg-purple-50 dark:bg-purple-950",
+				progress: "[&>div]:bg-purple-500",
+				text: "text-purple-600",
+			},
+		]
+		const variant = getRandom(loadingVariants)
+		const progress = Math.floor(Math.random() * 30) + 70
+		const messages = [
+			"Analyzing your data...",
+			"Finding best deals...",
+			"Optimizing results...",
+			"Almost ready...",
+			"Personalizing content...",
+		]
+
+		return (
+			<Card className={`w-64 ${variant.bg}`}>
+				<CardContent className="p-4">
+					<div className="text-center space-y-3">
+						<div className="animate-spin mx-auto h-8 w-8 border-4 border-muted border-t-primary rounded-full"></div>
+						<p className={`text-sm font-medium ${variant.text}`}>
+							{getRandom(messages)}
+						</p>
+						<Progress value={progress} className={`h-2 ${variant.progress}`} />
+						<p className="text-xs text-muted-foreground">
+							{progress}% complete
+						</p>
+					</div>
+				</CardContent>
+			</Card>
+		)
+	} else if (subcategory === "notification-spam") {
+		const notificationVariants = [
+			{
+				bg: "bg-red-50 dark:bg-red-950",
+				border: "border-red-200 dark:border-red-800",
+				icon: "text-red-600",
+				button: "bg-red-600 hover:bg-red-700 text-white",
+			},
+			{
+				bg: "bg-orange-50 dark:bg-orange-950",
+				border: "border-orange-200 dark:border-orange-800",
+				icon: "text-orange-600",
+				button: "bg-orange-600 hover:bg-orange-700 text-white",
+			},
+			{
+				bg: "bg-yellow-50 dark:bg-yellow-950",
+				border: "border-yellow-200 dark:border-yellow-800",
+				icon: "text-yellow-600",
+				button: "bg-yellow-600 hover:bg-yellow-700 text-white",
+			},
+		]
+		const variant = getRandom(notificationVariants)
+		const urgentMessages = [
+			"🚨 URGENT: Your account expires in 1 hour!",
+			"⚠️ SECURITY ALERT: Suspicious activity detected!",
+			"🔥 BREAKING: Limited offer ending NOW!",
+			"💥 CRITICAL: Action required immediately!",
+		]
+
+		return (
+			<Alert className={`w-72 ${variant.bg} ${variant.border} animate-pulse`}>
+				<Bell className={`h-4 w-4 ${variant.icon} animate-bounce`} />
+				<AlertTitle className="text-sm font-bold">
+					{getRandom(urgentMessages)}
+				</AlertTitle>
+				<AlertDescription className="text-xs mt-2">
+					<Button size="sm" className={`${variant.button} mr-2`}>
+						Act Now!
+					</Button>
+					<Button size="sm" variant="ghost" className="text-xs">
+						Dismiss
+					</Button>
+				</AlertDescription>
+			</Alert>
+		)
+	} else if (subcategory === "paywall-tease") {
+		const paywallVariants = [
+			{
+				bg: "bg-gradient-to-b from-background to-gray-100 dark:to-gray-900",
+				button: "bg-blue-600 hover:bg-blue-700 text-white",
+			},
+			{
+				bg: "bg-gradient-to-b from-background to-purple-100 dark:to-purple-900",
+				button: "bg-purple-600 hover:bg-purple-700 text-white",
+			},
+			{
+				bg: "bg-gradient-to-b from-background to-green-100 dark:to-green-900",
+				button: "bg-green-600 hover:bg-green-700 text-white",
+			},
+		]
+		const variant = getRandom(paywallVariants)
+
+		return (
+			<Card className="w-80 relative overflow-hidden">
+				<CardContent className="p-4 pb-15">
+					<div className="space-y-2">
+						<div className="space-y-1 text-sm text-muted-foreground">
+							<p className="blur-[3px] select-none">
+								The secret to increasing your productivity by 300% lies in this
+								revolutionary technique that top performers use daily.
+							</p>
+							<p className="blur-[3px] select-none">
+								Industry experts have discovered that this method can transform
+								your workflow and boost your results dramatically.
+							</p>
+							<p className="blur-[3px] select-none">
+								Don't miss out on these insider strategies that could change
+								everything for you.
+							</p>
+						</div>
+					</div>
+					<div
+						className={`absolute inset-x-0 bottom-0 h-32 ${variant.bg} flex items-end justify-center pb-4`}
+					>
+						<div className="text-center space-y-2">
+							<p className="text-sm font-medium">
+								Continue reading with Premium
+							</p>
+							<Button className={`${variant.button}`} size="sm">
+								Unlock Now - $9.99/mo
+							</Button>
+						</div>
+					</div>
+				</CardContent>
+			</Card>
+		)
+	} else if (subcategory === "guilt-trip") {
+		const guiltVariants = [
+			{
+				bg: "bg-gray-50 dark:bg-gray-950",
+				border: "border-gray-300 dark:border-gray-700",
+				sad: "😢",
+				button: "bg-green-600 hover:bg-green-700 text-white",
+			},
+			{
+				bg: "bg-blue-50 dark:bg-blue-950",
+				border: "border-blue-300 dark:border-blue-700",
+				sad: "🥺",
+				button: "bg-blue-600 hover:bg-blue-700 text-white",
+			},
+			{
+				bg: "bg-purple-50 dark:bg-purple-950",
+				border: "border-purple-300 dark:border-purple-700",
+				sad: "😔",
+				button: "bg-purple-600 hover:bg-purple-700 text-white",
+			},
+		]
+		const variant = getRandom(guiltVariants)
+		const guiltMessages = [
+			"We're a small team working hard...",
+			"Your support keeps us going...",
+			"We really need your help...",
+			"Please don't leave us hanging...",
+		]
+
+		return (
+			<Card className={`w-72 ${variant.bg} ${variant.border}`}>
+				<CardContent className="p-4 text-center">
+					<div className="text-4xl mb-2">{variant.sad}</div>
+					<p className="text-sm font-medium mb-2">{getRandom(guiltMessages)}</p>
+					<p className="text-xs text-muted-foreground mb-4">
+						Just $3/month helps us survive
+					</p>
+					<div className="space-y-2">
+						<Button className={`w-full ${variant.button}`} size="sm">
+							I'll Help Out
+						</Button>
+						<Button
+							variant="ghost"
+							size="sm"
+							className="w-full text-xs opacity-60"
+						>
+							Maybe later (we understand 😞)
+						</Button>
+					</div>
+				</CardContent>
+			</Card>
+		)
+	} else if (subcategory === "fake-chat") {
+		const chatVariants = [
+			{
+				bg: "bg-green-50 dark:bg-green-950",
+				border: "border-green-200 dark:border-green-800",
+				bubble: "bg-green-500 text-white",
+			},
+			{
+				bg: "bg-blue-50 dark:bg-blue-950",
+				border: "border-blue-200 dark:border-blue-800",
+				bubble: "bg-blue-500 text-white",
+			},
+			{
+				bg: "bg-purple-50 dark:bg-purple-950",
+				border: "border-purple-200 dark:border-purple-800",
+				bubble: "bg-purple-500 text-white",
+			},
+		]
+		const variant = getRandom(chatVariants)
+		const agents = ["Sarah", "Mike", "Emma", "Alex"]
+		const messages = [
+			"Hi! I'm here to help 😊",
+			"Need assistance with anything?",
+			"Ready to upgrade your experience?",
+			"Questions about our premium features?",
+		]
+
+		return (
+			<Card className={`w-64 ${variant.bg} ${variant.border}`}>
+				<CardHeader className="p-3 border-b">
+					<div className="flex items-center gap-2">
+						<div className="h-2 w-2 bg-green-500 rounded-full animate-pulse"></div>
+						<p className="text-sm font-medium">{getRandom(agents)} - Support</p>
+					</div>
+				</CardHeader>
+				<CardContent className="p-3">
+					<div className="space-y-2">
+						<div
+							className={`max-w-[80%] p-2 rounded-lg text-xs ${variant.bubble}`}
+						>
+							{getRandom(messages)}
+						</div>
+						<div className="flex items-center gap-1 text-xs text-muted-foreground">
+							<div className="flex space-x-1">
+								<div className="w-1 h-1 bg-current rounded-full animate-bounce"></div>
+								<div
+									className="w-1 h-1 bg-current rounded-full animate-bounce"
+									style={{ animationDelay: "0.1s" }}
+								></div>
+								<div
+									className="w-1 h-1 bg-current rounded-full animate-bounce"
+									style={{ animationDelay: "0.2s" }}
+								></div>
+							</div>
+							<span>typing...</span>
+						</div>
+					</div>
+				</CardContent>
+			</Card>
+		)
+	} else if (subcategory === "bait-switch") {
+		const baitVariants = [
+			{
+				bg: "bg-green-50 dark:bg-green-950",
+				border: "border-green-300 dark:border-green-700",
+				fakeButton: "bg-green-600 hover:bg-green-700 text-white",
+				realButton: "bg-red-600 hover:bg-red-700 text-white",
+			},
+			{
+				bg: "bg-blue-50 dark:bg-blue-950",
+				border: "border-blue-300 dark:border-blue-700",
+				fakeButton: "bg-blue-600 hover:bg-blue-700 text-white",
+				realButton: "bg-orange-600 hover:bg-orange-700 text-white",
+			},
+		]
+		const variant = getRandom(baitVariants)
+		const showReal = Math.random() > 0.7
+
+		return (
+			<Card className={`w-64 ${variant.bg} ${variant.border}`}>
+				<CardContent className="p-4 text-center">
+					<p className="text-lg font-bold mb-2">🎉 FREE DOWNLOAD!</p>
+					<p className="text-sm text-muted-foreground mb-4">
+						Get your free premium template now!
+					</p>
+					{showReal ? (
+						<div className="space-y-2">
+							<Button className={`w-full ${variant.realButton}`} size="sm">
+								Actually Pay $29.99
+							</Button>
+							<p className="text-xs text-muted-foreground">
+								*Free trial requires payment info
+							</p>
+						</div>
+					) : (
+						<Button className={`w-full ${variant.fakeButton}`} size="sm">
+							Download Free Now!
+						</Button>
+					)}
+				</CardContent>
+			</Card>
+		)
+	} else if (subcategory === "dark-confirm") {
+		const darkVariants = [
+			{
+				bg: "bg-red-50 dark:bg-red-950",
+				border: "border-red-300 dark:border-red-700",
+				confirm: "bg-gray-300 hover:bg-gray-400 text-gray-700 text-xs px-2",
+				cancel: "bg-red-600 hover:bg-red-700 text-white",
+			},
+			{
+				bg: "bg-orange-50 dark:bg-orange-950",
+				border: "border-orange-300 dark:border-orange-700",
+				confirm: "bg-gray-300 hover:bg-gray-400 text-gray-700 text-xs px-2",
+				cancel: "bg-orange-600 hover:bg-orange-700 text-white",
+			},
+		]
+		const variant = getRandom(darkVariants)
+
+		return (
+			<Card className={`w-72 ${variant.bg} ${variant.border}`}>
+				<CardContent className="p-4">
+					<p className="text-sm font-medium mb-3">
+						Are you sure you want to cancel your subscription?
+					</p>
+					<p className="text-xs text-muted-foreground mb-4">
+						You'll lose access to all premium features and your data will be
+						deleted forever.
+					</p>
+					<div className="flex gap-2">
+						<Button className={`flex-1 ${variant.cancel}`} size="sm">
+							Keep My Subscription
+						</Button>
+						<Button className={`${variant.confirm}`} size="sm">
+							Yes, Cancel
 						</Button>
 					</div>
 				</CardContent>
