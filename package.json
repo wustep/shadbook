@@ -1,7 +1,7 @@
 {
 	"name": "shadbook",
 	"private": true,
-	"version": "0.0.0",
+	"version": "1.0.0",
 	"type": "module",
 	"scripts": {
 		"dev": "vite --port 8080",
@@ -49,6 +49,7 @@
 		"@tanstack/react-router": "^1.120.10",
 		"@tanstack/react-table": "^8.21.2",
 		"@tanstack/router-devtools": "^1.120.10",
+		"@types/matter-js": "^0.19.8",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
 		"cmdk": "^1.0.0",
@@ -57,6 +58,7 @@
 		"embla-carousel-react": "^8.5.2",
 		"input-otp": "^1.4.2",
 		"lucide-react": "^0.483.0",
+		"matter-js": "^0.20.0",
 		"next-themes": "^0.4.6",
 		"react": "^19.0.0",
 		"react-day-picker": "^8.10.1",

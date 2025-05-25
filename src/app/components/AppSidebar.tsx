@@ -3,7 +3,10 @@ import {
 	AudioWaveform,
 	Command,
 	GalleryVerticalEnd,
+	Gamepad2,
 	Search,
+	Sparkles,
+	Zap,
 } from "lucide-react"
 import * as React from "react"
 
@@ -61,6 +64,31 @@ const data = {
 			},
 		])
 		.sort((a, b) => a.name.localeCompare(b.name)),
+	experiments: [
+		{
+			id: "physics-playground",
+			name: "Physics Playground",
+			description: "Throw shadcn components around in a physics simulation",
+			icon: Gamepad2,
+			path: "/experiments/physics-playground",
+		},
+		{
+			id: "animated-cards",
+			name: "Animated Cards",
+			description: "Cards with hover animations and micro-interactions",
+			icon: Sparkles,
+			path: "/experiments/animated-cards",
+			disabled: true,
+		},
+		{
+			id: "advanced-forms",
+			name: "Advanced Forms",
+			description: "Multi-step forms with validation",
+			icon: Zap,
+			path: "/experiments/advanced-forms",
+			disabled: true,
+		},
+	],
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
@@ -130,6 +158,32 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 									</SidebarMenuButton>
 								</SidebarMenuItem>
 							))}
+						</SidebarMenu>
+					</SidebarGroup>
+				)}
+				{(currentLayoutPath === "/_layout/experiments" ||
+					currentPath.startsWith("/experiments/")) && (
+					<SidebarGroup className="group-data-[collapsible=icon]:hidden">
+						<SidebarGroupLabel>Experiments</SidebarGroupLabel>
+						<SidebarMenu>
+							{data.experiments.map(experiment => {
+								const IconComponent = experiment.icon
+								const isActive = currentPath === experiment.path
+								return (
+									<SidebarMenuItem key={experiment.id}>
+										<SidebarMenuButton
+											asChild
+											disabled={experiment.disabled}
+											isActive={isActive}
+										>
+											<Link to={experiment.path}>
+												<IconComponent className="size-4" />
+												<span>{experiment.name}</span>
+											</Link>
+										</SidebarMenuButton>
+									</SidebarMenuItem>
+								)
+							})}
 						</SidebarMenu>
 					</SidebarGroup>
 				)}

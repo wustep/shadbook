@@ -12,12 +12,22 @@ export function AppContentHeader() {
 	// Map actual pathnames to layout route keys
 	const getLayoutPath = (path: string): PagePath => {
 		if (path === "/") return "/_layout"
-		return `/_layout${path}` as PagePath
+		// Check if it's a nested route under experiments
+		if (path.startsWith("/experiments/")) return "/_layout/experiments"
+		// Otherwise, use the first segment
+		const firstSegment = path.split("/")[1]
+		return `/_layout/${firstSegment}` as PagePath
 	}
 
 	const layoutPath = getLayoutPath(currentPath)
 	const currentPage = pageConfig[layoutPath] || pageConfig["/_layout"]
 	const IconComponent = currentPage.icon
+
+	// For nested routes, show a more specific title
+	let title: string = currentPage.title
+	if (currentPath === "/experiments/physics-playground") {
+		title = "Physics Playground"
+	}
 
 	return (
 		<header className="flex h-(--header-height) shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)">
@@ -29,7 +39,7 @@ export function AppContentHeader() {
 				/>
 				<h1 className="text-sm font-medium flex items-center">
 					<IconComponent className="mr-2 size-4" />
-					{currentPage.title}
+					{title}
 				</h1>
 				<div className="ml-auto flex items-center gap-2">
 					<Button variant="ghost" asChild size="sm" className="hidden sm:flex">
