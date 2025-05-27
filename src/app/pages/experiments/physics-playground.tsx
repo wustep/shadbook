@@ -488,175 +488,197 @@ export function PhysicsPlayground() {
 			const subtype = subcategory || selectedSubcategory
 			const element = createComponentElement(type, subtype)
 
+			// Initially hide the element to prevent flash of unpositioned content
+			element.style.opacity = "0"
+			// Ensure position absolute for correct transform behavior from top-left
+			element.style.position = "absolute"
+
 			// Append to scene first
 			sceneRef.current.appendChild(element)
 
-			// Wait for next frame to ensure element is rendered
+			// Wait for next frame to ensure element is rendered and dimensions are stable
 			requestAnimationFrame(() => {
-				// Get element dimensions
-				const rect = element.getBoundingClientRect()
-				const sceneRect = sceneRef.current!.getBoundingClientRect()
+				requestAnimationFrame(() => {
+					if (!sceneRef.current || !engineRef.current) {
+						// Scene or engine might have been cleaned up if component is unmounting
+						element.remove() // Clean up the orphaned element
+						return
+					}
 
-				// Improved spawn positioning with better distribution
-				const wallMargin = 50 // Safe distance from walls
-				const topMargin = 80 // Increased safe distance from ceiling
+					// Get element dimensions
+					const rect = element.getBoundingClientRect()
+					const sceneRect = sceneRef.current!.getBoundingClientRect()
 
-				// Calculate safe spawn area with more horizontal spread
-				const minX = wallMargin + rect.width / 2
-				const maxX = sceneRect.width - wallMargin - rect.width / 2
-				const x = Math.random() * (maxX - minX) + minX
+					// Validate dimensions - if too small or zero, abort this spawn
+					if (rect.width < 5 || rect.height < 5) {
+						// Using a small threshold like 5px
+						console.warn(
+							"Spawned component has unstable/small dimensions, removing:",
+							element.className,
+							rect,
+						)
+						element.remove() // Clean up the problematic DOM element
+						return // Abort spawn for this component
+					}
 
-				// Add some vertical variation to prevent stacking
-				const baseY = topMargin + rect.height / 2
-				const yVariation = Math.random() * 40 // Add up to 40px vertical variation
-				const y = baseY + yVariation
+					// Improved spawn positioning with better distribution
+					const wallMargin = 50 // Safe distance from walls
+					const topMargin = 80 // Increased safe distance from ceiling
 
-				// Minimal initial rotation to prevent getting stuck
-				const initialAngle = (Math.random() - 0.5) * Math.PI * 0.1 // ±9 degrees only
+					// Calculate safe spawn area with more horizontal spread
+					const minX = wallMargin + rect.width / 2
+					const maxX = sceneRect.width - wallMargin - rect.width / 2
+					const x = Math.random() * (maxX - minX) + minX
 
-				// Create physics body with optimized settings
-				const body = Matter.Bodies.rectangle(x, y, rect.width, rect.height, {
-					restitution: bounce,
-					friction: 0.4, // Higher friction for more realistic movement
-					frictionAir: 0.01, // Higher air resistance to prevent floating
-					density: 0.001, // Lower density for lighter feel
-					angle: initialAngle,
-					angularVelocity: (Math.random() - 0.5) * 0.05, // Minimal initial spin
-					sleepThreshold: 60, // Allow sleeping after 1 second of low activity
-					// Enable sleeping but with reasonable threshold
-				})
+					// Add some vertical variation to prevent stacking
+					const baseY = topMargin + rect.height / 2
+					const yVariation = Math.random() * 40 // Add up to 40px vertical variation
+					const y = baseY + yVariation
 
-				// Store the rendered height on the body for boundary checks
-				;(body as any).customRenderHeight = rect.height
+					// Minimal initial rotation to prevent getting stuck
+					const initialAngle = (Math.random() - 0.5) * Math.PI * 0.1 // ±9 degrees only
 
-				// Add to world
-				Matter.World.add(engineRef.current!.world, body)
-				bodiesRef.current.set(body.id, element)
+					// Create physics body with optimized settings
+					const body = Matter.Bodies.rectangle(x, y, rect.width, rect.height, {
+						restitution: bounce,
+						friction: 0.4, // Higher friction for more realistic movement
+						frictionAir: 0.01, // Higher air resistance to prevent floating
+						density: 0.001, // Lower density for lighter feel
+						angle: initialAngle,
+						angularVelocity: (Math.random() - 0.5) * 0.05, // Minimal initial spin
+						sleepThreshold: 60, // Allow sleeping after 1 second of low activity
+						// Enable sleeping but with reasonable threshold
+					})
 
-				// Give initial velocity based on gravity setting
-				const initialVelocity = {
-					x: (Math.random() - 0.5) * 1.5, // Random horizontal velocity
-					y:
-						gravity > 0 ? Math.random() * 1.5 + 0.5 : (Math.random() - 0.5) * 1, // Downward if gravity, random if no gravity
-				}
-				Matter.Body.setVelocity(body, initialVelocity)
+					// Store the rendered height on the body for boundary checks
+					;(body as any).customRenderHeight = rect.height
 
-				// Set initial position
-				element.style.left = "0px"
-				element.style.top = "0px"
-				element.style.transform = `translate(${x - rect.width / 2}px, ${
-					y - rect.height / 2
-				}px) rotate(${initialAngle}rad)`
+					// Add to world
+					Matter.World.add(engineRef.current!.world, body)
+					bodiesRef.current.set(body.id, element)
 
-				// Make element draggable with mobile-friendly styling
-				element.style.cursor = "grab"
-				element.style.touchAction = "none" // Prevent default touch behaviors
-				element.style.userSelect = "none" // Prevent text selection on drag
+					// Give initial velocity based on gravity setting
+					const initialVelocity = {
+						x: (Math.random() - 0.5) * 1.5, // Random horizontal velocity
+						y:
+							gravity > 0
+								? Math.random() * 1.5 + 0.5
+								: (Math.random() - 0.5) * 1, // Downward if gravity, random if no gravity
+					}
+					Matter.Body.setVelocity(body, initialVelocity)
 
-				// Add mouse and touch interaction
-				const handlePointerStart = (clientX: number, clientY: number) => {
-					element.style.cursor = "grabbing"
-					element.style.transform = element.style.transform + " scale(1.05)" // Slight scale feedback
-					const startX = clientX
-					const startY = clientY
-					const startBodyX = body.position.x
-					const startBodyY = body.position.y
-					let lastX = startX
-					let lastY = startY
-					let lastTime = Date.now()
+					// Set initial position for the DOM element
+					element.style.left = "0px"
+					element.style.top = "0px"
+					element.style.transform = `translate(${x - rect.width / 2}px, ${
+						y - rect.height / 2
+					}px) rotate(${initialAngle}rad)`
+					// Now that it's positioned, make it visible
+					element.style.opacity = "1"
 
-					const handlePointerMove = (currentX: number, currentY: number) => {
-						const currentTime = Date.now()
-						const dt = Math.max(currentTime - lastTime, 1) // Prevent division by zero
+					// Make element draggable with mobile-friendly styling
+					element.style.touchAction = "none" // Essential for mobile drag
+					element.style.userSelect = "none"
+					element.style.cursor = "grab"
+					setComponentCount(prev => prev + 1) // Increment count only on successful spawn
 
-						const dx = currentX - startX
-						const dy = currentY - startY
+					// Add mouse and touch interaction
+					const handlePointerStart = (clientX: number, clientY: number) => {
+						element.style.cursor = "grabbing"
+						element.style.transform = element.style.transform + " scale(1.05)" // Slight scale feedback
+						const startX = clientX
+						const startY = clientY
+						const startBodyX = body.position.x
+						const startBodyY = body.position.y
+						let lastX = startX
+						let lastY = startY
+						let lastTime = Date.now()
 
-						// Calculate velocity based on pointer movement
-						const velocityX = ((currentX - lastX) / dt) * 50 // Scale factor for responsiveness
-						const velocityY = ((currentY - lastY) / dt) * 50
+						const handlePointerMove = (currentX: number, currentY: number) => {
+							const currentTime = Date.now()
+							const dt = Math.max(currentTime - lastTime, 1) // Prevent division by zero
 
-						// Set position and apply velocity for smooth throwing
-						Matter.Body.setPosition(body, {
-							x: startBodyX + dx,
-							y: startBodyY + dy,
+							const dx = currentX - startX
+							const dy = currentY - startY
+
+							// Calculate velocity based on pointer movement
+							const velocityX = ((currentX - lastX) / dt) * 50 // Scale factor for responsiveness
+							const velocityY = ((currentY - lastY) / dt) * 50
+
+							// Set position and apply velocity for smooth throwing
+							Matter.Body.setPosition(body, {
+								x: startBodyX + dx,
+								y: startBodyY + dy,
+							})
+							Matter.Body.setVelocity(body, { x: velocityX, y: velocityY })
+
+							lastX = currentX
+							lastY = currentY
+							lastTime = currentTime
+						}
+
+						const handleMouseMove = (e: MouseEvent) => {
+							e.preventDefault()
+							handlePointerMove(e.clientX, e.clientY)
+						}
+
+						const handleTouchMove = (e: TouchEvent) => {
+							e.preventDefault()
+							if (e.touches.length > 0) {
+								handlePointerMove(e.touches[0].clientX, e.touches[0].clientY)
+							}
+						}
+
+						const handlePointerEnd = () => {
+							element.style.cursor = "grab"
+							// Remove scale feedback by recalculating transform without scale
+							const x = body.position.x
+							const y = body.position.y
+							const angle = body.angle
+							element.style.transform = `translate(${
+								x - element.offsetWidth / 2
+							}px, ${y - element.offsetHeight / 2}px) rotate(${angle}rad)`
+							document.removeEventListener("mousemove", handleMouseMove)
+							document.removeEventListener("mouseup", handlePointerEnd)
+							document.removeEventListener("touchmove", handleTouchMove)
+							document.removeEventListener("touchend", handlePointerEnd)
+							document.removeEventListener("touchcancel", handlePointerEnd)
+						}
+
+						document.addEventListener("mousemove", handleMouseMove, {
+							passive: false,
 						})
-						Matter.Body.setVelocity(body, { x: velocityX, y: velocityY })
+						document.addEventListener("mouseup", handlePointerEnd)
+						document.addEventListener("touchmove", handleTouchMove, {
+							passive: false,
+						})
+						document.addEventListener("touchend", handlePointerEnd)
+						document.addEventListener("touchcancel", handlePointerEnd)
 
-						lastX = currentX
-						lastY = currentY
-						lastTime = currentTime
+						return handlePointerEnd
 					}
 
-					const handleMouseMove = (e: MouseEvent) => {
+					// Mouse events
+					element.addEventListener("mousedown", e => {
 						e.preventDefault()
-						handlePointerMove(e.clientX, e.clientY)
-					}
-
-					const handleTouchMove = (e: TouchEvent) => {
-						e.preventDefault()
-						if (e.touches.length > 0) {
-							handlePointerMove(e.touches[0].clientX, e.touches[0].clientY)
-						}
-					}
-
-					const handlePointerEnd = () => {
-						element.style.cursor = "grab"
-						// Remove scale feedback by recalculating transform without scale
-						const x = body.position.x
-						const y = body.position.y
-						const angle = body.angle
-						element.style.transform = `translate(${
-							x - element.offsetWidth / 2
-						}px, ${y - element.offsetHeight / 2}px) rotate(${angle}rad)`
-						document.removeEventListener("mousemove", handleMouseMove)
-						document.removeEventListener("mouseup", handlePointerEnd)
-						document.removeEventListener("touchmove", handleTouchMove)
-						document.removeEventListener("touchend", handlePointerEnd)
-						document.removeEventListener("touchcancel", handlePointerEnd)
-					}
-
-					document.addEventListener("mousemove", handleMouseMove, {
-						passive: false,
+						handlePointerStart(e.clientX, e.clientY)
 					})
-					document.addEventListener("mouseup", handlePointerEnd)
-					document.addEventListener("touchmove", handleTouchMove, {
-						passive: false,
-					})
-					document.addEventListener("touchend", handlePointerEnd)
-					document.addEventListener("touchcancel", handlePointerEnd)
 
-					return handlePointerEnd
-				}
-
-				// Mouse events
-				element.addEventListener("mousedown", e => {
-					e.preventDefault()
-					handlePointerStart(e.clientX, e.clientY)
+					// Touch events
+					element.addEventListener(
+						"touchstart",
+						e => {
+							e.preventDefault()
+							if (e.touches.length > 0) {
+								handlePointerStart(e.touches[0].clientX, e.touches[0].clientY)
+							}
+						},
+						{ passive: false },
+					)
 				})
-
-				// Touch events
-				element.addEventListener(
-					"touchstart",
-					e => {
-						e.preventDefault()
-						if (e.touches.length > 0) {
-							handlePointerStart(e.touches[0].clientX, e.touches[0].clientY)
-						}
-					},
-					{ passive: false },
-				)
 			})
-
-			setComponentCount(prev => prev + 1)
 		},
-		[
-			selectedCategory,
-			selectedSubcategory,
-			bounce,
-			gravity,
-			createComponentElement,
-		],
+		[selectedCategory, selectedSubcategory, bounce, gravity],
 	)
 
 	// Clear all components
