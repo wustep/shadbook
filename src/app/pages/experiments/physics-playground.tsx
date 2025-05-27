@@ -43,6 +43,8 @@ export function PhysicsPlayground() {
 	const runnerRef = useRef<Matter.Runner | undefined>(undefined)
 	const bodiesRef = useRef<Map<number, HTMLElement>>(new Map())
 
+	const WALL_THICKNESS = 30 // Define WALL_THICKNESS for component-wide use
+
 	const [selectedCategory, setSelectedCategory] =
 		useState<ComponentCategory>("random")
 	const [selectedSubcategory, setSelectedSubcategory] = useState<
@@ -126,9 +128,11 @@ export function PhysicsPlayground() {
 					})
 				}
 				if (body.position.y < bounds.min.y + margin) {
+					const bodyRenderHeight = (body as any).customRenderHeight || 40 // Fallback height
 					Matter.Body.setPosition(body, {
 						x: body.position.x,
-						y: bounds.min.y + margin,
+						// Position center so top edge is 'margin' below WALL_THICKNESS
+						y: WALL_THICKNESS + bodyRenderHeight / 2 + margin,
 					})
 					Matter.Body.setVelocity(body, {
 						x: body.velocity.x,
@@ -156,9 +160,14 @@ export function PhysicsPlayground() {
 					if (isNearEdge) {
 						Matter.Sleeping.set(body, false)
 						// Give a stronger nudge to unstick
+						let nudgeY = 0.002 // Default upward nudge
+						if (body.position.y < 100) {
+							// Specifically if near the top due to isNearEdge condition
+							nudgeY = -0.002 // Nudge downwards
+						}
 						Matter.Body.applyForce(body, body.position, {
 							x: (Math.random() - 0.5) * 0.002,
-							y: 0.002,
+							y: nudgeY,
 						})
 					}
 				}
@@ -227,14 +236,13 @@ export function PhysicsPlayground() {
 			Matter.Composite.remove(engineRef.current.world, oldWalls)
 
 			// Create thicker, more reliable walls with better positioning
-			const wallThickness = 30
 			const newWalls = [
 				// Floor - positioned at the very bottom
 				Matter.Bodies.rectangle(
 					newBounds.width / 2,
-					newBounds.height - wallThickness / 2,
-					newBounds.width + wallThickness * 2, // Extend beyond sides
-					wallThickness,
+					newBounds.height - WALL_THICKNESS / 2,
+					newBounds.width + WALL_THICKNESS * 2, // Extend beyond sides
+					WALL_THICKNESS,
 					{
 						isStatic: true,
 						label: "floor",
@@ -245,10 +253,10 @@ export function PhysicsPlayground() {
 				),
 				// Left wall - positioned at the very left
 				Matter.Bodies.rectangle(
-					wallThickness / 2,
+					WALL_THICKNESS / 2,
 					newBounds.height / 2,
-					wallThickness,
-					newBounds.height + wallThickness * 2, // Extend beyond top/bottom
+					WALL_THICKNESS,
+					newBounds.height + WALL_THICKNESS * 2, // Extend beyond top/bottom
 					{
 						isStatic: true,
 						label: "wall-left",
@@ -259,10 +267,10 @@ export function PhysicsPlayground() {
 				),
 				// Right wall - positioned at the very right
 				Matter.Bodies.rectangle(
-					newBounds.width - wallThickness / 2,
+					newBounds.width - WALL_THICKNESS / 2,
 					newBounds.height / 2,
-					wallThickness,
-					newBounds.height + wallThickness * 2, // Extend beyond top/bottom
+					WALL_THICKNESS,
+					newBounds.height + WALL_THICKNESS * 2, // Extend beyond top/bottom
 					{
 						isStatic: true,
 						label: "wall-right",
@@ -274,9 +282,9 @@ export function PhysicsPlayground() {
 				// Ceiling - positioned at the very top
 				Matter.Bodies.rectangle(
 					newBounds.width / 2,
-					wallThickness / 2,
-					newBounds.width + wallThickness * 2, // Extend beyond sides
-					wallThickness,
+					WALL_THICKNESS / 2,
+					newBounds.width + WALL_THICKNESS * 2, // Extend beyond sides
+					WALL_THICKNESS,
 					{
 						isStatic: true,
 						label: "ceiling",
@@ -305,7 +313,9 @@ export function PhysicsPlayground() {
 			Matter.Engine.clear(engine)
 			bodiesRef.current.clear()
 		}
-	}, [gravity])
+		// Intentionally only initialize once.
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
 
 	// Update bounds when sidebar state changes
 	useEffect(() => {
@@ -323,8 +333,15 @@ export function PhysicsPlayground() {
 	// Update gravity when slider changes
 	useEffect(() => {
 		if (engineRef.current) {
-			// Apply the same scaling as in engine creation
 			engineRef.current.world.gravity.y = gravity * 0.000005
+
+			// Wake up all non-static bodies to apply new gravity
+			const bodies = Matter.Composite.allBodies(engineRef.current.world)
+			bodies.forEach(body => {
+				if (!body.isStatic) {
+					Matter.Sleeping.set(body, false)
+				}
+			})
 		}
 	}, [gravity])
 
@@ -509,6 +526,9 @@ export function PhysicsPlayground() {
 					// Enable sleeping but with reasonable threshold
 				})
 
+				// Store the rendered height on the body for boundary checks
+				;(body as any).customRenderHeight = rect.height
+
 				// Add to world
 				Matter.World.add(engineRef.current!.world, body)
 				bodiesRef.current.set(body.id, element)
@@ -644,6 +664,7 @@ export function PhysicsPlayground() {
 		if (!engineRef.current) return
 
 		const bodies = Matter.Composite.allBodies(engineRef.current.world)
+
 		bodies.forEach(body => {
 			if (!body.isStatic) {
 				const element = bodiesRef.current.get(body.id)
