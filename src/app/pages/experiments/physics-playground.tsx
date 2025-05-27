@@ -70,7 +70,7 @@ export function PhysicsPlayground() {
 			},
 			// Add constraint solver iterations for better stability
 			constraintIterations: 2,
-			positionIterations: 6,
+			positionIterations: 10, // Increased from 6 for potentially stiffer collision resolution
 			velocityIterations: 4,
 		})
 
