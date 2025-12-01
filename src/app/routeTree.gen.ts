@@ -8,118 +8,183 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-// Import Routes
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as PhysicsRouteImport } from './routes/physics'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as LayoutRouteImport } from './routes/_layout'
+import { Route as LayoutIndexRouteImport } from './routes/_layout/index'
+import { Route as LayoutExperimentsRouteImport } from './routes/_layout/experiments'
+import { Route as LayoutComponentsRouteImport } from './routes/_layout/components'
+import { Route as LayoutCardsRouteImport } from './routes/_layout/cards'
+import { Route as LayoutExperimentsPhysicsPlaygroundRouteImport } from './routes/_layout/experiments/physics-playground'
 
-import { Route as rootRoute } from './routes/__root'
-import { Route as AuthImport } from './routes/auth'
-import { Route as LayoutImport } from './routes/_layout'
-import { Route as LayoutIndexImport } from './routes/_layout/index'
-import { Route as LayoutExperimentsImport } from './routes/_layout/experiments'
-import { Route as LayoutComponentsImport } from './routes/_layout/components'
-import { Route as LayoutCardsImport } from './routes/_layout/cards'
-import { Route as LayoutExperimentsPhysicsPlaygroundImport } from './routes/_layout/experiments/physics-playground'
-
-// Create/Update Routes
-
-const AuthRoute = AuthImport.update({
+const PhysicsRoute = PhysicsRouteImport.update({
+  id: '/physics',
+  path: '/physics',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const LayoutRoute = LayoutImport.update({
+const LayoutRoute = LayoutRouteImport.update({
   id: '/_layout',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const LayoutIndexRoute = LayoutIndexImport.update({
+const LayoutIndexRoute = LayoutIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => LayoutRoute,
 } as any)
-
-const LayoutExperimentsRoute = LayoutExperimentsImport.update({
+const LayoutExperimentsRoute = LayoutExperimentsRouteImport.update({
   id: '/experiments',
   path: '/experiments',
   getParentRoute: () => LayoutRoute,
 } as any)
-
-const LayoutComponentsRoute = LayoutComponentsImport.update({
+const LayoutComponentsRoute = LayoutComponentsRouteImport.update({
   id: '/components',
   path: '/components',
   getParentRoute: () => LayoutRoute,
 } as any)
-
-const LayoutCardsRoute = LayoutCardsImport.update({
+const LayoutCardsRoute = LayoutCardsRouteImport.update({
   id: '/cards',
   path: '/cards',
   getParentRoute: () => LayoutRoute,
 } as any)
-
 const LayoutExperimentsPhysicsPlaygroundRoute =
-  LayoutExperimentsPhysicsPlaygroundImport.update({
+  LayoutExperimentsPhysicsPlaygroundRouteImport.update({
     id: '/physics-playground',
     path: '/physics-playground',
     getParentRoute: () => LayoutExperimentsRoute,
   } as any)
 
-// Populate the FileRoutesByPath interface
+export interface FileRoutesByFullPath {
+  '/auth': typeof AuthRoute
+  '/physics': typeof PhysicsRoute
+  '/cards': typeof LayoutCardsRoute
+  '/components': typeof LayoutComponentsRoute
+  '/experiments': typeof LayoutExperimentsRouteWithChildren
+  '/': typeof LayoutIndexRoute
+  '/experiments/physics-playground': typeof LayoutExperimentsPhysicsPlaygroundRoute
+}
+export interface FileRoutesByTo {
+  '/auth': typeof AuthRoute
+  '/physics': typeof PhysicsRoute
+  '/cards': typeof LayoutCardsRoute
+  '/components': typeof LayoutComponentsRoute
+  '/experiments': typeof LayoutExperimentsRouteWithChildren
+  '/': typeof LayoutIndexRoute
+  '/experiments/physics-playground': typeof LayoutExperimentsPhysicsPlaygroundRoute
+}
+export interface FileRoutesById {
+  __root__: typeof rootRouteImport
+  '/_layout': typeof LayoutRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/physics': typeof PhysicsRoute
+  '/_layout/cards': typeof LayoutCardsRoute
+  '/_layout/components': typeof LayoutComponentsRoute
+  '/_layout/experiments': typeof LayoutExperimentsRouteWithChildren
+  '/_layout/': typeof LayoutIndexRoute
+  '/_layout/experiments/physics-playground': typeof LayoutExperimentsPhysicsPlaygroundRoute
+}
+export interface FileRouteTypes {
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths:
+    | '/auth'
+    | '/physics'
+    | '/cards'
+    | '/components'
+    | '/experiments'
+    | '/'
+    | '/experiments/physics-playground'
+  fileRoutesByTo: FileRoutesByTo
+  to:
+    | '/auth'
+    | '/physics'
+    | '/cards'
+    | '/components'
+    | '/experiments'
+    | '/'
+    | '/experiments/physics-playground'
+  id:
+    | '__root__'
+    | '/_layout'
+    | '/auth'
+    | '/physics'
+    | '/_layout/cards'
+    | '/_layout/components'
+    | '/_layout/experiments'
+    | '/_layout/'
+    | '/_layout/experiments/physics-playground'
+  fileRoutesById: FileRoutesById
+}
+export interface RootRouteChildren {
+  LayoutRoute: typeof LayoutRouteWithChildren
+  AuthRoute: typeof AuthRoute
+  PhysicsRoute: typeof PhysicsRoute
+}
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/_layout': {
-      id: '/_layout'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof LayoutImport
-      parentRoute: typeof rootRoute
+    '/physics': {
+      id: '/physics'
+      path: '/physics'
+      fullPath: '/physics'
+      preLoaderRoute: typeof PhysicsRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/auth': {
       id: '/auth'
       path: '/auth'
       fullPath: '/auth'
-      preLoaderRoute: typeof AuthImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_layout/cards': {
-      id: '/_layout/cards'
-      path: '/cards'
-      fullPath: '/cards'
-      preLoaderRoute: typeof LayoutCardsImport
-      parentRoute: typeof LayoutImport
-    }
-    '/_layout/components': {
-      id: '/_layout/components'
-      path: '/components'
-      fullPath: '/components'
-      preLoaderRoute: typeof LayoutComponentsImport
-      parentRoute: typeof LayoutImport
-    }
-    '/_layout/experiments': {
-      id: '/_layout/experiments'
-      path: '/experiments'
-      fullPath: '/experiments'
-      preLoaderRoute: typeof LayoutExperimentsImport
-      parentRoute: typeof LayoutImport
+    '/_layout': {
+      id: '/_layout'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof LayoutRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_layout/': {
       id: '/_layout/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof LayoutIndexImport
-      parentRoute: typeof LayoutImport
+      preLoaderRoute: typeof LayoutIndexRouteImport
+      parentRoute: typeof LayoutRoute
+    }
+    '/_layout/experiments': {
+      id: '/_layout/experiments'
+      path: '/experiments'
+      fullPath: '/experiments'
+      preLoaderRoute: typeof LayoutExperimentsRouteImport
+      parentRoute: typeof LayoutRoute
+    }
+    '/_layout/components': {
+      id: '/_layout/components'
+      path: '/components'
+      fullPath: '/components'
+      preLoaderRoute: typeof LayoutComponentsRouteImport
+      parentRoute: typeof LayoutRoute
+    }
+    '/_layout/cards': {
+      id: '/_layout/cards'
+      path: '/cards'
+      fullPath: '/cards'
+      preLoaderRoute: typeof LayoutCardsRouteImport
+      parentRoute: typeof LayoutRoute
     }
     '/_layout/experiments/physics-playground': {
       id: '/_layout/experiments/physics-playground'
       path: '/physics-playground'
       fullPath: '/experiments/physics-playground'
-      preLoaderRoute: typeof LayoutExperimentsPhysicsPlaygroundImport
-      parentRoute: typeof LayoutExperimentsImport
+      preLoaderRoute: typeof LayoutExperimentsPhysicsPlaygroundRouteImport
+      parentRoute: typeof LayoutExperimentsRoute
     }
   }
 }
-
-// Create and export the route tree
 
 interface LayoutExperimentsRouteChildren {
   LayoutExperimentsPhysicsPlaygroundRoute: typeof LayoutExperimentsPhysicsPlaygroundRoute
@@ -150,125 +215,11 @@ const LayoutRouteChildren: LayoutRouteChildren = {
 const LayoutRouteWithChildren =
   LayoutRoute._addFileChildren(LayoutRouteChildren)
 
-export interface FileRoutesByFullPath {
-  '': typeof LayoutRouteWithChildren
-  '/auth': typeof AuthRoute
-  '/cards': typeof LayoutCardsRoute
-  '/components': typeof LayoutComponentsRoute
-  '/experiments': typeof LayoutExperimentsRouteWithChildren
-  '/': typeof LayoutIndexRoute
-  '/experiments/physics-playground': typeof LayoutExperimentsPhysicsPlaygroundRoute
-}
-
-export interface FileRoutesByTo {
-  '/auth': typeof AuthRoute
-  '/cards': typeof LayoutCardsRoute
-  '/components': typeof LayoutComponentsRoute
-  '/experiments': typeof LayoutExperimentsRouteWithChildren
-  '/': typeof LayoutIndexRoute
-  '/experiments/physics-playground': typeof LayoutExperimentsPhysicsPlaygroundRoute
-}
-
-export interface FileRoutesById {
-  __root__: typeof rootRoute
-  '/_layout': typeof LayoutRouteWithChildren
-  '/auth': typeof AuthRoute
-  '/_layout/cards': typeof LayoutCardsRoute
-  '/_layout/components': typeof LayoutComponentsRoute
-  '/_layout/experiments': typeof LayoutExperimentsRouteWithChildren
-  '/_layout/': typeof LayoutIndexRoute
-  '/_layout/experiments/physics-playground': typeof LayoutExperimentsPhysicsPlaygroundRoute
-}
-
-export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | ''
-    | '/auth'
-    | '/cards'
-    | '/components'
-    | '/experiments'
-    | '/'
-    | '/experiments/physics-playground'
-  fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/auth'
-    | '/cards'
-    | '/components'
-    | '/experiments'
-    | '/'
-    | '/experiments/physics-playground'
-  id:
-    | '__root__'
-    | '/_layout'
-    | '/auth'
-    | '/_layout/cards'
-    | '/_layout/components'
-    | '/_layout/experiments'
-    | '/_layout/'
-    | '/_layout/experiments/physics-playground'
-  fileRoutesById: FileRoutesById
-}
-
-export interface RootRouteChildren {
-  LayoutRoute: typeof LayoutRouteWithChildren
-  AuthRoute: typeof AuthRoute
-}
-
 const rootRouteChildren: RootRouteChildren = {
   LayoutRoute: LayoutRouteWithChildren,
   AuthRoute: AuthRoute,
+  PhysicsRoute: PhysicsRoute,
 }
-
-export const routeTree = rootRoute
+export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-/* ROUTE_MANIFEST_START
-{
-  "routes": {
-    "__root__": {
-      "filePath": "__root.tsx",
-      "children": [
-        "/_layout",
-        "/auth"
-      ]
-    },
-    "/_layout": {
-      "filePath": "_layout.tsx",
-      "children": [
-        "/_layout/cards",
-        "/_layout/components",
-        "/_layout/experiments",
-        "/_layout/"
-      ]
-    },
-    "/auth": {
-      "filePath": "auth.tsx"
-    },
-    "/_layout/cards": {
-      "filePath": "_layout/cards.tsx",
-      "parent": "/_layout"
-    },
-    "/_layout/components": {
-      "filePath": "_layout/components.tsx",
-      "parent": "/_layout"
-    },
-    "/_layout/experiments": {
-      "filePath": "_layout/experiments.tsx",
-      "parent": "/_layout",
-      "children": [
-        "/_layout/experiments/physics-playground"
-      ]
-    },
-    "/_layout/": {
-      "filePath": "_layout/index.tsx",
-      "parent": "/_layout"
-    },
-    "/_layout/experiments/physics-playground": {
-      "filePath": "_layout/experiments/physics-playground.tsx",
-      "parent": "/_layout/experiments"
-    }
-  }
-}
-ROUTE_MANIFEST_END */
