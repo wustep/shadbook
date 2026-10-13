@@ -128,7 +128,7 @@ export function PhysicsPlayground() {
 					})
 				}
 				if (body.position.y < bounds.min.y + margin) {
-					const bodyRenderHeight = (body as any).customRenderHeight || 40 // Fallback height
+					const bodyRenderHeight = (body as Matter.Body & { customRenderHeight?: number }).customRenderHeight || 40 // Fallback height
 					Matter.Body.setPosition(body, {
 						x: body.position.x,
 						// Position center so top edge is 'margin' below WALL_THICKNESS
@@ -551,7 +551,7 @@ export function PhysicsPlayground() {
 					})
 
 					// Store the rendered height on the body for boundary checks
-					;(body as any).customRenderHeight = rect.height
+					;(body as Matter.Body & { customRenderHeight?: number }).customRenderHeight = rect.height
 
 					// Add to world
 					Matter.World.add(engineRef.current!.world, body)

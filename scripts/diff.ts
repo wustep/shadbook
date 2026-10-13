@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 /**
  * shadcn diff tool
  * Compares the current version of your shadcn components with shadcn@latest
@@ -8,8 +10,6 @@
  * -- outputFile [file]: file to output diff results and AI summaries (e.g. "temp/diff.md")
  * -- filter [text]: filter to search specific components (e.g. "Button")
  */
-
-#!/usr/bin/env node
 
 import chalk from "chalk"
 import { exec, execSync } from "child_process"

@@ -70,6 +70,7 @@ export function ChartRadarLabelCustom() {
             <PolarAngleAxis
               dataKey="month"
               tick={({ x, y, textAnchor, value, index, ...props }) => {
+                void value
                 const data = chartData[index]
 
                 return (

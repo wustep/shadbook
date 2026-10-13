@@ -38,7 +38,7 @@ export default defineConfig({
 						name: "chromium",
 						provider: "playwright",
 					},
-					setupFiles: [".storybook/vitest.setup.js"],
+					setupFiles: [".storybook/vitest.setup.ts"],
 				},
 			},
 		],

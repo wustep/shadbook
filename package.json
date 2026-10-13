@@ -7,6 +7,7 @@
     "dev": "vite --port 8080",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
+    "test": "vitest run --no-file-parallelism",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
