@@ -87,7 +87,6 @@ export function PhysicsPlayground() {
 
 		// Create runner with more stable timestep
 		const runner = Matter.Runner.create({
-			isFixed: true,
 			delta: 1000 / 60, // 60 FPS
 		})
 		runnerRef.current = runner
