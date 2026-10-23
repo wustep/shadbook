@@ -1,6 +1,6 @@
 import { Checkbox } from "./checkbox"
 import { Label } from "./label"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { useEffect, useRef, useState } from "react"
 
 const meta: Meta<typeof Checkbox> = {

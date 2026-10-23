@@ -21,7 +21,7 @@ import { Page as Sidebar013 } from "./registry/blocks/sidebar-13/page"
 import { Page as Sidebar014 } from "./registry/blocks/sidebar-14/page"
 import { Page as Sidebar015 } from "./registry/blocks/sidebar-15/page"
 import { Page as Sidebar016 } from "./registry/blocks/sidebar-16/page"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 
 const meta: Meta = {
 	title: "Components/Examples/Blocks",

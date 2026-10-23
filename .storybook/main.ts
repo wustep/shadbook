@@ -1,5 +1,8 @@
 import type { StorybookConfig } from "@storybook/react-vite"
-import path from "path"
+import path from "node:path"
+import { fileURLToPath } from "node:url"
+
+const dirname = path.dirname(fileURLToPath(import.meta.url))
 
 // `title` names the manager's raw <title> ("Shadbook - Storybook") instead of
 // the package fallback crawlers saw ("@storybook/core - Storybook").
@@ -7,9 +10,9 @@ const config: StorybookConfig & { title: string } = {
 	title: "Shadbook",
 	stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
 	addons: [
-		"@storybook/addon-essentials",
+		"@storybook/addon-docs",
 		"@storybook/addon-onboarding",
-		// "@chromatic-com/storybook",
+		"@storybook/addon-vitest",
 	],
 	framework: {
 		name: "@storybook/react-vite",
@@ -22,7 +25,7 @@ const config: StorybookConfig & { title: string } = {
 		if (config.resolve) {
 			config.resolve.alias = {
 				...config.resolve.alias,
-				"@": path.resolve(__dirname, "../src/"),
+				"@": path.resolve(dirname, "../src/"),
 			}
 		}
 		return config

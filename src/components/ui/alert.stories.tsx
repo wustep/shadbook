@@ -1,7 +1,7 @@
 import { Alert, AlertDescription, AlertTitle } from "./alert"
 import { Badge } from "./badge"
 import { Button } from "./button"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import {
 	AlertTriangle,
 	BellRing,

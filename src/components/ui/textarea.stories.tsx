@@ -1,6 +1,6 @@
 import { Label } from "./label"
 import { Textarea } from "./textarea"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { useState } from "react"
 
 const meta: Meta<typeof Textarea> = {

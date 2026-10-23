@@ -3,7 +3,7 @@ import { Badge } from "./badge"
 import { Button } from "./button"
 import { Card, CardContent, CardFooter, CardHeader } from "./card"
 import { Skeleton } from "./skeleton"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import {
 	Bell,
 	Check,

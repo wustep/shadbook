@@ -11,9 +11,9 @@ import {
 import {
 	DocsContainer as BaseContainer,
 	DocsContainerProps,
-} from "@storybook/blocks"
-import { themes } from "@storybook/theming"
+} from "@storybook/addon-docs/blocks"
 import React, { FC, PropsWithChildren, useEffect, useState } from "react"
+import { themes } from "storybook/theming"
 
 export const DocsContainer: FC<PropsWithChildren<DocsContainerProps>> = ({
 	children,

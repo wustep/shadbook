@@ -1,7 +1,7 @@
 import "@/styles/globals.css"
 import { DocsContainer } from "./DocsContainer"
 import { getStoredMode, getStoredTheme, updateMode, updateTheme } from "./utils"
-import type { Preview } from "@storybook/react"
+import type { Preview } from "@storybook/react-vite"
 
 const preview: Preview = {
 	parameters: {
@@ -11,7 +11,7 @@ const preview: Preview = {
 				date: /Date$/i,
 			},
 		},
-		backgrounds: { disable: true }, // Disable Storybook's background addon
+		backgrounds: { disabled: true }, // Disable Storybook's background addon
 		chromatic: { disable: true },
 		docs: {
 			container: DocsContainer,

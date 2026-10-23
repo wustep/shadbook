@@ -10,7 +10,7 @@ import {
 	CommandSeparator,
 	CommandShortcut,
 } from "./command"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import {
 	CalendarIcon,
 	CreditCardIcon,

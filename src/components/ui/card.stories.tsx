@@ -9,7 +9,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from "./card"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import {
 	ArrowRight,
 	Calendar,

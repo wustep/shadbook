@@ -1,7 +1,7 @@
 import { Alert, AlertDescription } from "./alert"
 import { Badge } from "./badge"
 import { Card } from "./card"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { Check, FileText, Info, Terminal } from "lucide-react"
 
 const meta: Meta = {

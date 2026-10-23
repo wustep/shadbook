@@ -1,7 +1,7 @@
 import { Button } from "./button"
 import { Input } from "./input"
 import { Label } from "./label"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import {
 	AtSign,
 	CheckCircle2,

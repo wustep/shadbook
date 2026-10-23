@@ -4,7 +4,7 @@ import {
 	CollapsibleContent,
 	CollapsibleTrigger,
 } from "./collapsible"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import {
 	Bell,
 	ChevronDown,

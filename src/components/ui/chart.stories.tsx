@@ -1,6 +1,6 @@
 import { Button } from "./button"
 import { type ChartConfig, ChartContainer, ChartTooltipContent } from "./chart"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { Calendar, DollarSign, TrendingDown, TrendingUp } from "lucide-react"
 import { useState } from "react"
 import {

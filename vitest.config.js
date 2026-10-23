@@ -1,33 +1,29 @@
 import path from "node:path"
-import react from "@vitejs/plugin-react"
-import tailwindcss from "@tailwindcss/vite"
-
 import { fileURLToPath } from "node:url"
 
+import tailwindcss from "@tailwindcss/vite"
+import react from "@vitejs/plugin-react"
+import { playwright } from "@vitest/browser-playwright"
 import { defineConfig } from "vitest/config"
 
-import { storybookTest } from "@storybook/experimental-addon-test/vitest-plugin"
+import { storybookTest } from "@storybook/addon-vitest/vitest-plugin"
 
-const dirname =
-	typeof __dirname !== "undefined"
-		? __dirname
-		: path.dirname(fileURLToPath(import.meta.url))
+const dirname = path.dirname(fileURLToPath(import.meta.url))
 
-// More info at: https://storybook.js.org/docs/writing-tests/test-addon
+// More info at: https://storybook.js.org/docs/writing-tests/integrations/vitest-addon
 export default defineConfig({
 	plugins: [react(), tailwindcss()],
 	resolve: {
 		alias: {
-			"@": path.resolve(__dirname, "./src"),
+			"@": path.resolve(dirname, "./src"),
 		},
 	},
 	test: {
-		workspace: [
+		projects: [
 			{
 				extends: true,
 				plugins: [
-					// The plugin will run tests for the stories defined in your Storybook config
-					// See options at: https://storybook.js.org/docs/writing-tests/test-addon#storybooktest
+					// Runs tests for the stories defined in the Storybook config
 					storybookTest({ configDir: path.join(dirname, ".storybook") }),
 				],
 				test: {
@@ -35,10 +31,10 @@ export default defineConfig({
 					browser: {
 						enabled: true,
 						headless: true,
-						name: "chromium",
-						provider: "playwright",
+						provider: playwright(),
+						instances: [{ browser: "chromium" }],
 					},
-					setupFiles: [".storybook/vitest.setup.js"],
+					setupFiles: [".storybook/vitest.setup.ts"],
 				},
 			},
 		],

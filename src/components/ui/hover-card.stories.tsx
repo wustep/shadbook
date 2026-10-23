@@ -1,7 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "./avatar"
 import { Button } from "./button"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "./hover-card"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { CalendarDays, Github, Link, Twitter, User } from "lucide-react"
 
 const meta: Meta<typeof HoverCard> = {

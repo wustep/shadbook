@@ -3,7 +3,7 @@ import { Input } from "./input"
 import { Label } from "./label"
 import { RadioGroup, RadioGroupItem } from "./radio-group"
 import { Switch } from "./switch"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { AlertCircle, HelpCircle } from "lucide-react"
 
 const meta: Meta<typeof Label> = {

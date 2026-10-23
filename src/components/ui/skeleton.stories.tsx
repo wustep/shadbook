@@ -2,7 +2,7 @@ import { Avatar, AvatarFallback } from "./avatar"
 import { Badge } from "./badge"
 import { Card, CardContent, CardFooter, CardHeader } from "./card"
 import { Skeleton } from "./skeleton"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { Clock, MessageSquare, ThumbsUp, User } from "lucide-react"
 
 const meta: Meta<typeof Skeleton> = {

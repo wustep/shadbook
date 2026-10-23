@@ -2,7 +2,7 @@ import { Button } from "./button"
 import { Input } from "./input"
 import { Label } from "./label"
 import { Popover, PopoverContent, PopoverTrigger } from "./popover"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { Bell, Calendar, Plus, Settings, User } from "lucide-react"
 
 const meta: Meta<typeof Popover> = {

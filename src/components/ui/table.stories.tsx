@@ -19,7 +19,7 @@ import {
 	TableHeader,
 	TableRow,
 } from "./table"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { ArrowUpDown, MoreHorizontal } from "lucide-react"
 import { useState } from "react"
 
